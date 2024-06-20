@@ -1,0 +1,16 @@
+.dashboardContentContainer {
+    width: 85%;
+    height: 90%;
+  
+  }
+
+
+
+  @media (min-width: 100px) and (max-width: 500px) {
+
+    .dashboardContentContainer {
+        width: 100%;
+        padding: 0;
+      }
+    
+  }

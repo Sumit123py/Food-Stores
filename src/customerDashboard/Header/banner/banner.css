@@ -1,0 +1,192 @@
+.bannerContainer {
+  width: 100%;
+  height: 100vh;
+}
+
+.bannerContainer .banner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+
+}
+
+.bannerContainer .banner .slides {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  transition: 1s all ease-in-out;
+}
+
+.bannerContainer .banner .slides .img {
+  min-width: 100%;
+  height: 100%;
+}
+
+
+
+.bannerContainer .banner .slides .img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.bannerContainer .banner .bannerContent {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid green;
+}
+
+.bannerContainer .banner .bannerText {
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: white;
+  z-index: 3;
+  animation-name: fadeUp;
+  animation-delay: 0.5s;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+
+
+}
+
+
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.bannerContainer .banner .bannerText .texts {
+  line-height: 17vh;
+
+}
+
+
+
+.bannerContainer .banner .bannerText p {
+  font-family: "Oswald", sans-serif;
+  font-weight: 400;
+  font-optical-sizing: auto;
+
+  color: #D12525;
+}
+
+.banner .bannerText .first,
+.banner .bannerText .second,
+.banner .bannerText .third {
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-optical-sizing: auto;
+  /* font-size: 7rem; */
+  letter-spacing: 1.2px;
+}
+
+.bannerFoodImage {
+  width: 52%;
+  height: 82%;
+  /* position: absolute;
+    top: 15%;
+    left: 45%; */
+  z-index: 3;
+
+}
+
+.bannerFoodImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+
+}
+
+
+
+@keyframes rotateImage {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.imageNavigationBtns {
+  position: absolute;
+  top: 95%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.imageNavigationBtns span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: white;
+  z-index: 4;
+}
+
+.chilliImage1 {
+  position: absolute;
+  top: 5%;
+  left: 0;
+  z-index: 1;
+}
+
+.chilliImage2 {
+  position: absolute;
+  top: 5%;
+  right: 0%;
+  z-index: 2;
+}
+
+.chilliImage3 {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+}
+
+
+.chilliImage3 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+@media (min-width: 100px) and (max-width: 500px) {
+
+  .bannerContainer {
+    display: none;
+  }
+
+
+}

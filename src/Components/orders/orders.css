@@ -1,0 +1,295 @@
+.orderContainer {
+    width: 100%;
+    display: flex;
+    overflow: auto;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    padding: 10px;
+  
+  
+    .orderCard {
+      width: 100%;
+      height: 35vh;
+  
+  
+  
+  
+      .column1 {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        text-transform: uppercase;
+        font-family: "Oswald", sans-serif;
+        font-weight: 500;
+        font-optical-sizing: auto;
+        font-size: 18px;
+        background-color: orange;
+        color: white;
+  
+        /* p{
+        border: 1px solid red;
+  
+        } */
+  
+  
+      }
+  
+      .column1 :nth-child(1) {
+        width: 150px;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+      }
+  
+      .column1 :nth-child(2) {
+        width: 15%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+  
+      }
+  
+      .column1 :nth-child(3) {
+        width: 10%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+      }
+  
+      .column1 :nth-child(4) {
+        width: 10%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+  
+      }
+  
+      .column1 :nth-child(5) {
+        width: 15%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+  
+      }
+  
+      .column1 :nth-child(6) {
+        width: 10%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+  
+      }
+  
+      .column1 :nth-child(7) {
+        width: 10%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+      }
+  
+      .column1 :nth-child(8) {
+        width: 150px;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+      }
+  
+    }
+  
+  
+  
+    .orders {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1.2rem;
+      border-bottom: 0.5px solid grey;
+      padding: 1rem;
+      text-transform: uppercase;
+      font-family: "Oswald", sans-serif;
+      font-weight: 300;
+      font-optical-sizing: auto;
+    }
+  
+    .img {
+      width: 150px;
+      height: 150px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+  
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  
+    .foodName {
+      width: 15%;
+      height: 50px;
+      display: grid;
+      place-items: center;
+  
+    }
+  
+    .foodPrice {
+      width: 10%;
+      height: 50px;
+      display: grid;
+      place-items: center;
+  
+  
+    }
+  
+    .quantity {
+      width: 10%;
+      height: 50px;
+      display: grid;
+      place-items: center;
+  
+  
+    }
+  
+    .subtotal {
+      width: 15%;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      color: #e62222;
+  
+  
+    }
+  
+    .status {
+      position: relative;
+      width: 10%;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px;
+      font-size: 20px;
+      box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+      border-radius: 10px;
+      color: #0ad443;
+      font-weight: 400;
+      cursor: pointer;
+  
+      .dropDownIcon {
+        color: black;
+      }
+  
+      /* .status p:nth-child(1){
+        color:#F7B107;
+  
+      } */
+  
+      .statusList {
+        position: absolute;
+        top: 100%;
+        left: 0%;
+        width: 100%;
+        height: 70px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+        border-radius: 10px;
+        cursor: pointer;
+        padding: 10px;
+  
+  
+  
+      }
+  
+      .deliveryStatusList {
+        position: absolute;
+        top: 100%;
+        left: 0%;
+        width: 100%;
+        height: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        text-align: center;
+        background-color: white;
+        box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+        border-radius: 10px;
+        cursor: pointer;
+        padding: 10px;
+  
+  
+  
+      }
+  
+      .statusList p:nth-child(1),
+      .deliveryStatusList p:nth-child(1) {
+        width: 100%;
+        text-align: center;
+  
+        &:hover {
+          background-color: rgb(201, 201, 201);
+          color: black !important;
+          border-radius: 10px;
+        }
+      }
+  
+      .statusList p:nth-child(2) {
+        width: 100%;
+        text-align: center;
+  
+        &:hover {
+          background-color: rgb(201, 201, 201);
+          color: black !important;
+          border-radius: 10px;
+        }
+      }
+  
+      .statusList p:nth-child(3) {
+        width: 100%;
+        text-align: center;
+  
+        &:hover {
+          background-color: rgb(201, 201, 201);
+          color: black !important;
+          border-radius: 10px;
+        }
+      }
+  
+    }
+  
+  
+
+  
+  
+  }
+
+
+  @media (min-width: 100px) and (max-width: 500px) {
+    .orderListContainer {
+
+        .ordersMenuContainer {
+          display: none;
+        }
+    
+        .orderContainer {
+          display: none;
+        }
+      }
+  }

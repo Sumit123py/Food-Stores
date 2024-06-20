@@ -1,0 +1,312 @@
+
+  
+    .table1 {
+      width: 100%;
+      border: none;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+      padding: 2rem;
+  
+    }
+  
+    .column1 {
+      width: 100%;
+      height: 8vh;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 0.5px solid grey;
+  
+      p {
+        display: grid;
+        place-items: center;
+        text-transform: uppercase;
+        font-family: "Oswald", sans-serif;
+        font-weight: 500;
+        font-optical-sizing: auto;
+      }
+  
+    }
+  
+  
+  
+    .column1 :nth-child(1) {
+      width: 20%;
+      height: 100%;
+  
+    }
+  
+    .column1 :nth-child(2) {
+      width: 20%;
+      height: 100%;
+  
+    }
+  
+    .column1 :nth-child(3) {
+      width: 20%;
+      height: 100%;
+  
+    }
+  
+    .column1 :nth-child(4) {
+      width: 20%;
+      height: 100%;
+  
+    }
+  
+    .column1 :nth-child(5) {
+      width: 20%;
+      height: 100%;
+  
+    }
+  
+    .column2 {
+      width: 100%;
+      border-bottom: 0.5px solid grey;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      font-family: "Oswald", sans-serif;
+      font-weight: 300;
+      font-optical-sizing: auto;
+  
+  
+      .productImage {
+        width: 150px;
+        height: 150px;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+  
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+  
+      }
+  
+      .productPrice {
+        width: 20%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+      }
+  
+      .quantity {
+        width: 20%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+        .quantityBox {
+          width: 90px;
+          height: 50px;
+          background-color: rgba(195, 195, 195, 0.495);
+          border: none;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+          border-radius: 5px;
+  
+          .btns {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+  
+            .incQuantity {
+              border: none;
+              background: transparent;
+              font-size: 20px;
+  
+  
+            }
+  
+            .decQuantity {
+              border: none;
+              background: transparent;
+              font-size: 20px;
+  
+            }
+          }
+  
+        }
+  
+      }
+  
+      .subtotal {
+        width: 20%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+      }
+  
+      .remove {
+        width: 20%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+  
+        .fa-circle-xmark:hover {
+          color: #D12525;
+          cursor: pointer;
+  
+        }
+      }
+    }
+  
+    .column3 {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  
+  
+  
+      .updateBtn {
+        width: 210px;
+        height: 8vh;
+        position: relative;
+        display: flex;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        vertical-align: middle;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+        font-weight: 600;
+        padding: 25px 50px;
+        color: white;
+        text-align: center;
+        letter-spacing: 0.8px;
+        z-index: 1;
+        transition: all 500ms ease;
+        background-color: #00813D;
+        text-transform: uppercase;
+        font-family: "Oswald", sans-serif;
+        font-weight: 400 !important;
+        font-optical-sizing: auto;
+        border: none;
+        align-self: flex-end;
+  
+        &::before {
+          position: absolute;
+          content: "";
+          width: 100%;
+          height: 100%;
+          left: 0px;
+          top: 0px;
+          transform: scale(0, 0);
+          z-index: -1;
+          transition: all 500ms ease;
+        }
+  
+        &:hover::before {
+          background-color: #D12525;
+          transform: scale(1, 1);
+        }
+  
+  
+  
+      }
+  
+      .orderbtn {
+        width: 210px;
+        height: 8vh;
+        position: relative;
+        display: flex;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        vertical-align: middle;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+        font-weight: 600;
+        padding: 25px 50px;
+        color: white;
+        text-align: center;
+        letter-spacing: 0.8px;
+        z-index: 1;
+        transition: all 500ms ease;
+        background-color: #00813D;
+        text-transform: uppercase;
+        font-family: "Oswald", sans-serif;
+        font-weight: 400 !important;
+        font-optical-sizing: auto;
+        border: none;
+        align-self: flex-end;
+  
+        &::before {
+          position: absolute;
+          content: "";
+          width: 100%;
+          height: 100%;
+          left: 0px;
+          top: 0px;
+          transform: scale(0, 0);
+          z-index: -1;
+          transition: all 500ms ease;
+        }
+  
+        &:hover::before {
+          background-color: #D12525;
+          transform: scale(1, 1);
+        }
+  
+  
+  
+      }
+    }
+
+
+
+  @media (min-width: 100px) and (max-width: 500px) {
+    
+    
+        .table1 {
+          padding: 10px;
+        }
+    
+        .column2 {
+    
+          .quantity {
+            overflow: hidden;
+            border-radius: 5px;
+    
+    
+    
+            quantityBox {
+              width: 100%;
+              border: 1px solid red;
+            }
+          }
+        }
+    
+        .column3 {
+    
+          .updateBtn {
+            width: 100px;
+            height: 5vh;
+            border-radius: 5px;
+          }
+        }
+      
+  }

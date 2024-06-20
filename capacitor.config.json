@@ -1,0 +1,8 @@
+{
+    "appId": "io.ionic.foodstore",
+    "appName": "food-store",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "build",
+    "cordova": {}
+  }
