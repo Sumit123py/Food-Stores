@@ -65,6 +65,8 @@ const OrdersMainPage = ({setCurrentAction}) => {
   const order = currentOrder?.[0];
   if (!order) return navigate(-1);
 
+  const phoneNumber = order.users?.phone;
+
   return (
     <div className="order-details-container">
       <div className="order-header">
@@ -104,9 +106,7 @@ const OrdersMainPage = ({setCurrentAction}) => {
             </p>
           </div>
           {(userRole === "admin" || userRole === "delivery") && (
-            <p className="phone">
-              <i className="fa-solid fa-phone" style={{ color: "red" }}></i>
-            </p>
+            <a className="phone" href={`tel: ${phoneNumber}`}><i className="fa-solid fa-phone" style={{ color: "red" }}></i></a>
           )}
         </div>
         <div className="paymentInfo">
