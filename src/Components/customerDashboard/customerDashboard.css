@@ -14,9 +14,10 @@
   }
 
 
-  @media (min-width: 100px) and (max-width: 500px) {
+  @media (min-width: 100px) and (max-width: 1000px) {
     .customerDashboardContainer {
-        background: url(../../img/600.jpg);
+      background: rgb(236, 231, 239);
+      background: linear-gradient(150deg, rgba(236, 231, 239, 1) 32%, rgba(174, 204, 240, 1) 100%);
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;

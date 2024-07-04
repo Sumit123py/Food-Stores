@@ -8,6 +8,7 @@
     justify-content: flex-start;
     height: var(--uib-size);
     width: var(--uib-size);
+    
   }
   
   .dot-spinner__dot {

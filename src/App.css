@@ -292,6 +292,9 @@ body {
 }
 
 
+.dashboardNavigation{
+  display: none;
+}
 
 
 
@@ -1516,6 +1519,10 @@ h1 {
   width: 100%;
   height: 10%;
 
+  .selectedTitle{
+    display: none;
+  }
+
 
   .menu {
     width: 100%;
@@ -1628,7 +1635,7 @@ h1 {
 
 
 
-@media (min-width: 100px) and (max-width: 500px) {
+@media (min-width: 100px) and (max-width: 1000px) {
 
   html {
     font-size: 50%;
@@ -1649,6 +1656,58 @@ h1 {
 
 
 
+  .ordersMenuContainer {
+    display: flex;
+    position: relative;
+    width: 140px;
+    height: 50px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+    cursor: pointer;
+
+    .selectedTitle{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+
+    }
+  
+    .menu {
+      width: 140px;
+      /* height: 0; */
+      position: absolute;
+      top: 100%;
+      display: flex;
+      flex-direction: column;
+      /* justify-content: space-between; */
+      align-items: center;
+      gap: 2px;
+      font-family: "Oswald", sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      z-index: 5;
+      background-color: white;
+      transition: 0.5s all ease-in-out;
+      box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
+      overflow: hidden;
+
+      
+  
+      p {
+        width: 100%;
+        /* height: calc(250px / 5); */
+        padding: 10px 10px;
+        letter-spacing: 1.2px;
+        cursor: pointer;
+        text-align: center;
+        text-wrap: nowrap;
+      }
+    }
+  }
 
 
 
@@ -1776,11 +1835,13 @@ h1 {
       width: 100%;
       padding: 5px;
       flex-direction: row;
+      flex-wrap: nowrap;
       justify-content: none;
       align-items: center;
       overflow: visible;
       font-size: 12px;
       text-wrap: nowrap;
+
 
 
 

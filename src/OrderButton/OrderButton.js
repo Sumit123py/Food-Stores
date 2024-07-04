@@ -118,7 +118,7 @@ const OrderButton = ({onClick, isCreating, cart}) => {
     
 
     return (
-        <button disabled={isCreating || cart.length <= 0} onClick={onClick} className="truck-button" ref={buttonRef}>
+        <button disabled={isCreating || cart?.length <= 0} onClick={onClick} className="truck-button" ref={buttonRef}>
             <span className="default">Complete Order</span>
             <span className="success">
                 Order Placed

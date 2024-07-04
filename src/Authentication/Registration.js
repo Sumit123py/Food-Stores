@@ -5,8 +5,10 @@ import { useForm } from "react-hook-form";
 import { createUser } from "../Services/apiUsers";
 import toast from "react-hot-toast";
 import "./form.css";
+import Spinner from "../spinLoader/Spinner";
 const Registration = () => {
   const queryClient = useQueryClient();
+  
   const Navigate = useNavigate();
 
   const { mutate, isLoading: isCreating } = useMutation(createUser, {
@@ -53,7 +55,7 @@ const Registration = () => {
           {...register("password")}
         />
 
-        <button type="submit" disabled={isCreating}>Signup</button>
+        <button type="submit" disabled={isCreating}>{isCreating ? <Spinner/> : 'Signup'}</button>
         <div className="login">
           <p>Already have an account</p>
           <button onClick={() => Navigate('/Login')}>Login</button>

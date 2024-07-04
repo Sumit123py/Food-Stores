@@ -22,8 +22,6 @@ const Cart = () => {
 
   const user = currentUser?.[0];
 
-  console.log('us', user)
-
 
   const [addressAdded, setAddressAdded] = useState(user ? true : false)
   const [isEditing, setIsEditing] = useState(false)
@@ -44,7 +42,7 @@ const Cart = () => {
   return (
     <div className="cart">
       <div className="cartContainer">
-      {(!user || isEditing) &&  <AddressForm setAddressAdded={setAddressAdded} userDetails={user} setIsEditing={setIsEditing} onAddressUpdated={handleAddressUpdated}/>}
+      {(!user?.address  || isEditing) &&  <AddressForm setAddressAdded={setAddressAdded} userDetails={user} setIsEditing={setIsEditing} onAddressUpdated={handleAddressUpdated}/>}
       {user && 
       (<div className="userDetailsContainer">
 

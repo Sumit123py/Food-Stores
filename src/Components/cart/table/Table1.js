@@ -1,20 +1,39 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { deleteCart, getCart } from '../../../Services/apiCart';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Spinner from '../../../spinLoader/Spinner';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { createOrder } from '../../../Services/apiOrders';
+import { createOrder, createDuplicateOrder } from '../../../Services/apiOrders';
 import OrderButton from '../../../OrderButton/OrderButton';
-import { getCurrentUserId } from '../../../Services/apiUsers';
+import { getCurrentUserId, getUser } from '../../../Services/apiUsers';
 import { ProductContext } from '../../../context/FoodContext';
-import './table.css'
+import  supabase  from '../../../Services/Supabase'; // Assuming you have a supabase client instance
+import './table.css';
+import useSupabaseRealtime from '../../../Services/useSupabaseRealtime';
 
-const Table1 = ({addressAdded}) => {
+const Table1 = ({ addressAdded }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [QuantityData, setQuantityData] = useState({});
-  const { setOrderData, setTotalItem } = useContext(ProductContext)
+  const { setOrderData, setTotalItem } = useContext(ProductContext);
+
+  useSupabaseRealtime('Orders', 'Orders')
+
+  const userId = getCurrentUserId()
+
+  const { isLoading: userLoading, data: users } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUser,
+  });
+
+
+  const currentUser = users?.filter(
+    (user) => user?.id === userId
+  );
+
+  const user = currentUser?.[0];
+
 
   const IncreaseQuantity = (productId, maxQuantity, foodName) => {
     setQuantityData((prev) => {
@@ -22,7 +41,7 @@ const Table1 = ({addressAdded}) => {
       const newQuantity = currentQuantity + 1;
       if (newQuantity > maxQuantity) {
         toast.error(`There are ${maxQuantity} ${foodName} in store`);
-        return prev; 
+        return prev;
       }
       return { ...prev, [productId]: newQuantity };
     });
@@ -40,26 +59,40 @@ const Table1 = ({addressAdded}) => {
     queryFn: getCart,
   });
 
-  const { isDeleting, mutate } = useMutation({
+
+  useSupabaseRealtime('cart', 'carts')
+
+
+
+  
+
+  const fetchCart = cart?.filter((cartItem) => cartItem.userId === userId)
+
+
+  const { isDeleting, mutate: mutateDelete } = useMutation({
     mutationFn: deleteCart,
     onSuccess: () => {
+      toast.success('Item ordered')
       queryClient.invalidateQueries({ queryKey: ['carts'] });
-      setTotalItem(null)
-      refetch()
+      setTotalItem(null);
+      refetch();
     },
     onError: (err) => toast.error(err.message),
   });
 
+  
+
   const { mutate: mutateCreate, isLoading: isCreating } = useMutation({
-    mutationFn: ({ userId, cartItems }) => createOrder(userId, cartItems),
+    mutationFn: ({ userId, cartItems }) => createOrder(userId, cartItems), 
     onSuccess: async () => {
       toast.success("Order placed successfully");
       queryClient.invalidateQueries({ queryKey: ['Orders'] });
-      handleUpdate()
+      handleUpdate();
 
       try {
         await Promise.all(
-          cart.map((cartItem) => mutate(cartItem.id, {
+          fetchCart?.map((cartItem) => mutateDelete(
+            cartItem.userId, {
             onSuccess: () => {
               queryClient.invalidateQueries({ queryKey: ['Orders'] });
             },
@@ -76,8 +109,17 @@ const Table1 = ({addressAdded}) => {
     onError: (err) => toast.error(err.message),
   });
 
+  const {mutate: mutateCreateDuplicateOrder, isLoading: duplicateCreating} = useMutation({
+    mutationFn: ({userId, cartItems}) => createDuplicateOrder(userId, cartItems),
+    onSuccess: async () => {
+
+      queryClient.invalidateQueries({queryKey: ['Orders_duplicate']})
+    },
+    onError: (err) => toast.error(err.message)
+  })
+
   function handleUpdate() {
-    refetch()
+    refetch();
   }
 
   const handleAddOrder = () => {
@@ -90,6 +132,8 @@ const Table1 = ({addressAdded}) => {
       const userId = getCurrentUserId();
       if (userId) {
         mutateCreate({ userId, cartItems });
+        mutateCreateDuplicateOrder({ userId, cartItems })
+
       } else {
         toast.error('User not logged in');
       }
@@ -99,8 +143,8 @@ const Table1 = ({addressAdded}) => {
   };
 
   const handleBtnClick = () => {
-    toast.error('Please Fill The Form')
-}
+    toast.error('Please Fill The Form');
+  };
 
   if (isLoading) return <Spinner />;
 
@@ -113,7 +157,7 @@ const Table1 = ({addressAdded}) => {
         <p>Subtotal</p>
         <p>Remove</p>
       </div>
-      {cart?.map((cartItem) => {
+      {fetchCart?.map((cartItem) => {
         const productId = cartItem.id;
         const quantity = QuantityData[productId] || 1;
 
@@ -142,7 +186,7 @@ const Table1 = ({addressAdded}) => {
             <p className="remove">
               <i
                 disabled={isDeleting}
-                onClick={() => mutate(cartItem.id)}
+                onClick={() => mutateDelete(cartItem.id)}
                 className="fa-solid fa-circle-xmark"
               ></i>
             </p>
@@ -150,17 +194,17 @@ const Table1 = ({addressAdded}) => {
         );
       })}
       <div className="column3">
-        {cart.length > 0 && addressAdded && <OrderButton addressAdded={addressAdded} isCreating={isCreating} onClick={handleAddOrder} cart={cart}/>}
-        {cart.length <= 0 && <button onClick={() => {
-          setOrderData(getCurrentUserId())
-          navigate('/orderMain')
-          }} className="yourOrders">
+        {fetchCart?.length > 0 && user?.address && <OrderButton addressAdded={addressAdded} isCreating={isCreating} onClick={handleAddOrder} cart={cart} />}
+        {fetchCart?.length <= 0 && <button onClick={() => {
+          setOrderData(userId);
+          navigate('/orderMain');
+        }} className="yourOrders">
           your orders
         </button>}
-        {!(addressAdded || cart.length <= 0) && <button className='completeOrderBtn' onClick={handleBtnClick}>Complete Order</button>}
+        {!user?.address && fetchCart?.length > 0 && <button className='completeOrderBtn' onClick={handleBtnClick}>Complete Order</button>}
         <button
-         onClick={() => navigate(-1)}
-         className="updateBtn">
+          onClick={() => navigate(-1)}
+          className="updateBtn">
           Update Cart
         </button>
       </div>

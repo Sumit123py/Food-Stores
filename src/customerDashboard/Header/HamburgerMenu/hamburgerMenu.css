@@ -170,7 +170,7 @@
 }
 
 
-@media (min-width: 100px) and (max-width: 500px) {
+@media (min-width: 100px) and (max-width: 1000px) {
     .hamburgerContainer .content .foodImages {
         display: none;
     }

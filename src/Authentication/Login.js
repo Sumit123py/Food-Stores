@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { ProductContext } from '../context/FoodContext';
 import './form.css';
+import Spinner from '../spinLoader/Spinner';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,7 +26,6 @@ const Login = () => {
         const userData = await getUserByEmail(email);
         if (userData) {
           handleLogin(response.session.access_token, email); // Assuming response contains the token
-          console.log('res', response)
           navigate('/dashboard');
         } else {
           navigate('/Unauthorized');
@@ -77,7 +77,9 @@ const Login = () => {
           disabled={isLoading}
         />
 
-        <button disabled={isLoading} type="submit">Log In</button>
+        <button disabled={isLoading} type="submit">{isLoading ? <Spinner/> : 'Log In'}</button>
+      <p onClick={() => navigate('/')}>Create Account</p>
+
       </form>
     </div>
   );

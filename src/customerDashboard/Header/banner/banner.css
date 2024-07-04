@@ -182,11 +182,19 @@
 }
 
 
-@media (min-width: 100px) and (max-width: 500px) {
+@media (min-width: 100px) and (max-width: 1000px) {
 
   .bannerContainer {
     display: none;
   }
 
 
+}
+
+@media (min-width: 1000px) and (max-width: 1400px) {
+
+  .bannerContainer{
+    display: none;
+  }
+  
 }

@@ -5,10 +5,10 @@ import toast from 'react-hot-toast';
 import FoodAddForm from '../FoodAddForm/FoodAddForm';
 import Spinner from '../../spinLoader/Spinner';
 import './foodDashboard.css'
+import useSupabaseRealtime from '../../Services/useSupabaseRealtime';
 
-const FoodDashboard = ({ setCurrentAction, currentAction }) => {
+const FoodDashboard = ({ setCurrentAction, showForm, setShowForm }) => {
   const [foodToEdit, setFoodToEdit] = useState(null);
-  const [showForm, setShowForm] = useState(false);
   const queryClient = useQueryClient();
   const bottomRef = useRef(null);
 
@@ -16,6 +16,9 @@ const FoodDashboard = ({ setCurrentAction, currentAction }) => {
     queryKey: ['foods'],
     queryFn: () => getFood(),
   });
+
+  useSupabaseRealtime('Food', 'foods')
+
 
   const { isDeleting, mutate } = useMutation({
     mutationFn: deleteFood,

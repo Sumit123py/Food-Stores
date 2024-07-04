@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
 import { ProductContext } from "../../context/FoodContext";
 import './orders.css'
+import OrdersMenu from "../OrdersMenu";
 const Orders = ({height}) => {
   const queryClient = useQueryClient();
   const [currentFilter] = useSearchParams();
@@ -74,11 +75,32 @@ const Orders = ({height}) => {
   };
 
   
+
+  const Filter = [{
+    value: 'All',
+    title: 'All Status'
+  },{
+    value: 'New Order',
+    title: 'New Order'
+  },{
+    value: 'Pending',
+    title: 'Pending'
+  },{
+    value: 'Delivered',
+    title: 'Delivered Orders'
+  },{
+    value: 'Rejected',
+    title: 'Rejected Orders'
+  }]
   
 
   return (
     <>
+
+
       <div style={{height: userRole !== 'customer' ? height : '100vh'}}  className="orderContainer">
+<OrdersMenu Filter={Filter}/>
+
         <div className="orderCard">
           <div className="column1">
             <p>product</p>

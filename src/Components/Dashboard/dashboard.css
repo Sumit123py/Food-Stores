@@ -3,9 +3,11 @@
     height: 100vh;
     overflow: hidden;
     padding: 1rem;
+    display: grid;
+    place-items: center;
   }
 
-  @media (min-width: 100px) and (max-width: 500px) {
+  @media (min-width: 100px) and (max-width: 1000px) {
 
     .dashboard {
         padding: 0;

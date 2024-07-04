@@ -4,9 +4,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import './foodAddForm.css'
+import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
+import Spinner from "../../spinLoader/Spinner";
 const FoodAddForm = ({ foodToEdit = {}, setCurrentAction, setShowForm }) => {
   const queryClient = useQueryClient();
 
+
+  useSupabaseRealtime('Food', 'foods')
 
 
 
@@ -18,6 +22,9 @@ const FoodAddForm = ({ foodToEdit = {}, setCurrentAction, setShowForm }) => {
       queryClient.invalidateQueries({
         queryKey: ["foods"],
       });
+      setCurrentAction('dashboard')
+      reset(); 
+      setShowForm(false)
     },
     onError: (err) => toast.error(err.message),
   });
@@ -26,12 +33,13 @@ const FoodAddForm = ({ foodToEdit = {}, setCurrentAction, setShowForm }) => {
     mutationFn: ({ newFoodData, id }) => createEditFood(newFoodData, id),
     onSuccess: () => {
       toast.success("Food Edited successfully");
-      setCurrentAction('dashboard')
-      reset(); 
-      setShowForm(false)
+      
       queryClient.invalidateQueries({
         queryKey: ["foods"],
       });
+      setCurrentAction('dashboard')
+      reset(); 
+      setShowForm(false)
     },
     onError: (err) => toast.error(err.message),
   });
@@ -119,7 +127,7 @@ const FoodAddForm = ({ foodToEdit = {}, setCurrentAction, setShowForm }) => {
           className="foodAddBtn"
           type="submit"
           
-          value={isEditSession ? "Save Changes" : "Add Food"}
+          value={isWorking ? <Spinner/> : (isEditSession ? "Save Changes" : 'Add Food')}
           disabled={isWorking}
         />
       </form>

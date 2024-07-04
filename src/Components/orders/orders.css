@@ -281,15 +281,17 @@
   }
 
 
-  @media (min-width: 100px) and (max-width: 500px) {
+  @media (min-width: 100px) and (max-width: 1000px) {
     .orderListContainer {
 
-        .ordersMenuContainer {
-          display: none;
-        }
-    
+        
         .orderContainer {
           display: none;
+
+          .ordersMenuContainer {
+            display: none;
+          }
+      
         }
       }
   }

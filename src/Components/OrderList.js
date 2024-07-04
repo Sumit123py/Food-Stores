@@ -5,20 +5,18 @@ import OrdersMobile from './OrdersMobile/OrdersMobile';
 
 const OrderList = () => {
 
-    const [value, setValue] = useState(0)
+
+    
 
 
   return (
     <div className='orderListContainer'>
 
-        <OrdersMenu setValue={setValue} value={value}/>
 
-        {<Orders height={'89vh'}/>}
+        {<Orders height={'95vh'}/>}
 
         <OrdersMobile/>
-        {/* {value === 1 && <NewOrders/>}
-        {value === 2 && <PendingOrder/>}
-        {value === 3 && <DeliveredOrder/>} */}
+        
 
 
 

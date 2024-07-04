@@ -7,11 +7,16 @@ import toast from 'react-hot-toast';
 import Spinner from '../../spinLoader/Spinner';
 import { getCart, insertCart } from '../../Services/apiCart';
 import './foodList.css'
+import useSupabaseRealtime from '../../Services/useSupabaseRealtime';
+import { getCurrentUserId } from '../../Services/apiUsers';
 const FoodList = ({searchData}) => {
 
   const navigate = useNavigate()
 
   const { totalItem, setTotalItem } = useContext(ProductContext)
+
+  useSupabaseRealtime('Food', 'foods')
+  useSupabaseRealtime('cart', 'carts')
 
 
   const queryClient = useQueryClient();
@@ -20,6 +25,9 @@ const FoodList = ({searchData}) => {
     queryKey: ['foods'],
     queryFn: () => getFood()
   });
+
+
+  const UserID = getCurrentUserId()
 
 
   const { mutate: mutateCreate, isCreating } = useMutation({
@@ -34,10 +42,10 @@ const FoodList = ({searchData}) => {
     onError: (err) => toast.error(err.message),
   });
 
-  const handleCart = async (id) => {
+  const handleCart = async (id, userId) => {
     try {
       const cartItems = await getCart();
-      const isItemInCart = cartItems.some(item => item.id === id);
+      const isItemInCart = cartItems.some(item => (item.cartId === id && item.userId === userId));
 
       if (isItemInCart) {
         toast.success(`Item is already in cart, Check Cart`);
@@ -45,7 +53,8 @@ const FoodList = ({searchData}) => {
       }
 
       const foodItem = await getFood(id);
-      mutateCreate(foodItem);
+      console.log('uods', userId)
+      mutateCreate({foodItem, userId});
       toast.success("Food Added to Cart Successfully");
       navigate('/cart');
       setTotalItem(prevTotalItem => prevTotalItem + 1);
@@ -56,7 +65,6 @@ const FoodList = ({searchData}) => {
   };
 
 
-  if (isLoading) return <Spinner/>;
 
   let filterValue 
 
@@ -72,14 +80,17 @@ const FoodList = ({searchData}) => {
     <>
 
     <div className='foodListContainer'>
-      <div className="foodContainer">
+ { isLoading && <Spinner/>}
+
+      {filterValue && <div className="foodContainer">
+
       {filterValue?.map((foodItem) => (
         <div key={foodItem.id} className="foodCard">
           <div id='image' className="img">
             <img src={foodItem.image} alt="" />
           </div>
           <div className="details">
-            <div disabled={isCreating} onClick={() => handleCart(foodItem.id)} className='cartBtn'>
+            <div disabled={isCreating} onClick={() => handleCart(foodItem.id, UserID)} className='cartBtn'>
               <p><i className="fa-solid fa-cart-shopping" style={{ color: "#ffffff" }}></i></p>
               <p >Add To Cart</p>
             </div>
@@ -89,7 +100,7 @@ const FoodList = ({searchData}) => {
           </div>
         </div>
       ))}
-      </div>
+      </div>}
     </div>
 
     {/* // second */}
@@ -106,7 +117,7 @@ const FoodList = ({searchData}) => {
             <p id='foodPrice' className="foodPrice">₹{foodItem.foodPrice}</p>
                         
           </div>
-          <div disabled={isCreating} onClick={() => handleCart(foodItem.id)} className='cartBtn'>
+          <div disabled={isCreating} onClick={() => handleCart(foodItem.id, UserID)} className='cartBtn'>
               <p className='cartIcon'><i className="fa-solid fa-cart-shopping" ></i></p>
               <p >Add</p>
             </div>

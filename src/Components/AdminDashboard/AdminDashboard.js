@@ -14,7 +14,7 @@ const AdminDashboard = ({setCurrentAction, currentAction}) => {
   return (
     <>
     <div className='adminDashboardNavigation'>
-      <div style={{backgroundColor: currentAction === 'dashboard' ? 'orange' : '#F5F5F5', color: currentAction === 'dashboard' ? 'white' : 'black' }} onClick={() => setCurrentAction('dashboard')} className="nav dashboard">
+      <div style={{backgroundColor: currentAction === 'dashboard' ? 'orange' : '#F5F5F5', color: currentAction === 'dashboard' ? 'white' : 'black' }} onClick={() => setCurrentAction('dashboard')} className="nav">
         <img src={image1} alt="" className="img dashboardImg" />
         <p className='title'>dashboard</p>
       </div>

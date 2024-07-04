@@ -3,7 +3,7 @@
   }
   
 
-  @media (min-width: 100px) and (max-width: 500px) {
+  @media (min-width: 100px) and (max-width: 1000px) {
     .ordersMobileContainer {
         width: 100%;
         padding: 10px;
@@ -15,6 +15,12 @@
         background: rgb(236, 231, 239);
         background: linear-gradient(150deg, rgba(236, 231, 239, 1) 32%, rgba(174, 204, 240, 1) 100%);
     
+        .head{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
       }
 
       .ordersMobileContainer .ordersHistoryListContainer {

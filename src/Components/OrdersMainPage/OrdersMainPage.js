@@ -1,16 +1,20 @@
-import React, { useContext } from "react";
-import { getOrders, updateOrder } from "../../Services/apiOrders";
+import React, { useContext, useEffect, useState } from "react";
+import { getOrders, updateDuplicateOrder, updateOrder } from "../../Services/apiOrders";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { ProductContext } from "../../context/FoodContext";
 import toast from "react-hot-toast";
 import Spinner from "../../spinLoader/Spinner";
 import './ordersMainPage.css'
+import supabase from "../../Services/Supabase";
+import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
 const OrdersMainPage = ({setCurrentAction}) => {
   const { isLoading, data: orders, error, refetch } = useQuery({
     queryKey: ["Orders"],
     queryFn: getOrders,
   });
+
+  useSupabaseRealtime('Orders', 'Orders')
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -28,17 +32,65 @@ const OrdersMainPage = ({setCurrentAction}) => {
     onError: (err) => toast.error(err.message),
   });
 
+  const { mutate: mutateUpdateDuplicateOrder, isLoading: isUpdatingDuplicateOrder } = useMutation({
+    mutationFn: updateDuplicateOrder,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["Orders"] });
+      refetch();
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
   const handleUpdateStatus = (updatedStatus, id) => {
     mutate({ updatedStatus, id, idType: 'uuid' });
+    mutateUpdateDuplicateOrder({updatedStatus, id, idType: 'uuid' })
   };
 
   const handleUpdateApproval = (updatedApproval, id) => {
     mutate({ updatedApproval, id, idType: 'uuid' });
+    mutateUpdateDuplicateOrder({ updatedApproval, id, idType: 'uuid' })
+  };
+
+  const [customerLocation, setCustomerLocation] = useState(null);
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      const { data, error } = await supabase
+        .from('locations')
+        .select('latitude, longitude')
+        .eq('userId', orderData)
+        .single();
+
+      if (error) {
+        console.error("Error fetching location:", error);
+      } else {
+        setCustomerLocation(data);
+      }
+    };
+
+    if (userRole === 'delivery') {
+      fetchLocation();
+    }
+  }, [orderData, userRole]);
+
+  const getDirections = () => {
+    if (customerLocation) {
+      const { latitude, longitude } = customerLocation;
+      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+      window.open(googleMapsUrl, '_blank');
+    } else if (order.users?.address) {
+      const address = encodeURIComponent(order.users.address);
+      const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${address}`;
+      window.open(googleMapsUrl, '_blank');
+    } else {
+      alert("Customer location not available.");
+    }
   };
 
   const handleCheckChange = (e, id) => {
     const check = e.target.checked;
     mutate({ check, id, idType: 'int8' });
+    mutateUpdateDuplicateOrder({ check, id, idType: 'int8' })
   };
 
   const formatDateTime = (dateTime) => {
@@ -192,26 +244,26 @@ const OrdersMainPage = ({setCurrentAction}) => {
               disabled={isUpdating}
               onClick={() => handleUpdateApproval("Reject", order?.userId)}
             >
-              Reject Delivery
+              Reject Order
             </button>
             <button
               disabled={isUpdating}
               onClick={() => handleUpdateApproval("Accept", order?.userId)}
             >
-              Accept Delivery
+              Accept Order
             </button>
           </>
         )}
-        {userRole === "admin" &&
+        {(userRole === "admin" || userRole === 'customer') &&
           order?.Approval === "Accept" &&
           order?.status === "Pending" && (
             <button style={{ backgroundColor: "#FFB936" }}>
               Delivery Pending
             </button>
           )}
-        {userRole === "customer" && order?.status === "Pending" && (
+        {userRole === "customer" && order?.Approval === "Pending" && (
           <button style={{ backgroundColor: "#FFB936" }}>
-            Delivery Pending
+            Approval Pending
           </button>
         )}
         {order?.status === "Delivered" && (
@@ -221,7 +273,7 @@ const OrdersMainPage = ({setCurrentAction}) => {
         )}
         {userRole === "delivery" && order?.status === "Pending" && (
           <>
-            <button>Get Direction</button>
+            <button onClick={getDirections}>Get Direction</button>
             {order?.Approval === "Accept" && (
               <button
                 style={{ backgroundColor: "deeppink" }}
