@@ -49,7 +49,7 @@ const AdminDashboard = ({setCurrentAction, currentAction}) => {
       <div style={{backgroundColor: currentAction === 'dashboard' ? 'orange' : '#F5F5F5', color: currentAction === 'dashboard' ? 'white' : 'black' }} onClick={() => {
         setCurrentAction('dashboard')
         setHeight(0)
-        }} className="nav dashboard">
+        }} className="nav dashboardNav">
         <img src={image1} alt="" className="img dashboardImg" />
         <p className='title'>dashboard</p>
       </div>

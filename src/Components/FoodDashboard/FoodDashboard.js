@@ -51,7 +51,7 @@ const FoodDashboard = ({ setCurrentAction, showForm, setShowForm }) => {
             </div>
             <p className="column foodName">{foodItem.foodName}</p>
             <p className="column foodPrice">₹{foodItem.foodPrice}</p>
-            <p className="column ingredients">{foodItem.ingredients}</p>
+            <p className="column ingredients">No. of Products: {foodItem.maxQuantity}</p>
             <button
               onClick={() => {
                 setFoodToEdit(foodItem);
@@ -95,7 +95,7 @@ const FoodDashboard = ({ setCurrentAction, showForm, setShowForm }) => {
             <p className="column foodName">{foodItem.foodName}</p>
             <p className="column foodPrice">₹{foodItem.foodPrice}</p>
             </div>
-            <p className="column ingredients">{foodItem.ingredients}</p>
+            <p style={{color: 'red'}} className="column ingredients">No. of Products: {foodItem.maxQuantity}</p>
 
             <div className="editBtns">
             <button

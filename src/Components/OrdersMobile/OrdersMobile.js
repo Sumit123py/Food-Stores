@@ -18,14 +18,32 @@ const OrdersMobile = () => {
   const { setOrderData, userRole, handleLogout } = useContext(ProductContext);
   const navigate = useNavigate()
   const announceNewOrder = (order, userId) => {
-    const user = orders?.users?.find(user => user.id === userId);
-    
-    if (user) {
+   
+  
+    if (userId) {
+      const user = orders?.find((currOrder) => currOrder?.users.id === userId);
+      console.log('user', user);
+
       const msg = new SpeechSynthesisUtterance();
-      msg.text = `New order placed. Order ID: ${order.id}, Customer: ${user.firstName} ${user.lastName}`;
+      msg.text = `नई ऑर्डर प्राप्त हुई है। ऑर्डर आईडी: ${user?.users.userShortID}, ग्राहक का नाम: ${user?.users.firstName} ${user?.users.lastName}`;
+      msg.lang = 'hi-IN';
+  
+      // Get the list of available voices
+      const voices = window.speechSynthesis.getVoices();
+      console.log('voices', voices)
+      
+      // Find a female Hindi voice
+      const femaleHindiVoice = voices.find(voice => voice.lang === 'hi-IN' && voice.name.includes('female'));
+  
+      // If a female Hindi voice is available, set it to the message
+      if (femaleHindiVoice) {
+        msg.voice = femaleHindiVoice;
+      }
+  
       window.speechSynthesis.speak(msg);
     }
   };
+  
   useSupabaseRealtime('Orders', 'Orders', announceNewOrder)
   
 
@@ -119,7 +137,7 @@ const OrdersMobile = () => {
               <div className="col1">
                 <div className="orderId">
                   <p>OrderId:</p>
-                  <p style={{textTransform: 'uppercase'}}>{orderItem.userId.substring(0, 8)}</p>
+                  <p style={{textTransform: 'uppercase'}}>{orderItem.users.userShortID}</p>
                   <p
                     style={{
                       backgroundColor:

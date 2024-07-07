@@ -6,13 +6,15 @@ export async function getOrders() {
     .select(`
       *,
       users (
+        id,
         address,
         firstName,
         lastName,
         phone,
         personalEmail,
         logoImage,
-        logoName
+        logoName,
+        userShortID
       )
     `);
 
@@ -25,7 +27,6 @@ export async function getOrders() {
 }
 
 export async function createOrder(userId, cartItems) {
-  console.log('cart', cartItems)
 
   const { data, error } = await supabase
     .from('Orders')
@@ -48,7 +49,6 @@ export async function createOrder(userId, cartItems) {
 }
 
 export async function createDuplicateOrder(userId, cartItems) {
-  console.log('cart', cartItems)
 
   const { data, error } = await supabase
     .from('Orders_duplicate')

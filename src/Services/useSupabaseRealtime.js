@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import supabase from './Supabase';
 
-const useSupabaseRealtime = (tableName, queryKey, announceNewOrder) => {
+const useSupabaseRealtime = (tableName, queryKey, announceNewOrder = null) => {
   const queryClient = useQueryClient();
 
 
@@ -13,8 +13,12 @@ const useSupabaseRealtime = (tableName, queryKey, announceNewOrder) => {
       .channel(`${tableName}-changes`)
       .on('postgres_changes', { event: '*', schema: 'public', table: tableName }, (payload) => {
         const newOrder = payload.new
-        announceNewOrder(newOrder, newOrder.userId)
-        console.log('pat', newOrder.userId)
+        if (announceNewOrder) {
+          announceNewOrder(newOrder, newOrder.userId);
+        }
+
+        console.log('ann', newOrder)
+        
        
         queryClient.invalidateQueries([queryKey]);
       })

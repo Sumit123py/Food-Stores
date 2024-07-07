@@ -92,6 +92,7 @@ export function getCurrentUserId() {
   return null;
 }
 
+
 export async function getUsersByIds(userId) {
   const { data, error } = await supabase
     .from("users")

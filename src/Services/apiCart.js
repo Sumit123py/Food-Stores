@@ -1,7 +1,7 @@
 import supabase from "./Supabase";
 
 
-export async function insertCart ({foodItem, userId}) {
+export async function insertCart ({foodItem, userId, shortID}) {
 const { data, error } = await supabase
   .from('cart')
   .insert([{ 
@@ -9,11 +9,11 @@ const { data, error } = await supabase
     foodName: foodItem.foodName,
     foodPrice: foodItem.foodPrice,
     image: foodItem.image,
-    maxQuantity: foodItem.maxQuantity,
-    userId: userId
+    userId: userId,
+    userShortID: shortID
      }])
   .select()
-  console.log('useriD', userId)
+  
 
   if (error) {
     console.error(error);

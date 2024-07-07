@@ -11,6 +11,7 @@ import { ProductContext } from '../../../context/FoodContext';
 import  supabase  from '../../../Services/Supabase'; // Assuming you have a supabase client instance
 import './table.css';
 import useSupabaseRealtime from '../../../Services/useSupabaseRealtime';
+import { getFood } from '../../../Services/apiFood';
 
 const Table1 = ({ addressAdded }) => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const Table1 = ({ addressAdded }) => {
     queryFn: getUser,
   });
 
+ 
 
   const currentUser = users?.filter(
     (user) => user?.id === userId
@@ -35,24 +37,67 @@ const Table1 = ({ addressAdded }) => {
   const user = currentUser?.[0];
 
 
-  const IncreaseQuantity = (productId, maxQuantity, foodName) => {
-    setQuantityData((prev) => {
-      const currentQuantity = prev[productId] || 1;
-      const newQuantity = currentQuantity + 1;
-      if (newQuantity > maxQuantity) {
-        toast.error(`There are ${maxQuantity} ${foodName} in store`);
-        return prev;
+  const IncreaseQuantity = async (productId, maxQuantity, cartId) => {
+    const foodItem = await getFood(cartId);
+
+    if (maxQuantity < foodItem.maxQuantity) {
+      try {
+        const newQuantity = maxQuantity + 1;
+        const totalPrice = newQuantity * foodItem.foodPrice
+
+        const { error } = await supabase
+          .from('cart')
+          .update({ 
+            maxQuantity: newQuantity,
+          totalPrice: totalPrice })
+          .eq('id', productId);
+
+        if (error) {
+          console.error('Error updating maxQuantity:', error);
+          toast.error('Error updating maxQuantity');
+        } else {
+          queryClient.setQueryData(['carts'], oldData =>
+            oldData.map(item =>
+              item.id === productId ? { ...item, maxQuantity: newQuantity } : item
+            )
+          );
+        }
+      } catch (error) {
+        console.error('Error increasing maxQuantity:', error);
       }
-      return { ...prev, [productId]: newQuantity };
-    });
+    }
   };
 
-  const DecreaseQuantity = (productId) => {
-    setQuantityData((prev) => ({
-      ...prev,
-      [productId]: Math.max((prev[productId] || 1) - 1, 0),
-    }));
+  const DecreaseQuantity = async (productId, maxQuantity, cartId) => {
+    const foodItem = await getFood(cartId);
+
+    if (maxQuantity > 1) {
+      try {
+        const newQuantity = maxQuantity - 1;
+        const totalPrice = newQuantity * foodItem.foodPrice
+
+        const { error } = await supabase
+          .from('cart')
+          .update({ maxQuantity: newQuantity,
+          totalPrice: totalPrice })
+          .eq('id', productId);
+
+        if (error) {
+          console.error('Error updating maxQuantity:', error);
+          toast.error('Error updating maxQuantity');
+        } else {
+          queryClient.setQueryData(['carts'], oldData =>
+            oldData.map(item =>
+              item.id === productId ? { ...item, maxQuantity: newQuantity } : item
+            )
+          );
+        }
+      } catch (error) {
+        console.error('Error decreasing maxQuantity:', error);
+      }
+    }
   };
+  
 
   const { isLoading, data: cart, error, refetch } = useQuery({
     queryKey: ['carts'],
@@ -80,7 +125,6 @@ const Table1 = ({ addressAdded }) => {
     onError: (err) => toast.error(err.message),
   });
 
-  
 
   const { mutate: mutateCreate, isLoading: isCreating } = useMutation({
     mutationFn: ({ userId, cartItems }) => createOrder(userId, cartItems), 
@@ -122,23 +166,43 @@ const Table1 = ({ addressAdded }) => {
     refetch();
   }
 
-  const handleAddOrder = () => {
+  const handleAddOrder = async () => {
     if (cart && cart.length > 0) {
-      const cartItems = cart.map(cartItem => ({
-        ...cartItem,
-        maxQuantity: QuantityData[cartItem.id] || 1,
-        totalPrice: cartItem.foodPrice * (QuantityData[cartItem.id] || 1),
-      }));
+      const cartItems = cart;
+      console.log('cart', cartItems)
       const userId = getCurrentUserId();
       if (userId) {
-        mutateCreate({ userId, cartItems });
-        mutateCreateDuplicateOrder({ userId, cartItems })
-
+        await decreaseMaxQuantity(cartItems);
+        await mutateCreate({ userId, cartItems });
+        await mutateCreateDuplicateOrder({ userId, cartItems });
       } else {
         toast.error('User not logged in');
       }
     } else {
       toast.error('Cart is empty');
+    }
+  };
+
+  const decreaseMaxQuantity = async (cartItems) => {
+    try {
+      for (const cartItem of cartItems) {
+        const foodItem = await getFood(cartItem.cartId);
+        const newQuantity = foodItem.maxQuantity - (QuantityData[cartItem.id] || 1);
+        console.log('new', foodItem.maxQuantity)
+        console.log('quan', (QuantityData[cartItem.id] || 1))
+        
+        const { error } = await supabase
+          .from('Food')
+          .update({ maxQuantity: newQuantity })
+          .eq('id', cartItem.cartId);
+
+        if (error) {
+          console.error('Error updating maxQuantity:', error);
+          toast.error('Error updating maxQuantity');
+        }
+      }
+    } catch (error) {
+      console.error('Error decreasing maxQuantity:', error);
     }
   };
 
@@ -159,7 +223,6 @@ const Table1 = ({ addressAdded }) => {
       </div>
       {fetchCart?.map((cartItem) => {
         const productId = cartItem.id;
-        const quantity = QuantityData[productId] || 1;
 
         return (
           <div key={productId} className="column2">
@@ -169,19 +232,19 @@ const Table1 = ({ addressAdded }) => {
             <p className="productPrice">₹{cartItem.foodPrice}</p>
             <div className="quantity">
               <div className="quantityBox">
-                <p>{quantity}</p>
+                <p>{cartItem.maxQuantity}</p>
                 <div className="btns">
-                  <button onClick={() => IncreaseQuantity(productId, cartItem.maxQuantity, cartItem.foodName)} className="incQuantity">
+                  <button onClick={() => IncreaseQuantity(productId, cartItem.maxQuantity, cartItem.cartId)} className="incQuantity">
                     <i className="fa-solid fa-caret-up caret"></i>
                   </button>
-                  <button onClick={() => DecreaseQuantity(productId)} className="decQuantity">
+                  <button onClick={() => DecreaseQuantity(productId, cartItem.maxQuantity, cartItem.cartId)} className="decQuantity">
                     <i className="fa-solid fa-caret-down caret"></i>
                   </button>
                 </div>
               </div>
             </div>
             <p className="subtotal">
-              ₹{Number(cartItem.foodPrice) * quantity}.00
+              ₹{Number(cartItem.foodPrice) * cartItem.maxQuantity}.00
             </p>
             <p className="remove">
               <i

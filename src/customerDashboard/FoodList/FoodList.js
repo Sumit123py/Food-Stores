@@ -8,8 +8,12 @@ import Spinner from '../../spinLoader/Spinner';
 import { getCart, insertCart } from '../../Services/apiCart';
 import './foodList.css'
 import useSupabaseRealtime from '../../Services/useSupabaseRealtime';
-import { getCurrentUserId } from '../../Services/apiUsers';
+import { getCurrentUserId, getCurrentUserShortID, getUser } from '../../Services/apiUsers';
 const FoodList = ({searchData}) => {
+  const { data: users } = useQuery({
+    queryKey: ['users'],
+    queryFn: () => getUser(),
+  });
 
   const navigate = useNavigate()
 
@@ -28,6 +32,10 @@ const FoodList = ({searchData}) => {
 
 
   const UserID = getCurrentUserId()
+  const userShortID = users?.find((user) => user.id === UserID)
+  const ShortID = userShortID?.userShortID
+
+  
 
 
   const { mutate: mutateCreate, isCreating } = useMutation({
@@ -42,7 +50,7 @@ const FoodList = ({searchData}) => {
     onError: (err) => toast.error(err.message),
   });
 
-  const handleCart = async (id, userId) => {
+  const handleCart = async (id, userId, shortID) => {
     try {
       const cartItems = await getCart();
       const isItemInCart = cartItems.some(item => (item.cartId === id && item.userId === userId));
@@ -53,8 +61,13 @@ const FoodList = ({searchData}) => {
       }
 
       const foodItem = await getFood(id);
-      console.log('uods', userId)
-      mutateCreate({foodItem, userId});
+      if (foodItem.maxQuantity === 0) {
+        toast.error('Sorry, this food is not available');
+        return;
+      }
+      mutateCreate({foodItem, userId, shortID});
+      console.log('usi', shortID)
+
       toast.success("Food Added to Cart Successfully");
       navigate('/cart');
       setTotalItem(prevTotalItem => prevTotalItem + 1);
@@ -90,7 +103,7 @@ const FoodList = ({searchData}) => {
             <img src={foodItem.image} alt="" />
           </div>
           <div className="details">
-            <div disabled={isCreating} onClick={() => handleCart(foodItem.id, UserID)} className='cartBtn'>
+            <div disabled={isCreating} onClick={() => handleCart(foodItem.id, UserID, ShortID)} className='cartBtn'>
               <p><i className="fa-solid fa-cart-shopping" style={{ color: "#ffffff" }}></i></p>
               <p >Add To Cart</p>
             </div>
