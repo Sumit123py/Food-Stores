@@ -18,6 +18,7 @@ import FoodAddForm from './Components/FoodAddForm/FoodAddForm';
 import { ProductProvider } from './context/FoodContext';
 import useAuthRedirect from './Authentication/useAuthRedirect';
 import OrdersMainPage from './Components/OrdersMainPage/OrdersMainPage';
+import AppClosed from './Components/AppClosedPage/AppClosed';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,7 @@ const AppRoutes = () => (
     <Route path="/" element={<Registration />} />
     <Route path="/Login" element={<Login />} />
     <Route path="/spinner" element={<Spinner />} />
+    <Route path="/appClosed" element={<AppClosed />} />
     <Route path="/Unauthorized" element={<Unauthorized />} />
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/orders" element={<Orders />} />

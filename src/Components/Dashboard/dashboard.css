@@ -5,6 +5,7 @@
     padding: 1rem;
     display: grid;
     place-items: center;
+    position: absolute;
   }
 
   @media (min-width: 100px) and (max-width: 1000px) {

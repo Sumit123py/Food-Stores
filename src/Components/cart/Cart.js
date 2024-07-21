@@ -5,8 +5,14 @@ import { getCurrentUserId, getUser } from "../../Services/apiUsers";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../../spinLoader/Spinner";
 import './cart.css'
+import Table2 from "./table/Table2";
+import { getCart } from "../../Services/apiCart";
+import Message from "../messagePopUp/Message";
+import { getAppSetting } from "../../Services/apiAppSetting";
+import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
 const Cart = () => {
 
+  useSupabaseRealtime('appSetting', 'appSettings')
 
   const userId = getCurrentUserId()
 
@@ -15,6 +21,21 @@ const Cart = () => {
     queryFn: getUser,
   });
 
+  const {isLoading: cartLoading, data: cart } = useQuery({
+    queryKey: ['carts'],
+    queryFn: getCart,
+  });
+
+  const {isLoading: appSettingLoading, data: appSetting } = useQuery({
+    queryKey: ['appSettings'],
+    queryFn: getAppSetting,
+  });
+
+  const isDelivery = appSetting?.[0].isDeliveryAvailable
+
+  const [isDeliveryAvailable, setIsDeliveryAvailable] = useState(isDelivery)
+
+  const cartItems = cart?.filter((item) => item.userId === userId)
 
   const currentUser = users?.filter(
     (user) => user?.id === userId
@@ -42,6 +63,8 @@ const Cart = () => {
   return (
     <div className="cart">
       <div className="cartContainer">
+      {/* <Message appSetting={appSetting}/> */}
+
       {(!user?.address  || isEditing) &&  <AddressForm setAddressAdded={setAddressAdded} userDetails={user} setIsEditing={setIsEditing} onAddressUpdated={handleAddressUpdated}/>}
       {user && 
       (<div className="userDetailsContainer">
@@ -58,14 +81,13 @@ const Cart = () => {
 
           </p>
 
-          
-
         </div>
         <button onClick={() => setIsEditing(true)} className="editBtn">Change</button>
         
       </div>)}
 
       <Table1 addressAdded={addressAdded}/>
+      {cartItems?.length > 0 && <Table2 cartItems={cartItems} cartLoading={cartLoading} appSetting={appSetting}/>}
       </div>
     </div>
   );

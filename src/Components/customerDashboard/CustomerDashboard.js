@@ -1,48 +1,48 @@
-import React, { useState } from 'react'
-import Navbar from '../../customerDashboard/Header/Navbar/Navbar'
-import Banner from '../../customerDashboard/Header/banner/Banner'
-import HamburgerMenu from '../../customerDashboard/Header/HamburgerMenu/HamburgerMenu'
-import ScrollToTop from '../ScrollToTop/ScrollToTop'
-import HeroSection from '../HeroSection'
-import { getUser } from '../../Services/apiUsers'
-import { useQuery } from '@tanstack/react-query'
-import Spinner from '../../spinLoader/Spinner'
-import './customerDashboard.css'
+import React, { useState } from 'react';
+import Navbar from '../../customerDashboard/Header/Navbar/Navbar';
+import Banner from '../../customerDashboard/Header/banner/Banner';
+import HamburgerMenu from '../../customerDashboard/Header/HamburgerMenu/HamburgerMenu';
+import ScrollToTop from '../ScrollToTop/ScrollToTop';
+import HeroSection from '../HeroSection';
+import { getCurrentUserId, getUser } from '../../Services/apiUsers';
+import { useQuery } from '@tanstack/react-query';
+import Spinner from '../../spinLoader/Spinner';
+import './customerDashboard.css';
+import OrderReadyMessage from '../OrderReadyMessage/OrderReadyMessage';
+import { getOrders } from '../../Services/apiOrders';
+import useSupabaseRealtime from '../../Services/useSupabaseRealtime';
 
 const CustomerDashboard = () => {
-
-  const [show, setShow] = useState(false)
-  const [searchData, setSearchData] = useState('')
+  const [show, setShow] = useState(false);
+  const [searchData, setSearchData] = useState('');
+  
   const { isLoading, data: users, error } = useQuery({
-    queryKey: ["users"],
+    queryKey: ['users'],
     queryFn: getUser,
   });
 
+  useSupabaseRealtime('users', 'users')
+  const userId = getCurrentUserId();
 
-  const currentUser = users?.filter(
-    (user) => user.role === 'admin'
-  );
+  const user = users?.find((user) => user.role === 'admin');
+  const currentUserById = users?.find((user) => user.id === userId);
 
-  const user = currentUser?.[0];
+  const isOrderReady = currentUserById?.message
 
-  isLoading && <Spinner/>
-  error && <p>User Cannot loaded</p>
+
+  if (isLoading) return <Spinner />;
+  if (error) return <p>User not loaded</p>;
 
   return (
     <div className='customerDashboardContainer'>
-
-        <Navbar setShow={setShow} user={user} setSearchData={setSearchData}/>
-        
-        <Banner/>
-
-        <HeroSection searchData={searchData} setSearchData={setSearchData}/>
-
-        <HamburgerMenu show={show} user={user} setShow={setShow} setSearchData={setSearchData}/>
-
-        <ScrollToTop/>
-      
+      <Navbar setShow={setShow} user={user} setSearchData={setSearchData} />
+      <Banner />
+      <HeroSection searchData={searchData} setSearchData={setSearchData} />
+      <HamburgerMenu show={show} user={user} setShow={setShow} setSearchData={setSearchData} />
+      <ScrollToTop />
+      {isOrderReady && <OrderReadyMessage userId={userId} />}
     </div>
-  )
-}
+  );
+};
 
-export default CustomerDashboard
+export default CustomerDashboard;

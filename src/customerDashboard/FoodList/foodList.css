@@ -1,360 +1,316 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Satisfy&family=Teachers:ital,wght@0,400..800;1,400..800&display=swap');
 
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 
+body {
+  width: 100%;
+  font-family: 'Oswald', 'Poppins', sans-serif;
+}
 
 .foodListContainerMobile {
-    display: none;
+  display: none;
 }
-
 
 .foodListContainer {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    display: grid;
-    place-items: center;
-
-    .foodContainer {
-        width: 80%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-        gap: 20px;
-        font-size: 1.2rem;
-        font-family: "Oswald", sans-serif;
-        font-weight: 300;
-        font-optical-sizing: auto;
-
-
-    }
-
-
-
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: grid;
+  place-items: center;
 }
 
-.foodListContainer .foodContainer .foodCard .ingredients {
-    width: 100%;
-    font-size: 15px;
-    color: rgb(173, 172, 172);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: center;
-}
-
-.foodListContainer .foodContainer .foodCard .foodName {
-    font-family: "Oswald", sans-serif;
-    font-weight: 400;
-    font-optical-sizing: auto;
-    text-transform: uppercase;
-    font-size: 1.5rem;
+.foodListContainer .foodContainer {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 20px;
+  font-size: 1.2rem;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
 }
 
 .foodListContainer .foodContainer .foodCard {
-    width: 300px;
-    height: 500px;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
-    border-radius: 10px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    z-index: 1;
-    cursor: pointer;
+  width: 300px;
+  height: 500px;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+}
 
+.foodListContainer .foodContainer .foodCard .ingredients {
+  width: 100%;
+  font-size: 15px;
+  color: rgb(173, 172, 172);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
 
-
-
-
+.foodListContainer .foodContainer .foodCard .foodName {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 1.5rem;
 }
 
 .foodListContainer .foodContainer .foodCard .details {
-    width: 100%;
-    height: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-
 .foodListContainer .foodContainer .foodCard::before {
-    content: "";
-    top: 0;
-    width: 100%;
-    height: 60%;
-    position: absolute;
-    transition: 0.3s all ease-in;
-    z-index: -1;
+  content: "";
+  top: 0;
+  width: 100%;
+  height: 60%;
+  position: absolute;
+  transition: 0.3s all ease-in;
+  z-index: -1;
 }
 
 .foodListContainer .foodContainer .foodCard:hover .cartBtn {
-    opacity: 1;
-    visibility: visible;
-    background-color: black;
+  opacity: 1;
+  visibility: visible;
+  background-color: black;
 }
 
 .foodListContainer .foodContainer .foodCard:hover::before {
-    height: 100%;
-    background-color: #FFB936;
-    border-radius: 10px;
-
+  height: 100%;
+  background-color: #FFB936;
+  border-radius: 10px;
 }
 
-
 .foodListContainer .foodContainer .foodCard .img {
-    width: 100%;
-    height: 70%;
-    overflow: hidden;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
+  width: 100%;
+  height: 70%;
+  overflow: hidden;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
 }
 
 .foodListContainer .foodContainer .foodCard .img img {
-    width: 80%;
-    height: 80%;
-    object-fit: contain;
-
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
 }
 
 .foodListContainer .foodContainer .foodCard .cartBtn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  vertical-align: middle;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 600;
+  padding: 10px 50px;
+  text-align: center;
+  z-index: 1;
+  transition: all 500ms ease;
+  text-transform: capitalize;
+  border-radius: 19px;
+  letter-spacing: 1.3px;
+  cursor: pointer;
+  background-color: white;
+  color: white;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 400;
+}
 
+.foodListContainer .foodContainer .foodCard .cartBtn::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  transform: scale(0, 0);
+  z-index: -1;
+  transition: all 500ms ease;
+}
+
+.foodListContainer .foodContainer .foodCard .cartBtn:hover::before {
+  background-color: #00813D;
+  transform: scale(1, 1);
+}
+
+@media (min-width: 100px) and (max-width: 1000px) {
+  .foodListContainer {
+    display: none;
+  }
+
+  .foodListContainerMobile {
+    width: 100%;
+    height: 80vh;
+    overflow: auto;
+    display: flex;
+  }
+
+  .foodListContainerMobile::-webkit-scrollbar {
+    display: none;
+  }
+
+  .foodListContainerMobile .foodContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: rgba(85, 85, 85, 0.1) 0px 10px 50px;
+    border-radius: 10px;
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .cardDetails {
+    width: 170px;
+    height: 250px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    gap: 10px;
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .cardDetails .time {
+    bottom: 2%;
+    right: 2%;
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+    font-size: 15px;
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .details {
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .details .foodName {
+    font-weight: bold;
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .details .ingredients {
+    color: grey;
+    font-size: 15px;
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .cartBtn {
+    background-color: black;
+    box-shadow: 0 0 4px rgb(221, 221, 221);
+    visibility: visible;
+    opacity: 1;
+    color: white;
+    width: 100%;
+    height: 50px;
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
     overflow: hidden;
-    vertical-align: middle;
     font-size: 16px;
-    line-height: 1;
     font-weight: 600;
-    padding: 10px 50px;
     text-align: center;
     z-index: 1;
     transition: all 500ms ease;
     text-transform: capitalize;
-    border-radius: 19px;
+    border-radius: 30px;
     letter-spacing: 1.3px;
     cursor: pointer;
-    background-color: white;
-    color: white;
-    width: 100%;
-    opacity: 0;
-    visibility: hidden;
-    font-family: "Oswald", sans-serif;
+    font-family: 'Oswald', sans-serif;
     font-weight: 400;
-    font-optical-sizing: auto;
+  }
 
+  .foodListContainerMobile .foodContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 180px);
+  }
 
-}
+  .foodListContainerMobile .foodContainer .foodCard {
+    width: 100%;
+    height: 250px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: rgba(139, 139, 139, 0.1) 0px 10px 50px;
+    padding: 5px;
+    outline: 1px solid white;
+  }
 
-.foodListContainer .foodContainer .foodCard .cartBtn::before {
-    position: absolute;
-    content: "";
+  .foodListContainerMobile .foodContainer .foodCard .details .foodName {
+    text-wrap: nowrap;
+    font-size: 15px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .details .foodPrice {
+    text-wrap: nowrap;
+    font-size: 15px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .img {
+    width: 110px;
+    height: 110px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .img img {
     width: 100%;
     height: 100%;
-    left: 0px;
-    top: 0px;
-    transform: scale(0, 0);
-    z-index: -1;
-    transition: all 500ms ease;
-}
+    object-fit: cover;
+  }
 
-.foodListContainer .foodContainer .foodCard .cartBtn:hover::before {
-    background-color: #00813D;
-    transform: scale(1, 1);
-}
+  .foodListContainerMobile .foodContainer .foodCard .details {
+    width: 100%;
+    overflow: hidden;
+  }
 
-
-@media (min-width: 100px) and (max-width: 1000px) {
-    .foodListContainer {
-        display: none;
-    }
-
-    .foodListContainerMobile {
-        width: 100%;
-        height: 80vh;
-        overflow: auto;
-        display: flex;
-
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
-
-
-        .foodContainer {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-
-
-            .foodCard {
-                width: 100%;
-                display: flex;
-                align-items: center;
-                gap: 20px;
-                box-shadow: rgba(85, 85, 85, 0.1) 0px 10px 50px;
-                border-radius: 10px;
-
-                input {
-                    accent-color: blue;
-                }
-
-
-                .cardDetails {
-                    width: 170px;
-                    height: 250px;
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    border-radius: 10px;
-                    gap: 10px;
-
-
-                    .time {
-                        bottom: 2%;
-                        right: 2%;
-                        box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-                        font-size: 15px;
-                    }
-                }
-
-                .details {
-                    text-transform: uppercase;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-
-                    .foodName {
-                        font-weight: bold;
-                    }
-
-                    .ingredients {
-                        color: grey;
-                        font-size: 15px;
-                    }
-                }
-
-
-                .cartBtn {
-
-                    background-color: black;
-                    box-shadow: 0 0 4px rgb(221, 221, 221);
-                    visibility: visible;
-                    opacity: 1;
-                    color: white;
-                    width: 100%;
-                    height: 50px;
-                    padding: 10px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 10px;
-                    overflow: hidden;
-                    font-size: 16px;
-                    font-weight: 600;
-                    text-align: center;
-                    z-index: 1;
-                    transition: all 500ms ease;
-                    text-transform: capitalize;
-                    border-radius: 30px;
-                    letter-spacing: 1.3px;
-                    cursor: pointer;
-                    font-family: "Oswald", sans-serif;
-                    font-weight: 400;
-                    font-optical-sizing: auto;
-
-
-
-                }
-
-
-            }
-
-        }
-    }
-
-    .foodListContainerMobile .foodContainer {
-        display: grid;
-        grid-template-columns: repeat(2, 180px);
-    }
-
-    .foodListContainerMobile .foodContainer .foodCard {
-        width: 100%;
-        height: 250px;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        background-color: rgba(255, 255, 255, 0.13);
-        background: rgba(255, 255, 255, 0.13);
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        box-shadow: rgba(139, 139, 139, 0.1) 0px 10px 50px;
-        padding: 5px;
-        outline: 1px solid white;
-    }
-
-    .foodListContainerMobile .foodContainer .foodCard .details .foodName {
-        text-wrap: nowrap;
-        font-size: 15px;
-        font-family: "Oswald", sans-serif;
-        font-weight: 400;
-        font-optical-sizing: auto;
-    }
-
-    .foodListContainerMobile .foodContainer .foodCard .details .foodPrice {
-        text-wrap: nowrap;
-        font-size: 15px;
-        font-family: "Oswald", sans-serif;
-        font-weight: 300;
-        font-optical-sizing: auto;
-    }
-
-
-
-    .foodListContainerMobile .foodContainer .foodCard .img {
-        width: 110px;
-        height: 110px;
-        overflow: hidden;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        border-radius: 10px;
-
-
-    }
-
-    .foodListContainerMobile .foodContainer .foodCard .img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 10px;
-
-
-    }
-
-    .foodListContainerMobile .foodContainer .foodCard .details {
-        width: 100%;
-        overflow: hidden;
-
-        .foodName {
-            width: 100%;
-            
-            text-align: center;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-    }
+  .foodListContainerMobile .foodContainer .foodCard .details .foodName {
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

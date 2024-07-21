@@ -16,10 +16,11 @@ import { getFood } from '../../../Services/apiFood';
 const Table1 = ({ addressAdded }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [QuantityData, setQuantityData] = useState({});
   const { setOrderData, setTotalItem } = useContext(ProductContext);
 
   useSupabaseRealtime('Orders', 'Orders')
+
+  // useSupabaseRealtime('cart', 'carts')
 
   const userId = getCurrentUserId()
 
@@ -58,7 +59,7 @@ const Table1 = ({ addressAdded }) => {
         } else {
           queryClient.setQueryData(['carts'], oldData =>
             oldData.map(item =>
-              item.id === productId ? { ...item, maxQuantity: newQuantity } : item
+              item.id === productId ? { ...item, maxQuantity: newQuantity, totalPrice: totalPrice } : item
             )
           );
         }
@@ -78,7 +79,8 @@ const Table1 = ({ addressAdded }) => {
 
         const { error } = await supabase
           .from('cart')
-          .update({ maxQuantity: newQuantity,
+          .update({ 
+          maxQuantity: newQuantity,
           totalPrice: totalPrice })
           .eq('id', productId);
 
@@ -88,7 +90,7 @@ const Table1 = ({ addressAdded }) => {
         } else {
           queryClient.setQueryData(['carts'], oldData =>
             oldData.map(item =>
-              item.id === productId ? { ...item, maxQuantity: newQuantity } : item
+              item.id === productId ? { ...item, maxQuantity: newQuantity, totalPrice: totalPrice } : item
             )
           );
         }
@@ -185,27 +187,29 @@ const Table1 = ({ addressAdded }) => {
 
   const decreaseMaxQuantity = async (cartItems) => {
     try {
-      for (const cartItem of cartItems) {
-        const foodItem = await getFood(cartItem.cartId);
-        const newQuantity = foodItem.maxQuantity - (QuantityData[cartItem.id] || 1);
-        console.log('new', foodItem.maxQuantity)
-        console.log('quan', (QuantityData[cartItem.id] || 1))
-        
-        const { error } = await supabase
-          .from('Food')
-          .update({ maxQuantity: newQuantity })
-          .eq('id', cartItem.cartId);
+      await Promise.all(
+        cartItems.map(async (cartItem) => {
+          const foodItem = await getFood(cartItem.cartId);
+          if (foodItem.maxQuantity > 0) {
+            const newMaxQuantity = foodItem.maxQuantity - cartItem.maxQuantity;
 
-        if (error) {
-          console.error('Error updating maxQuantity:', error);
-          toast.error('Error updating maxQuantity');
-        }
-      }
+            const { error } = await supabase
+              .from('Food')
+              .update({ maxQuantity: newMaxQuantity })
+              .eq('id', cartItem.cartId);
+
+            if (error) {
+              console.error('Error updating maxQuantity in Food table:', error);
+              toast.error('Error updating maxQuantity in Food table');
+            }
+          }
+        })
+      );
     } catch (error) {
-      console.error('Error decreasing maxQuantity:', error);
+      console.error('Error decreasing maxQuantity in Food table:', error);
     }
   };
-
+        
   const handleBtnClick = () => {
     toast.error('Please Fill The Form');
   };

@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Satisfy&family=Teachers:ital,wght@0,400..800;1,400..800&display=swap');
 
-
 .hamburgerContainer {
     width: 100%;
     height: 100vh;
@@ -14,121 +13,105 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    .content {
-        width: 25%;
-        height: 100%;
-        padding: 1rem;
-        display: flex;
-        align-self: flex-end;
-        flex-direction: column;
-        justify-content: space-between;
-        background-color: rgba(255, 255, 255, 0.13);
-        background: rgba(56, 56, 56, 0.13);
-        backdrop-filter: blur(10px);
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.125);
-        transition: 0.3s linear;
-
-        .head {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            font-family: "Oswald", sans-serif;
-            font-weight: 400;
-            font-optical-sizing: auto;
-
-
-            .logoInfo {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                color: white;
-
-                .logoImg {
-                    width: 40px;
-                    height: 40px;
-
-                    img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-
-                }
-
-            }
-
-        }
-
-        .description {
-            letter-spacing: 1.2px;
-            color: rgb(73, 73, 73);
-            text-align: justify;
-            color: white;
-
-        }
-
-        .foodImages {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 20px;
-            justify-content: space-between;
-
-            .img {
-                width: 80px;
-                height: 80px;
-                border-radius: 10px;
-
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
-            }
-        }
-
-        .navigationBtns {
-            display: none;
-        }
-
-
-
-        .contactInfo {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            font-family: "Oswald", sans-serif;
-            font-weight: 400;
-            font-optical-sizing: auto;
-            text-transform: uppercase;
-            color: white;
-            letter-spacing: 1.2px;
-
-
-            .info {
-                display: flex;
-                align-items: center;
-                gap: 20px;
-                font-size: 1rem;
-            }
-
-
-        }
-    }
 }
 
+.hamburgerContainer .content {
+    width: 25%;
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    align-self: flex-end;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgba(56, 56, 56, 0.13);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    border-radius: 12px;
+    transition: 0.3s linear;
+}
 
+.hamburgerContainer .content .head {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-family: "Oswald", sans-serif;
+    font-weight: 400;
+    font-optical-sizing: auto;
+}
+
+.hamburgerContainer .content .head .logoInfo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+}
+
+.hamburgerContainer .content .head .logoInfo .logoImg {
+    width: 40px;
+    height: 40px;
+}
+
+.hamburgerContainer .content .head .logoInfo .logoImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hamburgerContainer .content .description {
+    letter-spacing: 1.2px;
+    color: white;
+    text-align: justify;
+}
+
+.hamburgerContainer .content .foodImages {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.hamburgerContainer .content .foodImages .img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+}
+
+.hamburgerContainer .content .foodImages .img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hamburgerContainer .content .navigationBtns {
+    display: none;
+}
+
+.hamburgerContainer .content .contactInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: "Oswald", sans-serif;
+    font-weight: 400;
+    font-optical-sizing: auto;
+    text-transform: uppercase;
+    color: white;
+    letter-spacing: 1.2px;
+}
+
+.hamburgerContainer .content .contactInfo .info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 1rem;
+}
 
 .navigationBtns ul .shop {
     position: relative;
-
 }
 
 .navigationBtns ul .shop:hover .dropDownList {
@@ -137,9 +120,7 @@
     visibility: visible;
 }
 
-
 .navigationBtns ul .shop .dropDownList {
-
     top: 150%;
     width: 200px;
     position: absolute;
@@ -153,7 +134,7 @@
     visibility: hidden;
 }
 
-.navigationBtns ul .shop .dropDownList P {
+.navigationBtns ul .shop .dropDownList p {
     padding: 10px;
     border-bottom: 0.2px solid rgb(181, 181, 181);
     cursor: pointer;
@@ -162,13 +143,12 @@
     font-weight: 600 !important;
     font-optical-sizing: auto;
     letter-spacing: 1.3px;
-
-    &:hover {
-        background-color: #D12525;
-        color: white;
-    }
 }
 
+.navigationBtns ul .shop .dropDownList p:hover {
+    background-color: #D12525;
+    color: white;
+}
 
 @media (min-width: 100px) and (max-width: 1000px) {
     .hamburgerContainer .content .foodImages {
@@ -178,44 +158,35 @@
     .hamburgerContainer {
         width: 100%;
         height: 100vh;
-
-
-
-        .content {
-
-            width: 100%;
-            align-self: flex-start;
-
-
-            .navigationBtns {
-                width: 100%;
-                height: 30%;
-                display: flex;
-
-
-                ul {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-
-                    li {
-                        font-weight: bold;
-                        color: orangered;
-                        font-size: 1.3rem;
-                        letter-spacing: 1.2px;
-                    }
-
-                    .logOut {
-                        background-color: transparent;
-                        border: none;
-                        outline: none;
-                    }
-
-
-                }
-            }
-
-        }
     }
 
+    .hamburgerContainer .content {
+        width: 100%;
+        align-self: flex-start;
+    }
+
+    .hamburgerContainer .content .navigationBtns {
+        width: 100%;
+        height: 30%;
+        display: flex;
+    }
+
+    .hamburgerContainer .content .navigationBtns ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .hamburgerContainer .content .navigationBtns ul li {
+        font-weight: bold;
+        color: rgb(13, 169, 241);
+        font-size: 1.3rem;
+        letter-spacing: 1.2px;
+    }
+
+    .hamburgerContainer .content .navigationBtns ul .logOut {
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
 }

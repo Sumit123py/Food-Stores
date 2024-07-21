@@ -66,7 +66,6 @@ const FoodList = ({searchData}) => {
         return;
       }
       mutateCreate({foodItem, userId, shortID});
-      console.log('usi', shortID)
 
       toast.success("Food Added to Cart Successfully");
       navigate('/cart');
@@ -132,7 +131,8 @@ const FoodList = ({searchData}) => {
           </div>
           <div disabled={isCreating} onClick={() => handleCart(foodItem.id, UserID)} className='cartBtn'>
               <p className='cartIcon'><i className="fa-solid fa-cart-shopping" ></i></p>
-              <p >Add</p>
+              {!isCreating && <p>Add</p>}
+              {isCreating && <Spinner/>}
             </div>
         </div>
       ))}

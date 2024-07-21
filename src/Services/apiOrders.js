@@ -14,7 +14,8 @@ export async function getOrders() {
         personalEmail,
         logoImage,
         logoName,
-        userShortID
+        userShortID,
+        message
       )
     `);
 
@@ -37,7 +38,8 @@ export async function createOrder(userId, cartItems) {
       foodName: item.foodName,
       foodPrice: item.foodPrice,
       totalPrice: item.totalPrice,
-      image: item.image
+      image: item.image,
+      deliveryType: item.deliveryType
     })));
 
   if (error) {

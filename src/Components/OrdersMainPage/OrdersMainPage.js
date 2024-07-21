@@ -22,6 +22,10 @@ const OrdersMainPage = ({setCurrentAction}) => {
 
   const currentOrder = orders?.filter((order) => order.userId === orderData);
 
+  const isApprovalPending = currentOrder?.every((order) => order.Approval === 'Accept')
+
+  console.log('i', isApprovalPending)
+
   const { mutate, isLoading: isUpdating } = useMutation({
     mutationFn: updateOrder,
     onSuccess: () => {
@@ -31,6 +35,7 @@ const OrdersMainPage = ({setCurrentAction}) => {
     },
     onError: (err) => toast.error(err.message),
   });
+
 
   const { mutate: mutateUpdateDuplicateOrder, isLoading: isUpdatingDuplicateOrder } = useMutation({
     mutationFn: updateDuplicateOrder,
@@ -91,6 +96,7 @@ const OrdersMainPage = ({setCurrentAction}) => {
     const check = e.target.checked;
     mutate({ check, id, idType: 'int8' });
     mutateUpdateDuplicateOrder({ check, id, idType: 'int8' })
+    
   };
 
   const formatDateTime = (dateTime) => {
@@ -111,13 +117,21 @@ const OrdersMainPage = ({setCurrentAction}) => {
     });
   };
 
+  const totalCost = (userId) => {
+
+    const item = orders?.filter((item) => item.userId === userId)
+    const totalCost = item?.reduce((acc, item) => acc + item.totalPrice, 0);
+    return totalCost
+
+  }
+
   if (isLoading) return <Spinner />;
   if (error) return <p>Error: {toast.error(error.message)}</p>;
 
   const order = currentOrder?.[0];
   if (!order) return navigate(-1);
 
-  const phoneNumber = order.users?.phone;
+  const phoneNumber = order?.users?.phone;
 
   return (
     <div className="order-details-container">
@@ -132,15 +146,13 @@ const OrdersMainPage = ({setCurrentAction}) => {
         <h2>Order Details</h2>
       </div>
       <div className="order-info">
-        {(userRole === "admin" || userRole === "delivery") && (
           <p>
             Order Id:
             <span style={{ textTransform: "uppercase" }}>
-              {order.userId?.substring(0, 8)}
+              {order?.users?.userShortID}
             </span>
           </p>
-        )}
-        <p>{formatDateTime(order.created_at)}</p>
+        <p>{formatDateTime(order?.created_at)}</p>
       </div>
       <div className="customer-info-column">
         <div className="customerInfo">
@@ -152,8 +164,8 @@ const OrdersMainPage = ({setCurrentAction}) => {
               {(userRole === "admin" || userRole === "delivery") && (
                 <span>Customer</span>
               )}
-              <span>
-                {order.users?.firstName} {order.users?.lastName}
+              <span style={{textTransform: 'capitalize'}}>
+                {order?.users?.firstName} {order?.users?.lastName}
               </span>
             </p>
           </div>
@@ -168,7 +180,10 @@ const OrdersMainPage = ({setCurrentAction}) => {
               Method: <span style={{ color: "black" }}>Cash On Delivery</span>
             </li>
             <li style={{ color: "#AAA" }}>
-              Status: <span style={{ color: "deeppink" }}>{order.status}</span>
+              Status: <span style={{ color: "deeppink" }}>{order?.orderStatus}</span>
+            </li>
+            <li style={{ color: "red" }}>
+              Total Cost: <span style={{ color: "red" }}>₹{totalCost(order?.userId)}</span>
             </li>
           </ul>
         </div>
@@ -182,52 +197,52 @@ const OrdersMainPage = ({setCurrentAction}) => {
               style={{ color: "#e11432" }}
             ></i>{" "}
           </span>
-          {order.users?.address}
+          {order?.users?.address}
         </p>
       </div>
       <div className="order-items">
         <h3>Order Items:</h3>
         <div className="foodListContainerMobile">
           <div className="foodContainer">
-            {currentOrder?.map((foodItem) => (
-              <div key={foodItem.id} className="foodCard">
+            {currentOrder?.map((orderItem) => (
+              <div key={orderItem?.id} className="foodCard">
                 <div className="cardDetails">
                   <div id="image" className="img">
-                    <img src={foodItem.image} alt="" />
+                    <img src={orderItem?.image} alt="" />
                   </div>
                   <div className="details">
                     <p id="foodName" className="foodName">
-                      {foodItem.foodName}
+                      {orderItem?.foodName}
                     </p>
                     <p id="foodPrice" className="foodPrice">
-                      ₹{foodItem.foodPrice}
+                      ₹{orderItem?.foodPrice}
                     </p>
                     <p id="maxQuantity" className="maxQuantity">
                       <span style={{color: 'red', fontSize: '12px'}}>No. of Products: </span>
-                      {foodItem.maxQuantity}
+                      {orderItem?.maxQuantity}
                     </p>
                   </div>
-                  <p className="time">{formatTime(foodItem.created_at)}</p>
+                  <p className="time">{formatTime(orderItem?.created_at)}</p>
                 </div>
-                {userRole === "delivery" &&
-                  foodItem.status === "Pending" &&
-                  foodItem.Approval !== "Pending" && (
+                {((userRole === "delivery" && orderItem.deliveryType === 'delivery') || (userRole === "admin" && orderItem.deliveryType === 'PickUp')) &&
+                  orderItem?.status === "Pending" &&
+                  orderItem?.Approval !== "Pending" && (
                     <label className="checkBoxContainer">
                       <input
                         type="checkbox"
-                        checked={foodItem.check}
-                        onChange={(e) => handleCheckChange(e, foodItem.id)}
+                        checked={orderItem?.check}
+                        onChange={(e) => handleCheckChange(e, orderItem?.id, orderItem.userId, orderItem.deliveryType)}
                         disabled={
-                          foodItem.status === "Accept" ||
-                          foodItem.Approval === "Reject"
+                          orderItem?.check ||
+                          orderItem?.Approval === "Reject"
                         }
                       />
                       <div className="checkmark"></div>
                     </label>
                   )}
-                {userRole === "admin" && (
+                {userRole === "admin" && orderItem.deliveryType === 'delivery' && (
                   <label className="checkBoxContainer">
-                    <input type="checkbox" checked={foodItem.check} disabled />
+                    <input type="checkbox" checked={orderItem?.check} disabled />
                     <div className="checkmark"></div>
                   </label>
                 )}
@@ -237,7 +252,7 @@ const OrdersMainPage = ({setCurrentAction}) => {
         </div>
       </div>
       <div className="actions">
-        {userRole === "admin" && order?.Approval === "Pending" && (
+        {userRole === "admin" && isApprovalPending === false &&  (
           <>
             <button
               style={{ backgroundColor: "#D12525" }}
@@ -256,12 +271,12 @@ const OrdersMainPage = ({setCurrentAction}) => {
         )}
         {(userRole === "admin" || userRole === 'customer') &&
           order?.Approval === "Accept" &&
-          order?.status === "Pending" && (
+          order?.status === "Pending" && order?.deliveryType === 'delivery' && (
             <button style={{ backgroundColor: "#FFB936" }}>
               Delivery Pending
             </button>
           )}
-        {userRole === "customer" && order?.Approval === "Pending" && (
+        {userRole === "customer" && order?.Approval === "Pending" && order?.deliveryType === 'delivery' && (
           <button style={{ backgroundColor: "#FFB936" }}>
             Approval Pending
           </button>
@@ -271,10 +286,10 @@ const OrdersMainPage = ({setCurrentAction}) => {
             Delivery Completed
           </button>
         )}
-        {userRole === "delivery" && order?.status === "Pending" && (
+        {userRole === "delivery" && order?.status === "Pending" && order?.deliveryType === 'delivery' && (
           <>
             <button onClick={getDirections}>Get Direction</button>
-            {order?.Approval === "Accept" && (
+            {order?.Approval === "Accept" && order?.deliveryType === 'delivery' && (
               <button
                 style={{ backgroundColor: "deeppink" }}
                 onClick={() => handleUpdateStatus("Delivered", order?.userId)}
@@ -292,6 +307,10 @@ const OrdersMainPage = ({setCurrentAction}) => {
                 Waiting For Approval
               </button>
             )}
+
+            {order?.deliveryType === 'PickUp' && order?.orderStatus === 'Ready' && order?.Approval === 'Accept' && (<button style={{backgroundColor: '#4CAF50', color: 'white'}}>Ready</button>)}
+            
+            {order?.deliveryType === 'PickUp' && order?.orderStatus === 'Preparing' && order?.Approval === 'Accept' && (<button style={{backgroundColor: '#4CAF50', color: 'white'}}>Preparing</button>)}
           </>
         )}
       </div>

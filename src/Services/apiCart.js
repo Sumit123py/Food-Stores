@@ -8,6 +8,7 @@ const { data, error } = await supabase
     cartId: foodItem.id,
     foodName: foodItem.foodName,
     foodPrice: foodItem.foodPrice,
+    totalPrice: foodItem.foodPrice,
     image: foodItem.image,
     userId: userId,
     userShortID: shortID
