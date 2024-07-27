@@ -126,14 +126,20 @@ const FoodList = ({searchData}) => {
           </div>
           <div className="details">
           <p id='foodName' className="foodName">{foodItem.foodName}</p>
-            <p id='foodPrice' className="foodPrice">₹{foodItem.foodPrice}</p>
+          <p style={{color: 'red'}} className="noOfProducts">
+            No. of Products: <span style={{color: 'black'}}>{foodItem.maxQuantity}</span>
+          </p>
+           
                         
           </div>
+          <div className="price cart">
+          <p id='foodPrice' className="foodPrice">₹{foodItem.foodPrice}</p>
           <div disabled={isCreating} onClick={() => handleCart(foodItem.id, UserID)} className='cartBtn'>
-              <p className='cartIcon'><i className="fa-solid fa-cart-shopping" ></i></p>
-              {!isCreating && <p>Add</p>}
-              {isCreating && <Spinner/>}
+              <p className='cartIcon'>ADD</p>
+              {/* {!isCreating && <p>Add</p>} */}
+              {/* {isCreating && <Spinner/>} */}
             </div>
+          </div>
         </div>
       ))}
       </div>

@@ -49,8 +49,8 @@ const Option = ({ i, index, setIndex, userId }) => {
 
   return (
     <div style={{ height: index === i ? '80px' : 0 }} className="dropDown">
-      <p onClick={() => handleOrderStatus('Ready', userId)}>Ready</p>
-      <p onClick={() => handleOrderStatus('Preparing', userId)}>Preparing</p>
+      <p className="ready" onClick={() => handleOrderStatus('Ready', userId)}>Ready</p>
+      <p className="preparing" onClick={() => handleOrderStatus('Preparing', userId)}>Preparing</p>
     </div>
   );
 };

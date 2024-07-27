@@ -20,7 +20,7 @@ const SearchFilter = ({setSearchData}) => {
               </p>
               <input
                 type="search"
-                placeholder="Search for a dish"
+                placeholder="Search"
                 onInput={ToggleSearchRestaurant} // Call ToggleSearchRestaurant on input change
                 id="searchId2"
               />
@@ -28,4 +28,4 @@ const SearchFilter = ({setSearchData}) => {
   )
 }
 
-export default SearchFilter
+export default SearchFilter;

@@ -1,10 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Satisfy&family=Teachers:ital,wght@0,400..800;1,400..800&display=swap');
 
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
+
 
 body {
   width: 100%;
@@ -13,6 +9,7 @@ body {
 
 .foodListContainerMobile {
   display: none;
+
 }
 
 .foodListContainer {
@@ -37,7 +34,7 @@ body {
 .foodListContainer .foodContainer .foodCard {
   width: 300px;
   height: 500px;
-  box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+  box-shadow: rgba(93, 93, 183, 0.019) 0px 0px 16px;
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -89,6 +86,7 @@ body {
   opacity: 1;
   visibility: visible;
   background-color: black;
+
 }
 
 .foodListContainer .foodContainer .foodCard:hover::before {
@@ -123,7 +121,7 @@ body {
   font-size: 16px;
   line-height: 1;
   font-weight: 600;
-  padding: 10px 50px;
+  padding: 10px;
   text-align: center;
   z-index: 1;
   transition: all 500ms ease;
@@ -133,7 +131,7 @@ body {
   cursor: pointer;
   background-color: white;
   color: white;
-  width: 100%;
+  width: 50px;
   opacity: 0;
   visibility: hidden;
   font-family: 'Oswald', sans-serif;
@@ -164,9 +162,10 @@ body {
 
   .foodListContainerMobile {
     width: 100%;
-    height: 80vh;
-    overflow: auto;
+    height: 45vh;
+    /* overflow: auto; */
     display: flex;
+    position: relative;
   }
 
   .foodListContainerMobile::-webkit-scrollbar {
@@ -175,21 +174,33 @@ body {
 
   .foodListContainerMobile .foodContainer {
     width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     gap: 10px;
     padding: 10px;
+    overflow-x: auto;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+
+
+    
   }
 
-  .foodListContainerMobile .foodContainer .foodCard {
+  .foodListContainerMobile .foodContainer::-webkit-scrollbar{
+    display: none;
+  }
+
+  /* .foodListContainerMobile .foodContainer .foodCard {
     width: 100%;
     display: flex;
     align-items: center;
     gap: 20px;
     box-shadow: rgba(85, 85, 85, 0.1) 0px 10px 50px;
     border-radius: 10px;
-  }
+  } */
 
   .foodListContainerMobile .foodContainer .foodCard .cardDetails {
     width: 170px;
@@ -225,14 +236,33 @@ body {
     font-size: 15px;
   }
 
+  .foodListContainerMobile .foodContainer .foodCard .price{
+    width: 100%;
+    height: unset;
+    display: flex;
+    justify-content: space-between;
+    
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .price .foodPrice{
+    color: black;
+    text-wrap: nowrap;
+    font-size: 30px;
+    font-family: "Zain", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: 2.2px;
+  }
+
+
   .foodListContainerMobile .foodContainer .foodCard .cartBtn {
     background-color: black;
-    box-shadow: 0 0 4px rgb(221, 221, 221);
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     visibility: visible;
     opacity: 1;
     color: white;
-    width: 100%;
-    height: 50px;
+    width: 75px;
+    height: 35px;
     padding: 10px;
     display: flex;
     justify-content: center;
@@ -245,47 +275,35 @@ body {
     z-index: 1;
     transition: all 500ms ease;
     text-transform: capitalize;
-    border-radius: 30px;
+    border-radius: 10px;
     letter-spacing: 1.3px;
     cursor: pointer;
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
   }
 
-  .foodListContainerMobile .foodContainer {
-    display: grid;
-    grid-template-columns: repeat(2, 180px);
-  }
+
 
   .foodListContainerMobile .foodContainer .foodCard {
-    width: 100%;
-    height: 250px;
+    min-width: 200px;
+    height: 100%;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background-color: rgba(255, 255, 255, 0.13);
+    background-color: rgba(255, 255, 255, 0.163);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: rgba(139, 139, 139, 0.1) 0px 10px 50px;
+    box-shadow: rgba(44, 102, 217, 0.168) 0px 30px 90px;
     padding: 5px;
-    outline: 1px solid white;
-  }
-
-  .foodListContainerMobile .foodContainer .foodCard .details .foodName {
-    text-wrap: nowrap;
-    font-size: 15px;
-    font-family: 'Oswald', sans-serif;
+    font-family: "Zain", sans-serif;
     font-weight: 400;
+    font-style: normal;
   }
 
-  .foodListContainerMobile .foodContainer .foodCard .details .foodPrice {
-    text-wrap: nowrap;
-    font-size: 15px;
-    font-family: 'Oswald', sans-serif;
-    font-weight: 300;
-  }
+ 
+
 
   .foodListContainerMobile .foodContainer .foodCard .img {
     width: 110px;
@@ -294,12 +312,16 @@ body {
     border-radius: 50%;
     display: grid;
     place-items: center;
+    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+    background: transparent;
+    
   }
 
   .foodListContainerMobile .foodContainer .foodCard .img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    
   }
 
   .foodListContainerMobile .foodContainer .foodCard .details {
@@ -312,5 +334,13 @@ body {
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    text-wrap: nowrap;
+    font-size: 30px;
+    font-family: "Zain", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    color: white;
+    letter-spacing: 1.2px;
   }
 }

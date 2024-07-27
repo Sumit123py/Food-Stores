@@ -13,7 +13,6 @@ const Table2 = ({ cartItems, cartLoading, appSetting }) => {
 
 
   const allItemsDelivery = cartItems.every(item => item.deliveryType === 'delivery');
-  console.log('c', allItemsDelivery)
 
   const subtotal = cartItems?.reduce((acc, item) => acc + item.totalPrice, 0);
   const deliveryCharges = 2;

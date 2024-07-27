@@ -12,6 +12,7 @@ import  supabase  from '../../../Services/Supabase'; // Assuming you have a supa
 import './table.css';
 import useSupabaseRealtime from '../../../Services/useSupabaseRealtime';
 import { getFood } from '../../../Services/apiFood';
+import OrderPreparingMessage from '../../OrderPreparingMessage/OrderPreparingMessage';
 
 const Table1 = ({ addressAdded }) => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Table1 = ({ addressAdded }) => {
     queryFn: getUser,
   });
 
+  const [closeReadyMessage, setCloseReadyMessage] = useState(false)
  
 
   const currentUser = users?.filter(
@@ -134,6 +136,7 @@ const Table1 = ({ addressAdded }) => {
       toast.success("Order placed successfully");
       queryClient.invalidateQueries({ queryKey: ['Orders'] });
       handleUpdate();
+      setCloseReadyMessage(true)
 
       try {
         await Promise.all(
@@ -168,11 +171,12 @@ const Table1 = ({ addressAdded }) => {
     refetch();
   }
 
+
+
   const handleAddOrder = async () => {
+
     if (cart && cart.length > 0) {
-      const cartItems = cart;
-      console.log('cart', cartItems)
-      const userId = getCurrentUserId();
+      const cartItems = cart.filter((item) => item.userId === userId);
       if (userId) {
         await decreaseMaxQuantity(cartItems);
         await mutateCreate({ userId, cartItems });
@@ -217,6 +221,8 @@ const Table1 = ({ addressAdded }) => {
   if (isLoading) return <Spinner />;
 
   return (
+    <>
+    {closeReadyMessage && <OrderPreparingMessage setCloseReadyMessage={setCloseReadyMessage}/>}
     <div className="table1">
       <div className="column1">
         <p>Product</p>
@@ -276,6 +282,7 @@ const Table1 = ({ addressAdded }) => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 

@@ -18,4 +18,4 @@ const Message = ({appSetting}) => {
   )
 }
 
-export default Message
+export default Message;

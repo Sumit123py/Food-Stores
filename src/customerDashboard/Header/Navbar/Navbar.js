@@ -7,6 +7,7 @@ const Navbar = ({ setShow, setSearchData, user }) => {
   const navigate = useNavigate();
 
   return (
+  <>
     <div className='NavbarContainer'>
       <div className="navbar">
         <div className="logoContainer">
@@ -47,6 +48,38 @@ const Navbar = ({ setShow, setSearchData, user }) => {
         </div>
       </div>
     </div>
+
+
+
+{/* // Mobile Navbar */}
+
+<div className='NavbarContainerMobile'>
+      <div className="navbar">
+      <div className="navigationBtns2">
+          
+          
+          <div onClick={() => setShow(true)} className="hamBurgerIcon">
+            <p className="line1"></p>
+            <p className="line2"></p>
+            <p className="line3"></p>
+          </div>
+
+          <p className="cartIcon"><i onClick={() => navigate('/cart')} className="fa-solid fa-cart-shopping" ></i><span>{totalItem}</span></p>
+        </div>
+        <div className="logoContainer">
+          <div className="logoImage">
+            <img src={user?.logoImage} alt="Logo" />
+          </div>
+          <p className="logoName">{user?.logoName}</p>
+        </div>
+        
+        
+      </div>
+    </div>
+  </>
+
+
+
   );
 };
 

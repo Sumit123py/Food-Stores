@@ -11,7 +11,6 @@ const AppClosed = () => {
       });
 
       const user = users?.filter((item) => item.role === 'admin')
-      console.log(user)
       isLoading && <Spinner/>
   return (
     <div className='appClosedContainer'>

@@ -4,6 +4,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Kdam+Thmor+Pro&family=Roboto&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Satisfy&family=Teachers:ital,wght@0,400..800;1,400..800&family=Zain:wght@200;300;400;700;800;900&display=swap');
+
 * {
   position: relative;
 
@@ -16,12 +21,12 @@
 
 
 html {
-  font-size: 100%;
+  /* font-size: 100%; */
 }
 
 body {
-  /* background: linear-gradient(90deg, #EFE7ED 50%, #AECCF0 50%); */
-  /* padding: 1rem; */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img{
@@ -1656,59 +1661,12 @@ h1 {
   }
 
 
-
-  .ordersMenuContainer {
-    display: flex;
-    position: relative;
-    width: 140px;
-    height: 50px;
-    border: 1px solid #000000;
-    border-radius: 10px;
-    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-    cursor: pointer;
-
-    .selectedTitle{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      height: 100%;
-      padding: 10px;
-
-    }
-  
-    .menu {
-      width: 140px;
-      /* height: 0; */
-      position: absolute;
-      top: 100%;
-      display: flex;
-      flex-direction: column;
-      /* justify-content: space-between; */
-      align-items: center;
-      gap: 2px;
-      font-family: "Oswald", sans-serif;
-      font-size: 16px;
-      font-weight: 300;
-      z-index: 5;
-      background-color: white;
-      transition: 0.5s all ease-in-out;
-      box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
-      overflow: hidden;
-
-      
-  
-      p {
-        width: 100%;
-        /* height: calc(250px / 5); */
-        padding: 10px 10px;
-        letter-spacing: 1.2px;
-        cursor: pointer;
-        text-align: center;
-        text-wrap: nowrap;
-      }
-    }
+  .heroContainer{
+    width: 100%;
   }
+
+
+
 
 
 

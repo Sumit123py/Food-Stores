@@ -182,6 +182,9 @@ const OrdersMainPage = ({setCurrentAction}) => {
             <li style={{ color: "#AAA" }}>
               Status: <span style={{ color: "deeppink" }}>{order?.orderStatus}</span>
             </li>
+            <li style={{ color: "#AAA" }}>
+              Service: <span style={{ color: "deeppink" }}>{order?.deliveryType}</span>
+            </li>
             <li style={{ color: "red" }}>
               Total Cost: <span style={{ color: "red" }}>₹{totalCost(order?.userId)}</span>
             </li>

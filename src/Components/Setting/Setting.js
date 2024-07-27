@@ -138,6 +138,7 @@ const Setting = () => {
             {isEditing && (
               <>
                 <input
+                className="settingInput"
                   autoFocus
                   required
                   type="text"
@@ -147,6 +148,8 @@ const Setting = () => {
                   placeholder="LogoName"
                 />
                 <input
+                className="settingInput"
+
                   required
                   type="text"
                   name="address"
@@ -155,7 +158,10 @@ const Setting = () => {
                   {...register("address")}
                 />
                 <input
+                className="settingInput"
+
                   required
+
                   type="Number"
                   placeholder="phone Number"
                   name="phone"
@@ -163,6 +169,8 @@ const Setting = () => {
                   {...register("phone")}
                 />
                 <input
+                className="settingInput"
+
                   required
                   type="email"
                   placeholder="email Address"

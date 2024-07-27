@@ -55,6 +55,7 @@ const Login = () => {
         <h3>Login Here</h3>
         <label htmlFor="username">Email</label>
         <input
+        className='authInput'
           value={email}
           onChange={handleEmailChange}
           name="email"
@@ -67,11 +68,12 @@ const Login = () => {
 
         <label htmlFor="password">Password</label>
         <input
+        className='authInput'
           value={password}
           onChange={handlePasswordChange}
           name="password"
           id="password"
-          type="password"
+          type="text"
           required
           autoComplete="off"
           disabled={isLoading}

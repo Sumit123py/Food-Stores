@@ -227,7 +227,7 @@ const OrdersMobile = () => {
                   Total Item: <span>{totalItem(orderItem.userId)}</span>
                 </p>
                 <p className="totalCost" style={{ color: "red" }}>
-                  Total Cost: <span>₹{totalCost(orderItem.userId)}</span>
+                  Total Cost: <span>₹{totalCost(orderItem.userId) + (orderItem.deliveryType === 'delivery' ? 2 : 0)}</span>
                 </p>
               </div>
               <div className="col2">

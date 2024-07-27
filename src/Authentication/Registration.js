@@ -37,6 +37,8 @@ const Registration = () => {
         <h3>Register Here</h3>
         <label for="username">Email</label>
         <input
+        className='authInput'
+
           name="email"
           id="email"
           type="email"
@@ -47,9 +49,11 @@ const Registration = () => {
 
         <label for="password">Password</label>
         <input
+        className='authInput'
+
           name="password"
           id="password"
-          type="password"
+          type="text"
           required
           autoComplete="off"
           {...register("password")}

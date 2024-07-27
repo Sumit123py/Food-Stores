@@ -1,106 +1,94 @@
 .addressFormContainer {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-  }
-  
-  form {
-    width: 60%;
-    gap: 20px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  
-    .head {
-      text-transform: uppercase;
-      font-size: 1rem;
-      font-family: "Oswald", sans-serif;
-      font-weight: 400;
-      font-optical-sizing: auto;
-  
-    }
-  
-    .col1 {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      position: relative;
-      justify-content: space-between;
-  
-      input {
-        width: 47%;
-        height: 50px;
-        padding: 1rem;
-        border: 0.5px solid grey;
-        font-family: "Oswald", sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        font-optical-sizing: auto;
-        letter-spacing: 1.2px;
-  
-  
-        &::placeholder {
-          color: black;
-        }
-      }
-  
-    }
-  
-    .col2 {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-  
-  
-      input {
-        width: 47%;
-        height: 50px;
-        padding: 1rem;
-        border: 0.5px solid grey;
-        font-family: "Oswald", sans-serif;
-        font-size: 16px;
-        font-weight: 400;
-        font-optical-sizing: auto;
-        letter-spacing: 1.2px;
-  
-        &::placeholder {
-          color: black;
-        }
-      }
-    }
-  
-    textarea {
-      width: 100%;
-      padding: 1rem;
-      font-family: "Oswald", sans-serif;
-      font-size: 16px;
-      font-weight: 400;
-      font-optical-sizing: auto;
-      letter-spacing: 1.2px;
-      border: 0.5px solid grey;
-      resize: vertical;
-      overflow: auto;
-  
-  
-  
-      &::placeholder {
-        color: black;
-  
-      }
-    }
-  
-  }
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
 
+form {
+  width: 60%;
+  gap: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+form .head {
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-family: "Oswald", sans-serif;
+  font-weight: 400;
+  font-optical-sizing: auto;
+}
+
+form .col1 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+}
+
+form .col1 input {
+  width: 47%;
+  height: 50px;
+  padding: 1rem;
+  border: 0.5px solid grey;
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  letter-spacing: 1.2px;
+}
+
+form .col1 input::placeholder {
+  color: black;
+}
+
+form .col2 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+form .col2 input {
+  width: 47%;
+  height: 50px;
+  padding: 1rem;
+  border: 0.5px solid grey;
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  letter-spacing: 1.2px;
+}
+
+form .col2 input::placeholder {
+  color: black;
+}
+
+form textarea {
+  width: 100%;
+  padding: 1rem;
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  letter-spacing: 1.2px;
+  border: 0.5px solid grey;
+  resize: vertical;
+  overflow: auto;
+}
+
+form textarea::placeholder {
+  color: black;
+}
 
 @media (min-width: 100px) and (max-width: 1000px) {
-    .addressFormContainer {
-
-        form {
-          width: 100%;
-        }
-      }
+  .addressFormContainer form {
+    width: 100%;
+  }
 }

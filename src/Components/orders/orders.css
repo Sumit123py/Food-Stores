@@ -283,6 +283,7 @@
 
   @media (min-width: 100px) and (max-width: 1000px) {
     .orderListContainer {
+      display: none;
 
         
         .orderContainer {

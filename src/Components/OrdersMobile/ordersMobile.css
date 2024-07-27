@@ -4,7 +4,7 @@
     display: none;
 }
 
-@media (min-width: 100px) and (max-width: 1000px) {
+@media (min-width: 100px) and (max-width: 1200px) {
     .ordersMobileContainer {
         width: 100%;
         padding: 10px;
@@ -12,7 +12,6 @@
         flex-direction: column;
         gap: 20px;
         font-family: "Roboto Condensed", sans-serif;
-        font-optical-sizing: auto;
         background: linear-gradient(150deg, rgba(236, 231, 239, 1) 32%, rgba(174, 204, 240, 1) 100%);
     }
 
@@ -40,7 +39,7 @@
 
     .ordersMobileContainer .ordersHistoryListContainer .column {
         width: 100%;
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+        box-shadow: rgba(0, 0, 0, 0.105) 0px 10px 50px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -51,7 +50,7 @@
         background: rgba(255, 255, 255, 0.13);
         backdrop-filter: blur(10px);
         border: 2px solid rgba(255, 255, 255, 0.1);
-        outline: 1px solid white;
+        /* outline: 1px solid white; */
     }
 
     .ordersMobileContainer .ordersHistoryListContainer .column .col3 {
@@ -121,5 +120,52 @@
     .ordersMobileContainer .ordersHistoryListContainer .column .moreDetails {
         align-self: flex-end;
         color: fuchsia;
+    }
+
+    .ordersMobileContainer .head .ordersMenuContainer {
+        display: flex;
+        position: relative;
+        width: 140px;
+        height: 50px;
+        border: 1px solid #000000;
+        border-radius: 10px;
+        box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+        cursor: pointer;
+    }
+
+    .ordersMobileContainer .head .ordersMenuContainer .selectedTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+    }
+
+    .ordersMobileContainer .head .ordersMenuContainer .menu {
+        width: 140px;
+        position: absolute;
+        top: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        font-family: "Oswald", sans-serif;
+        font-size: 16px;
+        font-weight: 300;
+        z-index: 5;
+        background-color: white;
+        transition: 0.5s all ease-in-out;
+        box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
+        overflow: hidden;
+    }
+
+    .ordersMobileContainer .head .ordersMenuContainer .menu p {
+        width: 100%;
+        padding: 10px 10px;
+        letter-spacing: 1.2px;
+        cursor: pointer;
+        text-align: center;
+        text-wrap: nowrap;
     }
 }

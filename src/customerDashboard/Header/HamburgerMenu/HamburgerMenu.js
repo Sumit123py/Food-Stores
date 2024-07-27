@@ -1,11 +1,18 @@
 import React, { useContext } from 'react'
 import Image1 from '../../../img/pasta-2.png'
 import { useNavigate } from 'react-router-dom'
-import { getCurrentUserId } from '../../../Services/apiUsers'
+import { getCurrentUserId, getUser } from '../../../Services/apiUsers'
 import { ProductContext } from '../../../context/FoodContext'
 import './hamburgerMenu.css'
+import { useQuery } from '@tanstack/react-query'
 const HamburgerMenu = ({show, setShow, user, setSearchData}) => {
 
+    const { isLoading, data: users } = useQuery({
+        queryKey: ["users"],
+        queryFn: getUser,
+      });
+
+      const userAdmin = users?.filter((item) => item.role === 'admin')
     const navigate = useNavigate()
     const {setOrderData, handleLogout} = useContext(ProductContext)
 
@@ -35,9 +42,9 @@ const HamburgerMenu = ({show, setShow, user, setSearchData}) => {
         <div className="head">
             <div className="logoInfo">
                 <div className="logoImg">
-                    <img src={Image1} alt="" />
+                    <img src={userAdmin?.[0].logoImage} alt="" />
                 </div>
-                <p className="logoName">logoname</p>
+                <p className="logoName">{userAdmin?.[0].logoName}</p>
             </div>
             <p onClick={() => setShow(false)} className="closeMenu"><i className="fa-solid fa-circle-xmark" style={{color: "#ed0c0c"}}></i></p>
         </div>
