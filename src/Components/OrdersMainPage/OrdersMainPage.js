@@ -224,6 +224,9 @@ const OrdersMainPage = ({setCurrentAction}) => {
                       <span style={{color: 'red', fontSize: '12px'}}>No. of Products: </span>
                       {orderItem?.maxQuantity}
                     </p>
+                    <p style={{textTransform: 'capitalize'}} className="weight">
+                      {orderItem.weightType}
+                    </p>
                   </div>
                   <p className="time">{formatTime(orderItem?.created_at)}</p>
                 </div>

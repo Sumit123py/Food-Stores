@@ -19,6 +19,7 @@ import { ProductProvider } from './context/FoodContext';
 import useAuthRedirect from './Authentication/useAuthRedirect';
 import OrdersMainPage from './Components/OrdersMainPage/OrdersMainPage';
 import AppClosed from './Components/AppClosedPage/AppClosed';
+import LottieIcon from './Components/LottieIcon';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,6 +50,7 @@ const AppRoutes = () => (
     <Route path="/scroll" element={<ScrollToTop />} />
     <Route path="/FoodAddForm" element={<FoodAddForm />} />
     <Route path="/orderMain" element={<OrdersMainPage />} />
+    
   </Routes>
 );
 

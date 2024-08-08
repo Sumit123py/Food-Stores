@@ -39,7 +39,8 @@ export async function createOrder(userId, cartItems) {
       foodPrice: item.foodPrice,
       totalPrice: item.totalPrice,
       image: item.image,
-      deliveryType: item.deliveryType
+      deliveryType: item.deliveryType,
+      weightType: item.weight
     })));
 
   if (error) {

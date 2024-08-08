@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Satisfy&family=Teachers:ital,wght@0,400..800;1,400..800&display=swap');
 
 .NavbarContainer {
@@ -45,7 +44,7 @@
 
 }
 
-.NavbarContainer .navbar .logoContainer .logoName{
+.NavbarContainer .navbar .logoContainer .logoName {
     font-size: 1.5rem;
 }
 
@@ -193,7 +192,7 @@ li {
     background-color: white;
     padding: 6px;
     border-radius: 10px;
-    
+
 }
 
 
@@ -236,11 +235,11 @@ li {
 
 @media (min-width: 100px) and (max-width: 1000px) {
 
-    .NavbarContainer{
+    .NavbarContainer {
         display: none;
     }
 
-    .NavbarContainerMobile .navbar .navigationBtns2{
+    .NavbarContainerMobile .navbar .navigationBtns2 {
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -261,18 +260,18 @@ li {
         padding: 10px;
         z-index: 5;
         /* overflow: hidden; */
-    
+
     }
-    
+
     .NavbarContainerMobile .navbar {
         width: 100%;
-        height: 100%;
+
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
     }
-    
+
     .NavbarContainerMobile .navbar .logoContainer {
         display: flex;
         flex-direction: column;
@@ -283,41 +282,49 @@ li {
         font-optical-sizing: auto;
         /* font-size: 2rem; */
     }
-    
+
     .NavbarContainerMobile .navbar .logoContainer .logoImage {
-        width: 9.375rem;
-        height: 9.375rem;
-    
-    
+        width: 5.375rem;
+        height: 5.375rem;
+        box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+        border-radius: 50%;
+        position: relative;
+
+
     }
-    
-    .NavbarContainerMobile .navbar .logoContainer .logoName{
-        font-size: 4rem;
-        font-family: "Zain", sans-serif;
-    font-weight: 700;
-    font-style: normal;
-        text-transform: uppercase;
+
+    .NavbarContainerMobile .navbar .logoContainer .logoName {
+        font-size: 3rem;
+        font-family: "Satisfy", cursive;
+        font-weight: 400;
+        font-style: normal;
+        text-transform: capitalize;
         font-weight: 600;
         letter-spacing: 1.2px;
         text-align: center;
         text-wrap: balance;
-        line-height: 3rem;
+        line-height: 4rem;
+        color: white;
+
     }
-    
-    
+
+
     .NavbarContainerMobile .navbar .logoContainer .logoImage img {
         width: 100%;
         height: 100%;
+        position: absolute;
+        top: 16%;
         object-fit: cover;
-    }
-    
-    
-    
-    
-    
- 
 
-    
+    }
+
+
+
+
+
+
+
+
     .NavbarContainerMobile .navbar .navigationBtns2 .cartIcon {
         width: 50px;
         height: 40px;
@@ -328,10 +335,10 @@ li {
         border-radius: 5px;
         color: black;
         box-shadow: #eaeaeb 0px 22px 70px 4px;
-    
+
     }
-    
-    
+
+
     .NavbarContainerMobile .navbar .navigationBtns2 .hamBurgerIcon {
         width: 50px;
         height: 40px;
@@ -344,21 +351,21 @@ li {
         background-color: white;
         padding: 6px;
         border-radius: 10px;
-        box-shadow: #f2f1f5 0px 22px 70px 4px;
-        
+        box-shadow: #A3DAFB 0px 22px 70px 4px;
+
     }
-    
-    
-    
-    
+
+
+
+
     .NavbarContainerMobile .navbar .navigationBtns2 .hamBurgerIcon:hover .line1,
     .NavbarContainerMobile .navbar .navigationBtns2 .hamBurgerIcon:hover .line2,
     .NavbarContainerMobile .navbar .navigationBtns2 .hamBurgerIcon:hover .line3 {
         background-color: #D12525;
-    
+
     }
-    
-    
+
+
     .NavbarContainerMobile .navbar .navigationBtns2 .hamBurgerIcon .line1 {
         width: 50%;
         height: 3px;
@@ -366,24 +373,24 @@ li {
         align-self: flex-end;
         border-radius: 1px;
     }
-    
+
     .NavbarContainerMobile .navbar .navigationBtns2 .hamBurgerIcon .line2 {
         width: 100%;
         height: 3px;
         background-color: #212121;
         border-radius: 1px;
-    
+
     }
-    
+
     .NavbarContainerMobile .navbar .navigationBtns2 .hamBurgerIcon .line3 {
         width: 50%;
         height: 3px;
         background-color: #212121;
         align-self: flex-start;
         border-radius: 1px;
-    
-    
+
+
     }
 
-    
+
 }

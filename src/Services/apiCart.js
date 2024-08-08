@@ -2,13 +2,16 @@ import supabase from "./Supabase";
 
 
 export async function insertCart ({foodItem, userId, shortID}) {
+  console.log(foodItem)
 const { data, error } = await supabase
   .from('cart')
   .insert([{ 
     cartId: foodItem.id,
     foodName: foodItem.foodName,
     foodPrice: foodItem.foodPrice,
-    totalPrice: foodItem.foodPrice,
+    totalPrice: foodItem.totalPrice,
+    maxQuantity: foodItem.maxQuantity,
+    weight: foodItem.weight,
     image: foodItem.image,
     userId: userId,
     userShortID: shortID

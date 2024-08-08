@@ -21,7 +21,7 @@ const Table1 = ({ addressAdded }) => {
 
   useSupabaseRealtime('Orders', 'Orders')
 
-  // useSupabaseRealtime('cart', 'carts')
+  useSupabaseRealtime('cart', 'carts')
 
   const userId = getCurrentUserId()
 
@@ -31,7 +31,8 @@ const Table1 = ({ addressAdded }) => {
   });
 
   const [closeReadyMessage, setCloseReadyMessage] = useState(false)
- 
+  const [selectedWeights, setSelectedWeights] = useState({});
+
 
   const currentUser = users?.filter(
     (user) => user?.id === userId
@@ -39,19 +40,36 @@ const Table1 = ({ addressAdded }) => {
 
   const user = currentUser?.[0];
 
+  // const [selectedPrices, setSelectedPrices] = useState(null)
 
-  const IncreaseQuantity = async (productId, maxQuantity, cartId) => {
+
+   
+
+
+  const IncreaseQuantity = async (productId, maxQuantity, cartId, weight) => {
     const foodItem = await getFood(cartId);
+
+    let selectedPrices 
+
+  if(weight === '250 Grams'){
+    selectedPrices = 0.25
+  }
+  else if(weight === '500 Grams'){
+    selectedPrices = 0.5
+  }
+  else if(weight === '1 kg'){
+    selectedPrices = 1
+  }
 
     if (maxQuantity < foodItem.maxQuantity) {
       try {
         const newQuantity = maxQuantity + 1;
-        const totalPrice = newQuantity * foodItem.foodPrice
+        const totalPrice = newQuantity * (foodItem.foodPrice * selectedPrices) 
 
         const { error } = await supabase
           .from('cart')
-          .update({ 
-            maxQuantity: newQuantity,
+          .update({
+          maxQuantity: newQuantity,
           totalPrice: totalPrice })
           .eq('id', productId);
 
@@ -65,19 +83,34 @@ const Table1 = ({ addressAdded }) => {
             )
           );
         }
+
       } catch (error) {
         console.error('Error increasing maxQuantity:', error);
       }
     }
   };
 
-  const DecreaseQuantity = async (productId, maxQuantity, cartId) => {
+
+
+  const DecreaseQuantity = async (productId, maxQuantity, cartId, weight) => {
     const foodItem = await getFood(cartId);
+
+    let selectedPrices 
+
+  if(weight === '250 Grams'){
+    selectedPrices = 0.25
+  }
+  else if(weight === '500 Grams'){
+    selectedPrices = 0.5
+  }
+  else if(weight === '1 kg'){
+    selectedPrices = 1
+  }
 
     if (maxQuantity > 1) {
       try {
         const newQuantity = maxQuantity - 1;
-        const totalPrice = newQuantity * foodItem.foodPrice
+        const totalPrice = newQuantity * (foodItem.foodPrice * selectedPrices) 
 
         const { error } = await supabase
           .from('cart')
@@ -109,13 +142,14 @@ const Table1 = ({ addressAdded }) => {
   });
 
 
-  useSupabaseRealtime('cart', 'carts')
 
 
 
   
 
   const fetchCart = cart?.filter((cartItem) => cartItem.userId === userId)
+
+  const sortedFetchCart = fetchCart?.sort((a, b) => a.id - b.id);
 
 
   const { isDeleting, mutate: mutateDelete } = useMutation({
@@ -226,12 +260,12 @@ const Table1 = ({ addressAdded }) => {
     <div className="table1">
       <div className="column1">
         <p>Product</p>
-        <p>Price</p>
+        <p>Item In</p>
         <p>Quantity</p>
         <p>Subtotal</p>
         <p>Remove</p>
       </div>
-      {fetchCart?.map((cartItem) => {
+      {sortedFetchCart?.map((cartItem) => {
         const productId = cartItem.id;
 
         return (
@@ -239,23 +273,23 @@ const Table1 = ({ addressAdded }) => {
             <div className="productImage">
               <img src={cartItem.image} alt={cartItem.foodName} />
             </div>
-            <p className="productPrice">₹{cartItem.foodPrice}</p>
+            <p className="productPrice">{cartItem.weight}</p>
             <div className="quantity">
               <div className="quantityBox">
-                <p>{cartItem.maxQuantity}</p>
                 <div className="btns">
-                  <button onClick={() => IncreaseQuantity(productId, cartItem.maxQuantity, cartItem.cartId)} className="incQuantity">
-                    <i className="fa-solid fa-caret-up caret"></i>
-                  </button>
-                  <button onClick={() => DecreaseQuantity(productId, cartItem.maxQuantity, cartItem.cartId)} className="decQuantity">
-                    <i className="fa-solid fa-caret-down caret"></i>
-                  </button>
+                  <p onClick={() => DecreaseQuantity(productId, cartItem.maxQuantity, cartItem.cartId, cartItem.weight)} className="decQuantity">
+                    -
+                  </p>
+                  <p>{cartItem.maxQuantity}</p>
+                  <p onClick={() => IncreaseQuantity(productId, cartItem.maxQuantity, cartItem.cartId, cartItem.weight)} className="incQuantity">
+                    +
+                  </p>
                 </div>
               </div>
             </div>
-            <p className="subtotal">
-              ₹{Number(cartItem.foodPrice) * cartItem.maxQuantity}.00
-            </p>
+            <div className="subtotal">
+              <p>₹{cartItem.totalPrice}</p>
+            </div>
             <p className="remove">
               <i
                 disabled={isDeleting}

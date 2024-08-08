@@ -162,10 +162,13 @@ body {
 
   .foodListContainerMobile {
     width: 100%;
-    height: 45vh;
+    height: 50vh;
     /* overflow: auto; */
     display: flex;
     position: relative;
+    /* border: 3px solid green; */
+    z-index: 1;
+
   }
 
   .foodListContainerMobile::-webkit-scrollbar {
@@ -177,12 +180,13 @@ body {
     height: 100%;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 40px;
     padding: 10px;
     overflow-x: auto;
     position: absolute;
     left: 0;
     bottom: 0;
+    z-index: 1;
 
 
 
@@ -204,7 +208,7 @@ body {
 
   .foodListContainerMobile .foodContainer .foodCard .cardDetails {
     width: 170px;
-    height: 250px;
+    height: 100%;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -238,16 +242,17 @@ body {
 
   .foodListContainerMobile .foodContainer .foodCard .price{
     width: 100%;
-    height: unset;
+    height: 0;
     display: flex;
     justify-content: space-between;
+    padding: 5px;
     
   }
 
   .foodListContainerMobile .foodContainer .foodCard .price .foodPrice{
     color: black;
     text-wrap: nowrap;
-    font-size: 30px;
+    font-size: 25px;
     font-family: "Zain", sans-serif;
     font-weight: 700;
     font-style: normal;
@@ -256,21 +261,20 @@ body {
 
 
   .foodListContainerMobile .foodContainer .foodCard .cartBtn {
-    background-color: black;
+    background-color: white;
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     visibility: visible;
     opacity: 1;
-    color: white;
-    width: 75px;
+    color: black;
+    width: 95px;
     height: 35px;
     padding: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 10px;
     overflow: hidden;
     font-size: 16px;
-    font-weight: 600;
     text-align: center;
     z-index: 1;
     transition: all 500ms ease;
@@ -279,42 +283,52 @@ body {
     letter-spacing: 1.3px;
     cursor: pointer;
     font-family: 'Oswald', sans-serif;
-    font-weight: 400;
+    font-weight: 600;
+    border: 1px solid black;
+    box-shadow: 4px 5px 0 black;
+    
+  }
+
+  .foodListContainerMobile .foodContainer .foodCard .cartBtn:active{
+    box-shadow: none;
+    transform: translateY(5px);
   }
 
 
 
+
+
   .foodListContainerMobile .foodContainer .foodCard {
-    min-width: 200px;
+    min-width: 250px;
     height: 100%;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    background-color: rgba(255, 255, 255, 0.163);
+    background-color: rgb(255, 255, 255);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: rgba(44, 102, 217, 0.168) 0px 30px 90px;
-    padding: 5px;
+    /* box-shadow: rgba(44, 102, 217, 0.168) 0px 30px 90px; */
+    /* padding: 5px; */
     font-family: "Zain", sans-serif;
     font-weight: 400;
     font-style: normal;
+    z-index: 5;
   }
 
  
 
 
   .foodListContainerMobile .foodContainer .foodCard .img {
-    width: 110px;
-    height: 110px;
+    width: 100%;
+    height: 180px;
     overflow: hidden;
-    border-radius: 50%;
+    border-radius: 10px;
     display: grid;
     place-items: center;
     box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
     background: transparent;
-    
   }
 
   .foodListContainerMobile .foodContainer .foodCard .img img {
@@ -323,6 +337,7 @@ body {
     object-fit: cover;
     
   }
+  
 
   .foodListContainerMobile .foodContainer .foodCard .details {
     width: 100%;
@@ -334,13 +349,12 @@ body {
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
-
     text-wrap: nowrap;
     font-size: 30px;
     font-family: "Zain", sans-serif;
     font-weight: 700;
     font-style: normal;
-    color: white;
+    color: black;
     letter-spacing: 1.2px;
   }
 }

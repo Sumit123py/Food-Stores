@@ -9,6 +9,7 @@ import { getAppSetting } from '../../Services/apiAppSetting'
 import AppClosed from '../AppClosedPage/AppClosed'
 import { useQuery } from '@tanstack/react-query'
 import useSupabaseRealtime from '../../Services/useSupabaseRealtime'
+import OrdersMobile from '../OrdersMobile/OrdersMobile'
 const Dashboard = () => {
 
     const {userRole} = useContext(ProductContext)
@@ -29,7 +30,7 @@ const Dashboard = () => {
     {userRole === 'admin' && <Admin/>}
     {userRole === 'customer' && <CustomerDashboard/>}
     {userRole === 'customer' && !isAppClosed && <AppClosed/>}
-    {userRole === 'delivery' && <OrderList/>}
+    {userRole === 'delivery' && <OrdersMobile/>}
     </div>
     </>
   )

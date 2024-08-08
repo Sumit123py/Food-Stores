@@ -66,26 +66,26 @@ const HamburgerMenu = ({show, setShow, user, setSearchData}) => {
                 setShow(false)
         }}>All</p>
             <p onClick={() => {
-                setSearchData('pizza')
+                setSearchData('samosa')
                 setShow(false)
-        }}>PIZZA</p>
+        }}>SAMOSA</p>
               <p onClick={() => 
               {
-                setSearchData('pasta')
+                setSearchData('rashgulla')
                 setShow(false)
-            }}>PASTA</p>
+            }}>RASHGULLA</p>
               <p onClick={() => {
-                setSearchData('chicken')
+                setSearchData('laddu')
                 setShow(false)
-            }}>CHICKEN</p>
+            }}>LADDU</p>
               <p onClick={() => {
-                setSearchData('burger')
+                setSearchData('cake')
                 setShow(false)
-            }}>BURGER</p>
+            }}>CAKE</p>
               <p onClick={() => {
-                setSearchData('noodles')
+                setSearchData('halwa')
                 setShow(false)
-            }}>NOODLES</p>
+            }}>HALWA</p>
               </div></li>
             <li>Contact</li>
             <li onClick={() => {

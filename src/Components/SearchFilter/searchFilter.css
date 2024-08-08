@@ -12,6 +12,7 @@
     outline: none;
     color: white;
   
+    z-index: 1;
     gap: 10px;
   
   

@@ -9,7 +9,8 @@ import { getCart, insertCart } from '../../Services/apiCart';
 import './foodList.css'
 import useSupabaseRealtime from '../../Services/useSupabaseRealtime';
 import { getCurrentUserId, getCurrentUserShortID, getUser } from '../../Services/apiUsers';
-const FoodList = ({searchData}) => {
+import LottieIcon from '../../Components/LottieIcon';
+const FoodList = ({searchData, setTitle, setMaxQuantity, setShowCartPopUp}) => {
   const { data: users } = useQuery({
     queryKey: ['users'],
     queryFn: () => getUser(),
@@ -17,10 +18,9 @@ const FoodList = ({searchData}) => {
 
   const navigate = useNavigate()
 
-  const { totalItem, setTotalItem } = useContext(ProductContext)
+  const { totalItem, setTotalItem, setFoodItemId, setFoodPrice, setPrice, type, setType, weight, setWeight } = useContext(ProductContext)
 
   useSupabaseRealtime('Food', 'foods')
-  useSupabaseRealtime('cart', 'carts')
 
 
   const queryClient = useQueryClient();
@@ -35,8 +35,19 @@ const FoodList = ({searchData}) => {
   const userShortID = users?.find((user) => user.id === UserID)
   const ShortID = userShortID?.userShortID
 
-  
 
+
+  const handleCartPopUp = (id, title, maxQuantity, price, weightType) => {
+    setTitle(title)
+    setFoodItemId(id)
+    setShowCartPopUp(true)
+    setMaxQuantity(maxQuantity)
+    setFoodPrice(price)
+    setPrice(weightType === 'kg' ? price * 0.25 : price)
+    setType(weightType)
+    setWeight(weightType === 'kg' ? '250 Grams' : 'Piece')
+    
+  }
 
   const { mutate: mutateCreate, isCreating } = useMutation({
     mutationFn: insertCart,
@@ -50,6 +61,8 @@ const FoodList = ({searchData}) => {
     onError: (err) => toast.error(err.message),
   });
 
+  
+  
   const handleCart = async (id, userId, shortID) => {
     try {
       const cartItems = await getCart();
@@ -115,7 +128,7 @@ const FoodList = ({searchData}) => {
       </div>}
     </div>
 
-    {/* // second */}
+    {/* second */}
 
     <div className='foodListContainerMobile'>
       <div className="foodContainer">
@@ -126,15 +139,16 @@ const FoodList = ({searchData}) => {
           </div>
           <div className="details">
           <p id='foodName' className="foodName">{foodItem.foodName}</p>
-          <p style={{color: 'red'}} className="noOfProducts">
-            No. of Products: <span style={{color: 'black'}}>{foodItem.maxQuantity}</span>
+          <p style={{color: 'grey'}} className="noOfProducts">
+            Total: <span style={{color: 'black'}}>{foodItem.maxQuantity} {foodItem.weightType}</span>
           </p>
            
                         
           </div>
           <div className="price cart">
-          <p id='foodPrice' className="foodPrice">₹{foodItem.foodPrice}</p>
-          <div disabled={isCreating} onClick={() => handleCart(foodItem.id, UserID)} className='cartBtn'>
+          <p id='foodPrice' className="foodPrice">₹{foodItem.weightType === 'kg' ? foodItem.foodPrice * 0.25 : foodItem.foodPrice}</p>
+          <div disabled={isCreating} onClick={() => handleCartPopUp(foodItem.id, foodItem.foodName, foodItem.maxQuantity, foodItem.foodPrice, foodItem.weightType)} className='cartBtn'>
+              <LottieIcon/>
               <p className='cartIcon'>ADD</p>
               {/* {!isCreating && <p>Add</p>} */}
               {/* {isCreating && <Spinner/>} */}

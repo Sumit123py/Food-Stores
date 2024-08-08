@@ -7,7 +7,7 @@ import Spinner from "../../spinLoader/Spinner";
 import './cart.css'
 import Table2 from "./table/Table2";
 import { getCart } from "../../Services/apiCart";
-import Message from "../messagePopUp/Message";
+
 import { getAppSetting } from "../../Services/apiAppSetting";
 import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
 const Cart = () => {

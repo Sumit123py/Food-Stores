@@ -7,15 +7,18 @@ const ProductContext = createContext(null);
 export const useAuth = () => useContext(ProductContext);
 
 const ProductProvider = ({ children }) => {
-  const [totalItem, setTotalItem] = useState(null);
+  
   const [subTotalPrice, setSubTotalPrice] = useState(0);
   const [email, setEmail] = useState(localStorage.getItem('userEmail') || '');
   const [password, setPassword] = useState('');
   const [userRole, setUserRole] = useState('');
   const [orderData, setOrderData] = useState({});
   const [token, setToken] = useState(localStorage.getItem('token') || null);
-  
-
+  const [foodItemId, setFoodItemId] = useState(null)
+  const [foodPrice, setFoodPrice] = useState(null)
+  const [price, setPrice] = useState(null);
+  const [type, setType] = useState(null)
+  const [weight, setWeight] = useState(null)
 
 
   useEffect(() => {
@@ -65,8 +68,6 @@ const ProductProvider = ({ children }) => {
   return (
     <ProductContext.Provider
       value={{
-        setTotalItem,
-        totalItem,
         subTotalPrice,
         setSubTotalPrice,
         email,
@@ -79,6 +80,15 @@ const ProductProvider = ({ children }) => {
         token,
         handleLogin,
         handleLogout,
+        foodItemId,
+        setFoodItemId,
+        foodPrice,
+        setFoodPrice,
+        price, setPrice,
+        type,
+        setType,
+        weight,
+        setWeight
       }}
     >
       {children}

@@ -2,9 +2,21 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProductContext } from '../../../context/FoodContext';
 import './navbar.css'
+import { getCart } from '../../../Services/apiCart';
+import { useQuery } from '@tanstack/react-query';
+import { getCurrentUserId } from '../../../Services/apiUsers';
 const Navbar = ({ setShow, setSearchData, user }) => {
-  const { totalItem, handleLogout } = useContext(ProductContext);
+  const { handleLogout } = useContext(ProductContext);
   const navigate = useNavigate();
+
+  const {isLoading: cartLoading, data: cart } = useQuery({
+    queryKey: ['carts'],
+    queryFn: getCart,
+  });
+
+  const userId  = getCurrentUserId()
+
+  const totalItem = cart.filter((item) => item.userId === userId)
 
   return (
   <>
@@ -38,7 +50,7 @@ const Navbar = ({ setShow, setSearchData, user }) => {
           </ul>
         </div>
         <div className="navigationBtns2">
-          <p className="cartIcon"><i onClick={() => navigate('/cart')} className="fa-solid fa-cart-shopping" ></i><span>{totalItem}</span></p>
+          <p className="cartIcon"><i onClick={() => navigate('/cart')} className="fa-solid fa-cart-shopping" ></i><span>{totalItem?.length}</span></p>
           <p className="contactUsBtn">Contact Us</p>
           <div onClick={() => setShow(true)} className="hamBurgerIcon">
             <p className="line1"></p>
@@ -64,7 +76,7 @@ const Navbar = ({ setShow, setSearchData, user }) => {
             <p className="line3"></p>
           </div>
 
-          <p className="cartIcon"><i onClick={() => navigate('/cart')} className="fa-solid fa-cart-shopping" ></i><span>{totalItem}</span></p>
+          <p className="cartIcon"><i onClick={() => navigate('/cart')} className="fa-solid fa-cart-shopping" ></i><span>{totalItem?.length}</span></p>
         </div>
         <div className="logoContainer">
           <div className="logoImage">

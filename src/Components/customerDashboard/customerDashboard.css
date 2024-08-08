@@ -1,38 +1,105 @@
 .customerDashboardContainer {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+
+
+
+}
+
+
+@media (min-width: 100px) and (max-width: 1000px) {
+  .customerDashboardContainer {
+    /* background: rgb(236, 231, 239);
+      background: linear-gradient(150deg, rgba(236, 231, 239, 1) 32%, rgb(6, 88, 188) 100%); */
+    /* background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; */
+    /* background: url(../../img/Screenshot_1-8-2024_14388_www.decohere.ai.jpeg); */
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:contain;
+    overflow-x: hidden;
+    justify-content: space-between;
+    background: linear-gradient(150deg, #A3DAFB, #8983F7 70%);
+
+  }
+
+  
+/* 
+  .item1{
+    position: absolute;
+    top: -10%;
+    right: 0;
+    width: 55%;
+    height: 50%;
+    background-color: rgb(255, 106, 0);
+    filter: blur(60px);
+    border-bottom-left-radius: 90%;
+}
+
+.item2{
+    position: absolute;
+    top: 25%;
+    left: -15%;
+    width: 73%;
+    height: 79%;
+    background-color: rgb(15, 48, 154);
+    filter: blur(70px);
+
+    border-top-left-radius: 10%;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 80%;
+}
+
+.item3{
+    position: absolute;
+    bottom: -5%;
+    left: -5%;
+    width: 120vw;
+    height: 40%;
+    filter: blur(30px);
+    border-top-right-radius: 60%;
+
+    background-color: black;
+}
+
+.item4{
+    position: absolute;
+    top: 40%;
+    right: -15%;
+    background-color: rgb(7, 17, 42);
+    width: 70%;
+    height: 50%;
+    filter: blur(110px);
+    z-index: 0;
+
+} */
+
+  /* .customerDashboardContainer::before {
+    content: '';
+    position: absolute;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    position: relative;
-  
-  
-  
-  
-  }
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url(../../img/Screenshot_2-8-2024_211830_127.0.0.1.jpeg) center center / cover no-repeat;
+    transform-origin: center;
+    z-index: -1;
+  } */
 
 
-  @media (min-width: 100px) and (max-width: 1000px) {
-    .customerDashboardContainer {
-      background: rgb(236, 231, 239);
-      background: linear-gradient(150deg, rgba(236, 231, 239, 1) 32%, rgb(6, 88, 188) 100%);
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        /* background: url(../../img/OIP\ \(3\).jpeg); */
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        overflow-x: hidden;
-        justify-content: space-between;
-        
-      }
-      
-    
-      .customerDashboardContainer::-webkit-scrollbar {
-        display: none;
-    
-      }
+  .customerDashboardContainer::-webkit-scrollbar {
+    display: none;
+
   }
+}

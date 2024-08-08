@@ -91,6 +91,9 @@
 
 .settingContainer .content .head .details .logoName {
   font-size: 2rem;
+  font-family: "Satisfy", cursive;
+  font-weight: 400;
+  text-transform: capitalize;
 }
 
 .checkbox, .app_checkbox {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createEditFood } from "../../Services/apiFood";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -6,13 +6,11 @@ import { useForm } from "react-hook-form";
 import './foodAddForm.css'
 import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
 import Spinner from "../../spinLoader/Spinner";
+
 const FoodAddForm = ({ foodToEdit = {}, setCurrentAction, setShowForm }) => {
   const queryClient = useQueryClient();
 
-
-  useSupabaseRealtime('Food', 'foods')
-
-
+  useSupabaseRealtime('Food', 'foods');
 
   const { mutate: mutateCreate, isCreating } = useMutation({
     mutationFn: createEditFood,
@@ -22,9 +20,9 @@ const FoodAddForm = ({ foodToEdit = {}, setCurrentAction, setShowForm }) => {
       queryClient.invalidateQueries({
         queryKey: ["foods"],
       });
-      setCurrentAction('dashboard')
-      reset(); 
-      setShowForm(false)
+      setCurrentAction('dashboard');
+      reset();
+      setShowForm(false);
     },
     onError: (err) => toast.error(err.message),
   });
@@ -33,20 +31,18 @@ const FoodAddForm = ({ foodToEdit = {}, setCurrentAction, setShowForm }) => {
     mutationFn: ({ newFoodData, id }) => createEditFood(newFoodData, id),
     onSuccess: () => {
       toast.success("Food Edited successfully");
-      
+
       queryClient.invalidateQueries({
         queryKey: ["foods"],
       });
-      setCurrentAction('dashboard')
-      reset(); 
-      setShowForm(false)
+      setCurrentAction('dashboard');
+      reset();
+      setShowForm(false);
     },
     onError: (err) => toast.error(err.message),
   });
 
   const isWorking = isCreating || isEditing;
-
-  
 
   const { id: editId, ...editValues } = foodToEdit;
   const isEditSession = Boolean(editId);
@@ -55,17 +51,25 @@ const FoodAddForm = ({ foodToEdit = {}, setCurrentAction, setShowForm }) => {
     defaultValues: isEditSession ? editValues : {},
   });
 
+  const [weightType, setWeightType] = useState(isEditSession ? editValues.weightType : '');
+
+  const handleWeightTypeChange = (value) => {
+    setWeightType(value);
+  };
+
   function onSubmit(data) {
-    const image = typeof data.image === 'string' ? data.image : data.image[0]
-    if(isEditSession) mutateEdit({newFoodData: {...data, image}, id: editId})
-    else mutateCreate({ ...data, image: image });
-
-
+    const image = typeof data.image === 'string' ? data.image : data.image[0];
+    const newFoodData = { ...data, image, weightType };
+    if (isEditSession) {
+      mutateEdit({ newFoodData, id: editId });
+    } else {
+      mutateCreate(newFoodData);
+    }
   }
 
-  
   return (
     <div className="formContainer">
+      {isEditSession && <p onClick={() => setShowForm(false)} className="closeForm"><i className="fa-regular fa-circle-xmark"></i></p>}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="input foodName">
           <label htmlFor="foodName">Food Name</label>
@@ -81,21 +85,21 @@ const FoodAddForm = ({ foodToEdit = {}, setCurrentAction, setShowForm }) => {
         <div className="input foodPrice">
           <label htmlFor="foodPrice">Food Price</label>
           <input
-            type="Number"
+            type="number"
             name="foodPrice"
             id="foodPrice"
-            disabled={isWorking} 
+            disabled={isWorking}
             placeholder="Enter Food Price"
             {...register("foodPrice")}
           />
         </div>
         <div className="input maxQuantity">
-          <label htmlFor="foodPrice">Food Quantity</label>
+          <label htmlFor="maxQuantity">Food Quantity</label>
           <input
-            type="Number"
+            type="number"
             name="maxQuantity"
             id="maxQuantity"
-            disabled={isWorking} 
+            disabled={isWorking}
             placeholder="Enter Food maxQuantity"
             {...register("maxQuantity")}
           />
@@ -105,29 +109,46 @@ const FoodAddForm = ({ foodToEdit = {}, setCurrentAction, setShowForm }) => {
           <input
             type="file"
             name="image"
-            required={isEditSession ? false : "This field is required"}
+            required={!isEditSession}
             id="image"
-            disabled={isWorking} 
-            placeholder="Add Food Image" 
+            disabled={isWorking}
+            placeholder="Add Food Image"
             {...register("image")}
           />
         </div>
-        <div className="input foodIngredients">
-          <label htmlFor="ingredients">Food Ingredients</label>
-          <input
-            type="text"
-            name="ingredients"
-            id="ingredients"
-            disabled={isWorking} 
-            placeholder="Add Food Ingredients"
-            {...register("ingredients")}
-          />
+        <div className="input weightType">
+          <label>Type</label>
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="weightType"
+                required
+                value="kg"
+                checked={weightType === 'kg'}
+                onChange={() => handleWeightTypeChange('kg')}
+                disabled={isWorking}
+              />
+              Kg
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="weightType"
+                value="piece"
+                required
+                checked={weightType === 'piece'}
+                onChange={() => handleWeightTypeChange('piece')}
+                disabled={isWorking}
+              />
+              Piece
+            </label>
+          </div>
         </div>
         <input
           className="foodAddBtn"
           type="submit"
-          
-          value={isWorking ? <Spinner/> : (isEditSession ? "Save Changes" : 'Add Food')}
+          value={isWorking ? <Spinner /> : (isEditSession ? "Save Changes" : 'Add Food')}
           disabled={isWorking}
         />
       </form>

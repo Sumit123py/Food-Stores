@@ -9,6 +9,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Satisfy&family=Teachers:ital,wght@0,400..800;1,400..800&family=Zain:wght@200;300;400;700;800;900&display=swap');
 
+
+
 * {
   position: relative;
 
@@ -212,11 +214,16 @@ img{
   }
 }
 
-.HeroContainer {
+.heroContainer {
   width: 100%;
-  height: 20vh;
-  padding: 10px;
+  height: 27.5rem;
+  padding-top: 10px;
+  padding-bottom: 10px;
   overflow: auto;
+  z-index: 1;
+  position: absolute;
+  bottom: 0;
+
 }
 
 .loginContainer {
@@ -616,12 +623,6 @@ img{
 
 
 
-
-
-
-
-
-
 .orderBtn {
   width: 100%;
   height: 40px;
@@ -639,111 +640,11 @@ img{
   }
 }
 
-.formContainer {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-family: "Oswald", sans-serif;
-  font-weight: 400;
-  font-optical-sizing: auto;
 
-
-}
-
-.formContainer form {
-  width: 500px;
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
-  padding: 10px;
-  border-radius: 10px;
-
-}
-
-.formContainer form .input {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-}
-
-.formContainer form .input label {
-  width: 30%;
-}
-
-
-
-.formContainer form .input input {
-  width: 70%;
-  height: 40px;
-  border: none;
-  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-  padding: 5px;
-  border-radius: 10px;
-}
-
-.formContainer form .input input[type="file"] {
-  border: none;
-  border-radius: none;
-  box-shadow: none;
-}
-
-
-.foodAddBtn {
-
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: middle;
-  font-size: 16px;
-  line-height: 1;
-  font-weight: 600;
-  padding: 10px 50px;
-  text-align: center;
-  z-index: 1;
-  transition: all 500ms ease;
-  text-transform: capitalize;
-  border-radius: 19px;
-  letter-spacing: 1.3px;
-  cursor: pointer;
-  background-color: black;
-  color: white;
-
-
-
-}
-
-.foodAddBtn::before {
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 100%;
-  left: 0px;
-  top: 0px;
-  transform: scale(0, 0);
-  z-index: -1;
-  transition: all 500ms ease;
-}
-
-.foodAddBtn:hover::before {
-  background-color: #00813D;
-  transform: scale(1, 1);
-}
 
 a {
   text-decoration: none;
 }
-
-
-
-
 
 
 
@@ -1000,49 +901,7 @@ a {
 
     }
 
-    .quantity {
-      width: 20%;
-      height: 100%;
-      display: grid;
-      place-items: center;
-
-      .quantityBox {
-        width: 90px;
-        height: 50px;
-        background-color: rgba(195, 195, 195, 0.495);
-        border: none;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        border-radius: 5px;
-
-        .btns {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 10px;
-
-          .incQuantity {
-            border: none;
-            background: transparent;
-            font-size: 20px;
-
-
-          }
-
-          .decQuantity {
-            border: none;
-            background: transparent;
-            font-size: 20px;
-
-          }
-        }
-
-      }
-
-    }
+   
 
     .subtotal {
       width: 20%;
@@ -1912,3 +1771,6 @@ h1 {
 
 
 }
+
+
+
