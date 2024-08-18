@@ -14,7 +14,7 @@ app.use(express.json());
 
 // Initialize Firebase app
 const firebaseApp = firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(firebaseServiceAccount)
+  credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
 });
 
 // Initialize Firebase messaging
@@ -22,26 +22,28 @@ const messaging = firebaseApp.messaging();
 
 app.get("/send-message", async (req, res) => {
   try {
-    const token = req.body.token || req.query.token || req.headers["x-fcm-token"];
+    const token =
+      req.body.token || req.query.token || req.headers["x-fcm-token"];
 
     const message = {
       token,
       data: {
-        title: "Simple Notification",
-        body: "This is a simple notification",
-        icon: "https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_28dp.png",
-        badge: "https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_128dp.png"
-      }
+        title: "New Order",
+        body: "Check Order",
+        icon: "https://iiokcprfxttdlszwhpma.supabase.co/storage/v1/object/public/Logo_img/0.7100901411215532-OIPcopy.png",
+        badge:
+          "https://iiokcprfxttdlszwhpma.supabase.co/storage/v1/object/public/Logo_img/0.7100901411215532-OIPcopy.png",
+      },
     };
 
     await messaging.send(message);
     res.status(200).json({
-      message: "Notification sent successfully"
+      message: "Notification sent successfully",
     });
   } catch (error) {
     res.status(error?.status || 500).json({
       status: "error",
-      message: error?.message || "Something went wrong"
+      message: error?.message || "Something went wrong",
     });
   }
 });
