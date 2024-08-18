@@ -1,11 +1,56 @@
 import React, { useContext } from "react";
 import "./option.css";
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import supabase from "../../Services/Supabase";
 import toast from "react-hot-toast";
+import { getUser } from "../../Services/apiUsers";
 
 const Option = ({ i, index, setIndex, userId }) => {
   const queryClient = useQueryClient();
+
+  const { isLoading: userLoading, data: users } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUser,
+  });
+
+  const currentUser = users?.filter(
+    (user) => user?.id === userId
+  );
+
+  const user = currentUser?.[0];
+
+
+  const sendNotification = async () => {
+    // Obtain the token from local storage or another source
+    console.log('FCM Token:', user?.fcm_token);
+    
+    if (!user?.fcm_token) {
+      console.error('FCM token not found');
+      return;
+    }
+    
+    try {
+      const response = await fetch(`http://localhost:5000/send-message`, {
+        method: 'GET', // Use 'POST' if your server expects a POST request
+        headers: {
+          'Content-Type': 'application/json',
+          'x-fcm-token': user?.fcm_token 
+        }
+      });
+
+
+      
+     
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Server Response:', data);
+    } catch (error) {
+      console.error('Error sending notification:', error);
+    }
+  };
 
   const { mutate: updateOrderStatus } = useMutation(
     async ({ status, userId }) => {
@@ -19,6 +64,7 @@ const Option = ({ i, index, setIndex, userId }) => {
       }
 
       if (status === 'Ready') {
+        sendNotification()
         const { error: userError } = await supabase
           .from("users")
           .update({ message: true })

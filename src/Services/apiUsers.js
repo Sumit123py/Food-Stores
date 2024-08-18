@@ -1,9 +1,11 @@
 import supabase from "./Supabase";
 
-export async function createUser({ email, password }) {
+export async function createUser({ email, password, fcmToken }) {
+  console.log('fc', fcmToken)
   let { data, error } = await supabase.auth.signUp({
     email,
     password,
+    fcmToken
   });
 
   if (error) {
@@ -14,7 +16,7 @@ export async function createUser({ email, password }) {
   const userId = data.user.id;
   const { error: insertError } = await supabase
     .from("users")
-    .insert([{ id: userId, email: email, password: password }]);
+    .insert([{ id: userId, email: email, password: password, fcm_token: fcmToken }]);
 
   if (insertError) {
     console.error(insertError);

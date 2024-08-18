@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -6,8 +6,14 @@ import { createUser } from "../Services/apiUsers";
 import toast from "react-hot-toast";
 import "./form.css";
 import Spinner from "../spinLoader/Spinner";
+import { ProductContext } from "../context/FoodContext";
+import FCMInitializer from "../features/notifications/firebase";
 const Registration = () => {
   const queryClient = useQueryClient();
+
+  const {fcmToken} = useContext(ProductContext)
+
+  console.log('akd', fcmToken)
   
   const Navigate = useNavigate();
 
@@ -23,10 +29,17 @@ const Registration = () => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    mutate(data);
+    const userData = {
+      ...data,
+      fcmToken,
+    };
+    mutate(userData);
   };
 
   return (
+    <>
+    <FCMInitializer/>
+
     <div className="registrationContainer">
       <div class="background">
         <div class="shape"></div>
@@ -67,6 +80,7 @@ const Registration = () => {
       </form>
       
     </div>
+    </>
   );
 };
 

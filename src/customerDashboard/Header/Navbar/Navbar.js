@@ -16,7 +16,7 @@ const Navbar = ({ setShow, setSearchData, user }) => {
 
   const userId  = getCurrentUserId()
 
-  const totalItem = cart.filter((item) => item.userId === userId)
+  const totalItem = cart?.filter((item) => item.userId === userId)
 
   return (
   <>

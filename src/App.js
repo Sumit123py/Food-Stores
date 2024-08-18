@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -20,6 +20,8 @@ import useAuthRedirect from './Authentication/useAuthRedirect';
 import OrdersMainPage from './Components/OrdersMainPage/OrdersMainPage';
 import AppClosed from './Components/AppClosedPage/AppClosed';
 import LottieIcon from './Components/LottieIcon';
+import FCMInitializer, { messaging, requestNotificationPermission } from './features/notifications/firebase';
+import { onMessage } from 'firebase/messaging';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,11 +52,35 @@ const AppRoutes = () => (
     <Route path="/scroll" element={<ScrollToTop />} />
     <Route path="/FoodAddForm" element={<FoodAddForm />} />
     <Route path="/orderMain" element={<OrdersMainPage />} />
-    
   </Routes>
 );
 
 function App() {
+  useEffect(() => {
+    (async () => {
+      // Request notification permission and register the service worker
+      await requestNotificationPermission();
+
+      // Event handler for incoming messages
+      onMessage(messaging, (message) => {
+        new Notification(message?.data?.title || "Notification Title", {
+          icon: message?.data?.icon,
+          badge: message?.data?.badge,
+          body: message?.data?.body,
+        });
+      });
+
+      // Request notification permission
+      if (Notification.permission === 'default') {
+        await Notification.requestPermission().then(permission => {
+          if (permission !== 'granted') {
+            console.error('Notification permission denied');
+          }
+        });
+      }
+    })();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />

@@ -10,6 +10,7 @@ import { getCart } from "../../Services/apiCart";
 
 import { getAppSetting } from "../../Services/apiAppSetting";
 import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
+import OrderReadyMessage from "../OrderReadyMessage/OrderReadyMessage";
 const Cart = () => {
 
   useSupabaseRealtime('appSetting', 'appSettings')
@@ -59,9 +60,15 @@ const Cart = () => {
   isLoading && <Spinner/>
 
 
+  const currentUserById = users?.find((user) => user.id === userId);
+
+  const isOrderReady = currentUserById?.message;
+
   
   return (
     <div className="cart">
+      {isOrderReady && <OrderReadyMessage userId={userId} />}
+
       <div className="cartContainer">
       {/* <Message appSetting={appSetting}/> */}
 

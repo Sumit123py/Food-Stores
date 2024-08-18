@@ -38,12 +38,45 @@ const Table1 = ({ addressAdded }) => {
     (user) => user?.id === userId
   );
 
+  const admin = users?.filter((user) => user.role === 'admin')
+
+  const adminUser = admin?.[0]
   const user = currentUser?.[0];
 
   // const [selectedPrices, setSelectedPrices] = useState(null)
 
 
-   
+  const sendNotification = async () => {
+    // Obtain the token from local storage or another source
+    console.log('FCM Token:', adminUser?.fcm_token);
+    
+    if (!adminUser?.fcm_token) {
+      console.error('FCM token not found');
+      return;
+    }
+    
+    try {
+      const response = await fetch(`http://localhost:5000/send-message`, {
+        method: 'GET', // Use 'POST' if your server expects a POST request
+        headers: {
+          'Content-Type': 'application/json',
+          'x-fcm-token': adminUser?.fcm_token 
+        }
+      });
+
+
+      
+     
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Server Response:', data);
+    } catch (error) {
+      console.error('Error sending notification:', error);
+    }
+  };
 
 
   const IncreaseQuantity = async (productId, maxQuantity, cartId, weight) => {
@@ -157,7 +190,7 @@ const Table1 = ({ addressAdded }) => {
     onSuccess: () => {
       toast.success('Item ordered')
       queryClient.invalidateQueries({ queryKey: ['carts'] });
-      setTotalItem(null);
+      
       refetch();
     },
     onError: (err) => toast.error(err.message),
@@ -178,6 +211,7 @@ const Table1 = ({ addressAdded }) => {
             cartItem.userId, {
             onSuccess: () => {
               queryClient.invalidateQueries({ queryKey: ['Orders'] });
+              sendNotification()
             },
             onError: (err) => {
               console.error('Error deleting cart item:', err);

@@ -19,6 +19,7 @@ const ProductProvider = ({ children }) => {
   const [price, setPrice] = useState(null);
   const [type, setType] = useState(null)
   const [weight, setWeight] = useState(null)
+  const [fcmToken, setFcmToken] = useState(null)
 
 
   useEffect(() => {
@@ -65,6 +66,7 @@ const ProductProvider = ({ children }) => {
     localStorage.removeItem('token');
   };
 
+
   return (
     <ProductContext.Provider
       value={{
@@ -88,7 +90,9 @@ const ProductProvider = ({ children }) => {
         type,
         setType,
         weight,
-        setWeight
+        setWeight,
+        fcmToken,
+        setFcmToken
       }}
     >
       {children}

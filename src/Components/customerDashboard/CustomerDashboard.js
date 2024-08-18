@@ -35,16 +35,22 @@ const CustomerDashboard = () => {
   const user = users?.find((user) => user.role === "admin");
   const currentUserById = users?.find((user) => user.id === userId);
 
+
+
   const isOrderReady = currentUserById?.message;
 
   if (isLoading) return <Spinner />;
   if (error) return <p>User not loaded</p>;
 
+
+  
+
   return (
     <div className="customerDashboardContainer">
+      
       <Navbar setShow={setShow} user={user} setSearchData={setSearchData} />
       <Banner />
-      <HeroSection setTitle={setTitle} setMaxQuantity={setMaxQuantity}  searchData={searchData} setSearchData={setSearchData} setShowCartPopUp={setShowCartPopUp} />
+      <HeroSection  setTitle={setTitle} setMaxQuantity={setMaxQuantity}  searchData={searchData} setSearchData={setSearchData} setShowCartPopUp={setShowCartPopUp} />
       <HamburgerMenu
         show={show}
         user={user}
