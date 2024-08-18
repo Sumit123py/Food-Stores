@@ -34,10 +34,10 @@ export default async function handler(req, res) {
       const message = {
         token,
         notification: {
-          title: "Simple Notification",
-          body: "This is a simple notification",
-          icon: "https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_28dp.png",
-          badge: "https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_128dp.png"
+          title: "New Order",
+          body: "Check Order",
+          icon: "https://iiokcprfxttdlszwhpma.supabase.co/storage/v1/object/public/Logo_img/0.7100901411215532-OIPcopy.png",
+          badge: "https://iiokcprfxttdlszwhpma.supabase.co/storage/v1/object/public/Logo_img/0.7100901411215532-OIPcopy.png"
         }
       };
 
