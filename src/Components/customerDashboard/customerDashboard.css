@@ -28,7 +28,7 @@
     background-size:contain;
     overflow-x: hidden;
     justify-content: space-between;
-    background: linear-gradient(150deg, #A3DAFB, #8983F7 70%);
+    background: linear-gradient(150deg, #A3DAFB, red 70%);
 
   }
 
