@@ -1,12 +1,16 @@
 const express = require("express");
 const firebaseAdmin = require("firebase-admin");
-const cors = require("cors"); // Import the CORS package
+const cors = require("cors");
 const firebaseServiceAccount = require("../firebase-service-account.json");
 
 const app = express();
 
-// Enable CORS for all routes
-app.use(cors());
+// Allow requests from your React app
+app.use(cors({
+  origin: 'http://localhost:3000', // or '*' to allow all origins
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'x-fcm-token'],
+}));
 
 app.use(express.json());
 

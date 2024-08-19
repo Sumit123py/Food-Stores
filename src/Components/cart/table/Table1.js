@@ -56,7 +56,7 @@ const Table1 = ({ addressAdded }) => {
     }
     
     try {
-      const response = await fetch(`http://localhost:5000/send-message`, {
+      const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message`, {
         method: 'GET', // Use 'POST' if your server expects a POST request
         headers: {
           'Content-Type': 'application/json',
