@@ -32,7 +32,7 @@ app.get("/api/send-message", async (req, res) => {
 
     const message = {
       token,
-      data: {
+      notification: {
         title,
         body,
         click_action: url,
