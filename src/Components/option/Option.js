@@ -30,27 +30,25 @@ const Option = ({ i, index, setIndex, userId }) => {
     }
     
     try {
-      const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message`, {
+      const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=Order Ready&body=Your order is now ready for pickup&url=https://shivaaysweets.vercel.app`, {
         method: 'GET', // Use 'POST' if your server expects a POST request
         headers: {
           'Content-Type': 'application/json',
           'x-fcm-token': user?.fcm_token 
         }
       });
-
-
-      
-     
+  
       if (!response.ok) {
         throw new Error(`Server error: ${response.status}`);
       }
-
+  
       const data = await response.json();
       console.log('Server Response:', data);
     } catch (error) {
       console.error('Error sending notification:', error);
     }
   };
+  
 
   const { mutate: updateOrderStatus } = useMutation(
     async ({ status, userId }) => {
