@@ -56,25 +56,27 @@ const Table1 = ({ addressAdded }) => {
     }
     
     try {
-      const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=New Order&body=You have a new order to check&url=https://shivaaysweets.vercel.app`, {
+      const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message`, {
         method: 'GET', // Use 'POST' if your server expects a POST request
         headers: {
           'Content-Type': 'application/json',
           'x-fcm-token': adminUser?.fcm_token 
         }
       });
-  
+
+
+      
+     
       if (!response.ok) {
         throw new Error(`Server error: ${response.status}`);
       }
-  
+
       const data = await response.json();
       console.log('Server Response:', data);
     } catch (error) {
       console.error('Error sending notification:', error);
     }
   };
-  
 
 
   const IncreaseQuantity = async (productId, maxQuantity, cartId, weight) => {
