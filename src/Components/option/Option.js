@@ -21,7 +21,6 @@ const Option = ({ i, index, setIndex, userId }) => {
 
 
   const sendNotification = async () => {
-    console.log('FCM Token:', user?.fcm_token);
     
     if (!user?.fcm_token) {
       console.error('FCM token not found');
@@ -30,7 +29,7 @@ const Option = ({ i, index, setIndex, userId }) => {
     
     try {
       const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=Order Ready&body=Your order is now ready for pickup&url=https://shivaaysweets.vercel.app`, {
-        method: 'GET', // Use 'POST' if your server expects a POST request
+        method: 'POST', // Use 'POST' if your server expects a POST request
         headers: {
           'Content-Type': 'application/json',
           'x-fcm-token': user?.fcm_token 

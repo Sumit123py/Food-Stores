@@ -22,7 +22,7 @@ const firebaseApp = firebaseAdmin.initializeApp({
 // Initialize Firebase messaging
 const messaging = firebaseApp.messaging();
 
-app.get("/api/send-message", async (req, res) => {
+app.post("/api/send-message", async (req, res) => {
   try {
     const token =
       req.body.token || req.query.token || req.headers["x-fcm-token"];
@@ -32,7 +32,7 @@ app.get("/api/send-message", async (req, res) => {
 
     const message = {
       token,
-      notification: {
+      data: {
         title,
         body,
         click_action: url,

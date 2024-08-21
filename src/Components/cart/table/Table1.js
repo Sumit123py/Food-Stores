@@ -47,7 +47,6 @@ const Table1 = ({ addressAdded }) => {
 
 
   const sendNotification = async () => {
-    console.log('FCM Token:', adminUser?.fcm_token);
     
     if (!adminUser?.fcm_token) {
       console.error('FCM token not found');
@@ -56,7 +55,7 @@ const Table1 = ({ addressAdded }) => {
     
     try {
       const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=New Order&body=You have a new order to check&url=https://shivaaysweets.vercel.app`, {
-        method: 'GET', // Use 'POST' if your server expects a POST request
+        method: 'POST', // Use 'POST' if your server expects a POST request
         headers: {
           'Content-Type': 'application/json',
           'x-fcm-token': adminUser?.fcm_token 
