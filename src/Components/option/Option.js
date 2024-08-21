@@ -30,7 +30,7 @@ const Option = ({ i, index, setIndex, userId }) => {
     }
     
     try {
-      const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=Order Ready`, {
+      const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=Order Ready&body=Your order is now ready for pickup`, {
         method: 'GET', // Use 'POST' if your server expects a POST request
         headers: {
           'Content-Type': 'application/json',
@@ -48,6 +48,7 @@ const Option = ({ i, index, setIndex, userId }) => {
       console.error('Error sending notification:', error);
     }
   };
+  
   
 
   const { mutate: updateOrderStatus } = useMutation(
