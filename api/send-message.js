@@ -7,7 +7,7 @@ const app = express();
 
 // Allow requests from your React app
 app.use(cors({
-  origin: 'http://localhost:3000', // or '*' to allow all origins
+  origin: '*', // or '*' to allow all origins
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'x-fcm-token'],
 }));
