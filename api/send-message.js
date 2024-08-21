@@ -28,12 +28,14 @@ app.get("/api/send-message", async (req, res) => {
       req.body.token || req.query.token || req.headers["x-fcm-token"];
     const title = req.query.title || "Default Title"; // Default title if not provided
     const body = req.query.body || "Default Body"; // Default body if not provided
+    const url = req.query.url || "https://shivaaysweets.vercel.app"; // Default URL if not provided
 
     const message = {
       token,
       data: {
         title,
         body,
+        click_action: url,
         icon: "https://iiokcprfxttdlszwhpma.supabase.co/storage/v1/object/public/Logo_img/0.7100901411215532-OIPcopy.png",
         badge: "https://iiokcprfxttdlszwhpma.supabase.co/storage/v1/object/public/Logo_img/0.7100901411215532-OIPcopy.png",
       },
