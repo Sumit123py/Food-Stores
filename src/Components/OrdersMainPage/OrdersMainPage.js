@@ -218,7 +218,7 @@ const OrdersMainPage = ({setCurrentAction}) => {
                       {orderItem?.foodName}
                     </p>
                     <p id="foodPrice" className="foodPrice">
-                      ₹{orderItem?.foodPrice}
+                      ₹{orderItem?.totalPrice}
                     </p>
                     <p id="maxQuantity" className="maxQuantity">
                       <span style={{color: 'red', fontSize: '12px'}}>No. of Products: </span>

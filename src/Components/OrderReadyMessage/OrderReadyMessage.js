@@ -24,11 +24,6 @@ const OrderReadyMessage = ({userId}) => {
       }
     }
 
-    const orderReadyCookieHeading = 'Your Order Is Ready'
-    const orderPreparingCookieHeading = 'Your Order Is Preparing'
-
-    const orderReadyCookieDescription = 'Thank You for using our App'
-    const orderPreparingCookieDescription = 'Please Stay On The App'
   return (
     <div className="orderReadyMessageContainer">
       <div className="orderReadyMessage"></div>

@@ -32,7 +32,7 @@ app.post("/api/send-message", async (req, res) => {
 
     const message = {
       token,
-      data: {
+      data: { 
         title,
         body,
         click_action: url,

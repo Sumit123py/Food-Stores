@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./option.css";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import supabase from "../../Services/Supabase";
 import toast from "react-hot-toast";
 import { getUser } from "../../Services/apiUsers";
+import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
 
 const Option = ({ i, index, setIndex, userId }) => {
   const queryClient = useQueryClient();
@@ -16,6 +17,8 @@ const Option = ({ i, index, setIndex, userId }) => {
   const currentUser = users?.filter(
     (user) => user?.id === userId
   );
+
+  useSupabaseRealtime('users', 'users')
 
   const user = currentUser?.[0];
 
@@ -46,6 +49,34 @@ const Option = ({ i, index, setIndex, userId }) => {
       console.error('Error sending notification:', error);
     }
   };
+
+
+  useEffect(() => {
+    let interval;
+    let timeout;
+  
+    if (user?.message) {
+      interval = setInterval(() => {
+        sendNotification()
+      }, 30000); // 10 seconds interval
+  
+      timeout = setTimeout(() => {
+        clearInterval(interval);
+      }, 5 * 60 * 1000); // 5 minutes
+    }
+  
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [user?.message]);
+  
+  
+  
   
   
   
