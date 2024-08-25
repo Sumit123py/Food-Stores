@@ -90,7 +90,7 @@ const Table1 = ({ addressAdded }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          fcmToken: 'eI2ZgYAdeytk9qPGQ2qCrp:APA91bGe1Q1szfd7XzK3fj6LefeZqz3YU6UJZnBCkVulYtNQ0qOgWSVvZZRLsE683kL3JOFKdwSLn4PHRCLbLMoGcZwuljMRN77T01gfVXfW-O6mvNxtxsmos6F5kK398OB85YIz4vFd',
+          fcmToken: adminUser?.fcm_token,
           delayInSeconds: 300, 
           userId: user?.id,
           title: 'New Order',
