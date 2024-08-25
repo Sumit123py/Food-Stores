@@ -51,29 +51,63 @@ const Option = ({ i, index, setIndex, userId }) => {
   };
 
 
-  useEffect(() => {
-    let interval;
-    let timeout;
+  const scheduleNotification = async () => {
+    try {
+      const response = await fetch(`https://shivaaysweets.vercel.app/api/schedule-message`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fcmToken: user?.fcm_token ,
+          delayInSeconds: 300, 
+          userId: user?.id,
+          title: 'Order Ready',
+          body: 'Your order is now ready for pickup',
+          url: 'https://shivaaysweets.vercel.app'
+        }),
+      });
   
-    if (user?.message) {
-      interval = setInterval(() => {
-        sendNotification()
-      }, 30000); // 10 seconds interval
+      if (!response.ok) {
+        throw new Error('Failed to schedule notification on the server');
+      }
   
-      timeout = setTimeout(() => {
-        clearInterval(interval);
-      }, 5 * 60 * 1000); // 5 minutes
+      const data = await response.json();
+      console.log('Server response:', data);
+    } catch (error) {
+      console.error('Error scheduling notification:', error);
     }
+  };
   
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-    };
-  }, [user?.message]);
+
+  // useEffect(() => {
+
+  //   if (!user?.message) return;
+    
+  //   let interval;
+  //   let timeout;
+
+    
+  
+  //   if (user?.message) {
+  //     interval = setInterval(() => {
+  //       sendNotification()
+  //     }, 30000); // 10 seconds interval
+  
+  //     timeout = setTimeout(() => {
+  //       clearInterval(interval);
+  //     }, 5 * 60 * 1000); // 5 minutes
+  //   }
+  
+  //   return () => {
+  //     if (interval) {
+  //       clearInterval(interval);
+  //     }
+  //     if (timeout) {
+  //       clearTimeout(timeout);
+  //     }
+  //   };
+  // }, [user?.message]);
   
   
   
@@ -94,6 +128,7 @@ const Option = ({ i, index, setIndex, userId }) => {
 
       if (status === 'Ready') {
         sendNotification()
+        scheduleNotification()
         const { error: userError } = await supabase
           .from("users")
           .update({ message: true })

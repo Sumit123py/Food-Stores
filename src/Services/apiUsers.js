@@ -1,7 +1,22 @@
 import supabase from "./Supabase";
 
+
+export async function getUser() {
+  // Query all orders with related user details
+  let { data, error } = await supabase
+    .from('users')
+    .select(`*`);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Orders could not be loaded");
+  }
+
+  return data;
+}
+
+
 export async function createUser({ email, password, fcmToken }) {
-  console.log('fc', fcmToken)
   let { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -111,19 +126,3 @@ export async function getUsersByIds(userId) {
   return data;
 }
 
-export async function getUser() {
-
-  
-let { data, error } = await supabase
-.from('users')
-.select('*')
-
-
-  if (error) {
-    console.error(error);
-    throw new Error("Users could not be loaded");
-  }
-
-  return data;
-
-}

@@ -24,13 +24,41 @@ const OrdersMainPage = ({setCurrentAction}) => {
 
   const isApprovalPending = currentOrder?.every((order) => order.Approval === 'Accept')
 
-  console.log('i', isApprovalPending)
+  const sendNotification = async () => {
+    if (!order?.user?.fcm_token) {
+      console.error("FCM token not found");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://shivaaysweets.vercel.app/api/send-message?title=Order Accepted&body=Your Order Is Preparing...&url=https://shivaaysweets.vercel.app`,
+        {
+          method: "POST", // Use 'POST' if your server expects a POST request
+          headers: {
+            "Content-Type": "application/json",
+            "x-fcm-token": order?.user?.fcm_token,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Server Response:", data);
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+  };
 
   const { mutate, isLoading: isUpdating } = useMutation({
     mutationFn: updateOrder,
     onSuccess: () => {
       toast.success(`Order status updated successfully`);
       queryClient.invalidateQueries({ queryKey: ["Orders"] });
+      sendNotification()
       refetch();
     },
     onError: (err) => toast.error(err.message),

@@ -82,31 +82,35 @@ const Table1 = ({ addressAdded }) => {
     }
   };
 
-
-
-  useEffect(() => {
-    let interval;
-    let timeout;
+  const scheduleNotification = async () => {
+    try {
+      const response = await fetch(`https://shivaaysweets.vercel.app/api/schedule-message`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fcmToken: 'eI2ZgYAdeytk9qPGQ2qCrp:APA91bGe1Q1szfd7XzK3fj6LefeZqz3YU6UJZnBCkVulYtNQ0qOgWSVvZZRLsE683kL3JOFKdwSLn4PHRCLbLMoGcZwuljMRN77T01gfVXfW-O6mvNxtxsmos6F5kK398OB85YIz4vFd',
+          delayInSeconds: 300, 
+          userId: user?.id,
+          title: 'New Order',
+          body: `OrderID: ${user?.userShortID}`,
+          url: 'https://shivaaysweets.vercel.app'
+        }),
+      });
   
-    if (currentUserOrder && currentUserOrder?.Approval !== "Accept") {
-      interval = setInterval(() => {
-        sendNotification()
-      }, 30000); // 10 seconds interval
+      if (!response.ok) {
+        throw new Error('Failed to schedule notification on the server');
+      }
   
-      timeout = setTimeout(() => {
-        clearInterval(interval);
-      }, 5 * 60 * 1000); // 5 minutes
+      const data = await response.json();
+      console.log('Server response:', data);
+    } catch (error) {
+      console.error('Error scheduling notification:', error);
     }
-  
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-    };
-  }, [currentUserOrder?.Approval]);
+  };
+
+
 
   const IncreaseQuantity = async (productId, maxQuantity, cartId, weight) => {
     const foodItem = await getFood(cartId);
@@ -236,6 +240,7 @@ const Table1 = ({ addressAdded }) => {
               onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: ["Orders"] });
                 sendNotification();
+                scheduleNotification()
               },
               onError: (err) => {
                 console.error("Error deleting cart item:", err);

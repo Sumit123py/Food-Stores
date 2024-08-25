@@ -15,7 +15,8 @@ export async function getOrders() {
         logoImage,
         logoName,
         userShortID,
-        message
+        message,
+        fcm_token
       )
     `);
 
