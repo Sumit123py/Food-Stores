@@ -1,19 +1,21 @@
 const cron = require('node-cron');
-const bodyParser = require('body-parser');
-const cors = require("cors");
 const supabase = require('../src/Components/backend/Supabase');
 const fetch = require('node-fetch');
+
+// Initialize CORS
+const cors = require("cors")({
+  origin: '*',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'x-fcm-token'],
+});
 
 const scheduledTasks = new Map(); // Use a Map to track scheduled tasks
 
 export default async function handler(req, res) {
-  if (req.method === 'POST' && req.url === '/api/schedule-message') {
-    bodyParser.json()(req, res, async () => {
-      cors({
-        origin: '*',
-        methods: ['GET', 'POST'],
-        allowedHeaders: ['Content-Type', 'x-fcm-token'],
-      })(req, res, async () => {
+  // Apply CORS middleware to every request
+  cors(req, res, async () => {
+    if (req.method === 'POST' && req.url === '/api/schedule-message') {
+      try {
         const { fcmToken, delayInSeconds, userId, title, body, url } = req.body;
 
         if (!fcmToken || !delayInSeconds || !userId) {
@@ -89,11 +91,14 @@ export default async function handler(req, res) {
         scheduledTasks.set(userId, task); // Add the task to the map
 
         res.status(200).json({ message: 'Notification scheduled successfully' });
-      });
-    });
-  } else {
-    res.status(405).json({ error: 'Method not allowed' });
-  }
+      } catch (error) {
+        console.error('Error in handler:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    } else {
+      res.status(405).json({ error: 'Method not allowed' });
+    }
+  });
 }
 
 const fetchUserFromDatabase = async (userId) => {
