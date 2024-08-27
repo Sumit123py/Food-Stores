@@ -119,7 +119,3 @@ app.post("/api/send-message", async (req, res) => {
 
 
 
-const port = 5001;
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
-});
