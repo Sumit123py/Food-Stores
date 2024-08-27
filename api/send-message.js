@@ -1,19 +1,8 @@
-const express = require("express");
 const firebaseAdmin = require("firebase-admin");
 const cors = require("cors");
-const firebaseServiceAccount = require("../firebase-service-account.json");
-const supabase = require("../src/Components/backend/Supabase"); // Assuming you have Supabase integration
-const { fetchUserFromDatabase, getOrdersByUserId } = require('../src/utils');
-
-const app = express();
-
-app.use(cors({
-  origin: '*', // or '*' to allow all origins
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'x-fcm-token'],
-}));
-
-app.use(express.json());
+const firebaseServiceAccount = require("../../firebase-service-account.json");
+const supabase = require("../../src/Components/backend/Supabase"); // Assuming you have Supabase integration
+const { fetchUserFromDatabase, getOrdersByUserId } = require('../../src/utils');
 
 const firebaseApp = firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
@@ -24,12 +13,10 @@ const messaging = firebaseApp.messaging();
 async function checkUserAndOrderStatus(userId) {
   try {
     const user = await fetchUserFromDatabase(userId);
-  
+
     if (!user?.message) return false;
 
     const orders = await getOrdersByUserId(userId);
-    
-
     const hasPendingOrders = orders?.some(order => order.Approval === 'Pending');
 
     return hasPendingOrders;
@@ -43,7 +30,7 @@ async function sendNotification(token, title, body, url) {
   try {
     const message = {
       token,
-      data: { 
+      data: {
         title,
         body,
         click_action: url,
@@ -58,15 +45,26 @@ async function sendNotification(token, title, body, url) {
   }
 }
 
-app.post("/api/send-message", async (req, res) => {
-  // Access userId from request body
+module.exports = async (req, res) => {
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-fcm-token'
+    );
+    res.status(200).end();
+    return;
+  }
+
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
   const userId = req.body.userId || req.query.userId;
   const token = req.body.fcmToken || req.query.token || req.headers["x-fcm-token"];
   const title = req.query.title || "Default Title";
   const body = req.query.body || "Default Body";
   const url = req.query.url || "https://shivaaysweets.vercel.app";
-
-
 
   if (!userId || !token) {
     return res.status(400).json({
@@ -79,7 +77,6 @@ app.post("/api/send-message", async (req, res) => {
   let iterationCount = 0;
 
   try {
-    // Send a single notification before starting the loop
     await sendNotification(token, title, body, url);
     console.log("Initial notification sent successfully");
   } catch (error) {
@@ -89,7 +86,7 @@ app.post("/api/send-message", async (req, res) => {
   }
 
   async function sendMessagesLoop() {
-    if (iterationCount >= maxIterations) return; // Stop after max iterations
+    if (iterationCount >= maxIterations) return;
 
     try {
       const shouldContinue = await checkUserAndOrderStatus(userId);
@@ -105,17 +102,13 @@ app.post("/api/send-message", async (req, res) => {
       setTimeout(sendMessagesLoop, interval);
     } catch (error) {
       console.error("Error in notification loop:", error);
-      // You can also try to resend the notification after a short delay
       setTimeout(sendMessagesLoop, 1000); // retry after 1 second
     }
   }
 
-  sendMessagesLoop(); // Start the loop
+  sendMessagesLoop();
 
   res.status(200).json({
     message: "Notification loop started successfully",
   });
-});
-
-
-
+};
