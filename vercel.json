@@ -1,13 +1,9 @@
 {
-  "rewrites": [
+  
+  "crons": [
     {
-      "source": "/api/send-message",
-      "destination": "/api/send-message.js"
-    },
-    {
-      "source": "/api/schedule-message",
-      "destination": "/api/schedule-message.js"
+      "path": "/api/schedule-message",
+      "schedule": "* * * * *"  
     }
   ]
-  
 }
