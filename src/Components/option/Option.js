@@ -53,7 +53,7 @@ const Option = ({ i, index, setIndex, userId }) => {
 
   const scheduleNotification = async () => {
     try {
-      const response = await fetch(`https://shivaaysweets.vercel.app/api/schedule-message`, {
+      const response = await fetch(`http://localhost:5001/api/schedule-message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,86 +1,87 @@
-const cron = require('node-cron');
-const supabase = require('../src/Components/backend/Supabase');
-const fetch = require('node-fetch');
-const express = require('express');
-const cors = require('cors');
-const { fetchUserFromDatabase, getOrdersByUserId } = require('../src/utils');
+import { fetchUserFromDatabase, getOrdersByUserId } from '../src/utils'; // Adjust import path as needed
+import fetch from 'node-fetch';
+import supabase from '../src/Components/backend/Supabase';
 
-const app = express();
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'x-fcm-token'],
-}));
-app.use(express.json());
+export default async function handler(req, res) {
+  if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).end('Unauthorized');
+  }
 
-const scheduledTasks = new Map();
+  const startTime = Date.now();
+  const duration = 5 * 60 * 1000; // 5 minutes in milliseconds
+  const interval = 30 * 1000; // 30 seconds in milliseconds
 
-app.post('/api/schedule-message', async (req, res) => {
   try {
-    const { fcmToken, delayInSeconds, userId, title, body, url } = req.body;
+    while (Date.now() - startTime < duration) {
+      const now = new Date().toISOString();
 
-    if (!fcmToken || !delayInSeconds || !userId) {
-      return res.status(400).json({ error: 'fcmToken, delayInSeconds, and userId are required' });
-    }
+      // Fetch messages that are due to be sent
+      const { data: messages, error } = await supabase
+        .from('scheduleMessages')
+        .select('*')
+        .lte('scheduleTime', now);
 
-    if (scheduledTasks.has(userId)) {
-      return res.status(400).json({ error: 'A notification is already scheduled for this user' });
-    }
+      if (error) throw new Error('Error fetching scheduled messages');
 
-    const intervalSeconds = 30;
-    const totalTimes = Math.floor(delayInSeconds / intervalSeconds);
-    let count = 0;
+      for (const message of messages) {
+        const { id, fcmToken, userId, title, body, url } = message;
 
-    const task = cron.schedule(`*/${intervalSeconds} * * * * *`, async () => {
-      if (count >= totalTimes) {
-        task.stop();
-        scheduledTasks.delete(userId);
-        return;
-      }
-
-      const user = await fetchUserFromDatabase(userId);
-      if (!user?.message) {
-        task.stop();
-        scheduledTasks.delete(userId);
-        return;
-      }
-
-      const orders = await getOrdersByUserId(userId);
-      const hasPendingOrders = orders.some(order => order.Approval === 'Pending');
-      if (!hasPendingOrders) {
-        task.stop();
-        scheduledTasks.delete(userId);
-        return;
-      }
-
-      try {
-        const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&url=${encodeURIComponent(url)}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-fcm-token': fcmToken
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status}`);
+        // Fetch user and their orders status
+        const user = await fetchUserFromDatabase(userId);
+        if (!user?.message) {
+          // User condition not met, remove scheduled message
+          await supabase
+            .from('scheduleMessages')
+            .delete()
+            .eq('id', id);
+          continue;
         }
 
-        const data = await response.json();
-        console.log('Server Response:', data);
-      } catch (error) {
-        console.error('Error sending notification:', error);
+        const orders = await getOrdersByUserId(userId);
+        const hasPendingOrders = orders.some(order => order.Approval === 'Pending');
+        if (!hasPendingOrders) {
+          // No pending orders, remove scheduled message
+          await supabase
+            .from('scheduleMessages')
+            .delete()
+            .eq('id', id);
+          continue;
+        }
+
+        // Send notification
+        try {
+          const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&url=${encodeURIComponent(url)}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-fcm-token': fcmToken
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log('Server Response:', data);
+        } catch (error) {
+          console.error('Error sending notification:', error);
+        }
+
+        // Remove sent message from the database
+        await supabase
+          .from('scheduleMessages')
+          .delete()
+          .eq('id', id);
       }
 
-      count++;
-    });
+      // Wait for 30 seconds before running the loop again
+      await new Promise(resolve => setTimeout(resolve, interval));
+    }
 
-    scheduledTasks.set(userId, task);
-    res.status(200).json({ message: 'Notification scheduled successfully' });
+    res.status(200).end('Cron job executed successfully');
   } catch (error) {
-    console.error('Error in handler:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error in cron job:', error);
+    res.status(500).end('Internal Server Error');
   }
-});
-
-module.exports = app;
+}
