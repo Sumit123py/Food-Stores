@@ -1,60 +1,87 @@
-const supabase = require('../src/Components/backend/Supabase');
-const fetch = require('node-fetch');
-const express = require('express');
-const cors = require('cors');
-const { fetchUserFromDatabase, getOrdersByUserId } = require('../src/utils');
+import { fetchUserFromDatabase, getOrdersByUserId } from '../src/utils'; // Adjust import path as needed
+import fetch from 'node-fetch';
+import supabase from '../src/Components/backend/Supabase';
 
-const app = express();
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'x-fcm-token'],
-}));
-app.use(express.json());
-
-app.post('/api/send-scheduled-message', async (req, res) => {
-  try {
-    const { userId, title, body, url, fcmToken } = req.body;
-
-    // Fetch user data from the database
-    const user = await fetchUserFromDatabase(userId);
-
-    // Check if the user has opted out of notifications
-    if (!user?.message) {
-      console.log('User has opted out of notifications. Exiting.');
-      return res.status(200).json({ message: 'User has opted out of notifications' });
-    }
-
-    // Fetch user's orders and check their status
-    const orders = await getOrdersByUserId(userId);
-    const hasPendingOrders = orders.some(order => order.Approval === 'Pending');
-
-    // If no pending orders, exit the function
-    if (!hasPendingOrders) {
-      console.log('No pending orders for this user. Exiting.');
-      return res.status(200).json({ message: 'No pending orders for this user' });
-    }
-
-    // Send the notification if all conditions are met
-    const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&url=${encodeURIComponent(url)}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-fcm-token': fcmToken
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error(`Server error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log('Notification sent successfully:', data);
-    res.status(200).json({ message: 'Notification sent successfully', data });
-  } catch (error) {
-    console.error('Error sending notification:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+export default async function handler(req, res) {
+  if (req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).end('Unauthorized');
   }
-});
 
-module.exports = app;
+  const startTime = Date.now();
+  const duration = 5 * 60 * 1000; // 5 minutes in milliseconds
+  const interval = 30 * 1000; // 30 seconds in milliseconds
+
+  try {
+    while (Date.now() - startTime < duration) {
+      const now = new Date().toISOString();
+
+      // Fetch messages that are due to be sent
+      const { data: messages, error } = await supabase
+        .from('ScheduledMessages')
+        .select('*')
+        .lte('scheduledTime', now);
+
+      if (error) throw new Error('Error fetching scheduled messages');
+
+      for (const message of messages) {
+        const { id, fcmToken, userId, title, body, url } = message;
+
+        // Fetch user and their orders status
+        const user = await fetchUserFromDatabase(userId);
+        if (!user?.message) {
+          // User condition not met, remove scheduled message
+          await supabase
+            .from('ScheduledMessages')
+            .delete()
+            .eq('id', id);
+          continue;
+        }
+
+        const orders = await getOrdersByUserId(userId);
+        const hasPendingOrders = orders.some(order => order.Approval === 'Pending');
+        if (!hasPendingOrders) {
+          // No pending orders, remove scheduled message
+          await supabase
+            .from('ScheduledMessages')
+            .delete()
+            .eq('id', id);
+          continue;
+        }
+
+        // Send notification
+        try {
+          const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&url=${encodeURIComponent(url)}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-fcm-token': fcmToken
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log('Server Response:', data);
+        } catch (error) {
+          console.error('Error sending notification:', error);
+        }
+
+        // Remove sent message from the database
+        await supabase
+          .from('ScheduledMessages')
+          .delete()
+          .eq('id', id);
+      }
+
+      // Wait for 30 seconds before running the loop again
+      await new Promise(resolve => setTimeout(resolve, interval));
+    }
+
+    res.status(200).end('Cron job executed successfully');
+  } catch (error) {
+    console.error('Error in cron job:', error);
+    res.status(500).end('Internal Server Error');
+  }
+}

@@ -12,7 +12,7 @@
   "crons": [
     {
       "path": "/api/schedule-message",
-      "schedule": "*/30 * * * *"
+      "schedule": "* * * * *"
     }
   ]
 }
