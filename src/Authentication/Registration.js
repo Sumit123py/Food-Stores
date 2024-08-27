@@ -13,21 +13,18 @@ const Registration = () => {
 
   const {fcmToken} = useContext(ProductContext)
 
-  
+  console.log('akd', fcmToken)
   
   const Navigate = useNavigate();
 
   const { mutate, isLoading: isCreating } = useMutation(createUser, {
-    onSuccess: (data) => {
-      const userId = data.id; // Assuming `createUser` returns the newly created user ID
-      localStorage.setItem("userId", userId); // Store in localStorage
+    onSuccess: () => {
       toast.success("New User Created Successfully");
       queryClient.invalidateQueries("users");
       Navigate("/Login");
     },
     onError: (err) => toast.error(err.message),
   });
-  
 
   const { register, handleSubmit } = useForm();
 

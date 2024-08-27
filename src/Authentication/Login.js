@@ -43,21 +43,14 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    
     // Check if email and password are provided
     if (!email || !password) return;
-  
+    
     // Call the mutation function
     await mutate({ email, password });
   
     try {
-      // Retrieve the user ID from localStorage after login
-      const userId = localStorage.getItem("userId");
-  
-      if (!userId) {
-        throw new Error("User ID not found");
-      }
-  
       // Update the user with the FCM token
       const { error: userError } = await supabase
         .from("users")
@@ -75,7 +68,6 @@ const Login = () => {
       console.error("Error updating FCM token:", error);
     }
   };
-  
   
 
   return (
