@@ -1,11 +1,4 @@
 {
-  "crons": [
-    {
-      "path": "/api/schedule-message",
-      "schedule": "* * * * *"  
-    }
-  ],
-  
   "rewrites": [
     {
       "source": "/api/send-message",
