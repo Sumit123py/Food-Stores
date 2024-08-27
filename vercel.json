@@ -9,15 +9,10 @@
       "destination": "/api/schedule-message.js"
     }
   ],
-  
-    "crons": [
-      {
-        "path": "/api/schedule-message",
-        "schedule": "* * * * *"
-      }
-    ]
-  
-  
+  "crons": [
+    {
+      "path": "/api/schedule-message",
+      "schedule": "* * * * *"  
+    }
+  ]
 }
-
-
