@@ -36,7 +36,14 @@ const Option = ({ i, index, setIndex, userId }) => {
         headers: {
           'Content-Type': 'application/json',
           'x-fcm-token': user?.fcm_token 
-        }
+        },
+              body: JSON.stringify({
+                fcmToken: user?.fcm_token , 
+                userId: user?.id,
+                title: 'Order Ready',
+                body: 'Your order is now ready for pickup',
+                url: 'https://shivaaysweets.vercel.app'
+              }),
       });
   
       if (!response.ok) {
@@ -51,33 +58,33 @@ const Option = ({ i, index, setIndex, userId }) => {
   };
 
 
-  const scheduleNotification = async () => {
-    try {
-      const response = await fetch(`http://localhost:5001/api/schedule-message`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fcmToken: user?.fcm_token ,
-          delayInSeconds: 300, 
-          userId: user?.id,
-          title: 'Order Ready',
-          body: 'Your order is now ready for pickup',
-          url: 'https://shivaaysweets.vercel.app'
-        }),
-      });
+  // const scheduleNotification = async () => {
+  //   try {
+  //     const response = await fetch(`http://localhost:5001/api/schedule-message`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         fcmToken: user?.fcm_token ,
+  //         delayInSeconds: 300, 
+  //         userId: user?.id,
+  //         title: 'Order Ready',
+  //         body: 'Your order is now ready for pickup',
+  //         url: 'https://shivaaysweets.vercel.app'
+  //       }),
+  //     });
   
-      if (!response.ok) {
-        throw new Error('Failed to schedule notification on the server');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Failed to schedule notification on the server');
+  //     }
   
-      const data = await response.json();
-      console.log('Server response:', data);
-    } catch (error) {
-      console.error('Error scheduling notification:', error);
-    }
-  };
+  //     const data = await response.json();
+  //     console.log('Server response:', data);
+  //   } catch (error) {
+  //     console.error('Error scheduling notification:', error);
+  //   }
+  // };
   
 
   // useEffect(() => {
@@ -128,7 +135,7 @@ const Option = ({ i, index, setIndex, userId }) => {
 
       if (status === 'Ready') {
         sendNotification()
-        scheduleNotification()
+        // scheduleNotification()
         const { error: userError } = await supabase
           .from("users")
           .update({ message: true })

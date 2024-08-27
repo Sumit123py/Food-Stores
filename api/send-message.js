@@ -3,10 +3,10 @@ const firebaseAdmin = require("firebase-admin");
 const cors = require("cors");
 const firebaseServiceAccount = require("../firebase-service-account.json");
 const supabase = require("../src/Components/backend/Supabase"); // Assuming you have Supabase integration
-import { fetchUserFromDatabase, getOrdersByUserId } from '../src/utils'
+const { fetchUserFromDatabase, getOrdersByUserId } = require('../src/utils');
+
 const app = express();
 
-// Allow requests from your React app
 app.use(cors({
   origin: '*', // or '*' to allow all origins
   methods: ['GET', 'POST'],
@@ -15,85 +15,111 @@ app.use(cors({
 
 app.use(express.json());
 
-// Initialize Firebase app
 const firebaseApp = firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
 });
 
-// Initialize Firebase messaging
 const messaging = firebaseApp.messaging();
 
-// Function to check user and order status
 async function checkUserAndOrderStatus(userId) {
-  const user = await fetchUserFromDatabase(userId);
-  if (!user?.message) return false;
+  try {
+    const user = await fetchUserFromDatabase(userId);
+  
+    if (!user?.message) return false;
 
-  const orders = await getOrdersByUserId(userId);
-  const hasPendingOrders = orders.some(order => order.Approval === 'Pending');
+    const orders = await getOrdersByUserId(userId);
+    
 
-  return hasPendingOrders;
+    const hasPendingOrders = orders?.some(order => order.Approval === 'Pending');
+
+    return hasPendingOrders;
+  } catch (error) {
+    console.error("Error checking user and order status:", error);
+    return false;
+  }
 }
 
-// Function to send notification
 async function sendNotification(token, title, body, url) {
-  const message = {
-    token,
-    data: { 
-      title,
-      body,
-      click_action: url,
-      icon: "https://iiokcprfxttdlszwhpma.supabase.co/storage/v1/object/public/Logo_img/0.7100901411215532-OIPcopy.png",
-      badge: "https://iiokcprfxttdlszwhpma.supabase.co/storage/v1/object/public/Logo_img/0.7100901411215532-OIPcopy.png",
-    },
-  };
+  try {
+    const message = {
+      token,
+      data: { 
+        title,
+        body,
+        click_action: url,
+        icon: "https://iiokcprfxttdlszwhpma.supabase.co/storage/v1/object/public/Logo_img/0.7100901411215532-OIPcopy.png",
+        badge: "https://iiokcprfxttdlszwhpma.supabase.co/storage/v1/object/public/Logo_img/0.7100901411215532-OIPcopy.png",
+      },
+    };
 
-  await messaging.send(message);
+    await messaging.send(message);
+  } catch (error) {
+    console.error("Error sending notification:", error);
+  }
 }
 
 app.post("/api/send-message", async (req, res) => {
+  // Access userId from request body
   const userId = req.body.userId || req.query.userId;
-  const token = req.body.token || req.query.token || req.headers["x-fcm-token"];
+  const token = req.body.fcmToken || req.query.token || req.headers["x-fcm-token"];
   const title = req.query.title || "Default Title";
   const body = req.query.body || "Default Body";
   const url = req.query.url || "https://shivaaysweets.vercel.app";
 
-  const duration = 5 * 60 * 1000; // 5 minutes
+
+
+  if (!userId || !token) {
+    return res.status(400).json({
+      message: "Missing required parameters: userId or fcmToken"
+    });
+  }
+
+  const maxIterations = 10; // Add a maximum number of iterations
   const interval = 30 * 1000; // 30 seconds
-  const startTime = Date.now();
+  let iterationCount = 0;
 
   try {
-    // Loop for 5 minutes, sending messages every 30 seconds
-    const sendMessagesLoop = async () => {
-      if (Date.now() - startTime >= duration) return; // Stop after 5 minutes
+    // Send a single notification before starting the loop
+    await sendNotification(token, title, body, url);
+    console.log("Initial notification sent successfully");
+  } catch (error) {
+    console.error("Error sending initial notification:", error);
+    res.status(500).json({ message: "Error sending initial notification" });
+    return;
+  }
 
-      // Check user and order status
+  async function sendMessagesLoop() {
+    if (iterationCount >= maxIterations) return; // Stop after max iterations
+
+    try {
       const shouldContinue = await checkUserAndOrderStatus(userId);
 
       if (shouldContinue) {
-        // Send notification if the condition is met
         await sendNotification(token, title, body, url);
-
-        // Continue the loop after the interval
-        setTimeout(sendMessagesLoop, interval);
       } else {
-        // Stop sending notifications if conditions are not met
         console.log("Conditions not met, stopping notifications.");
+        return;
       }
-    };
 
-    sendMessagesLoop(); // Start the loop
-
-    res.status(200).json({
-      message: "Notification loop started successfully",
-    });
-  } catch (error) {
-    console.error("Error in notification loop:", error);
-    res.status(500).json({
-      status: "error",
-      message: error?.message || "Something went wrong",
-    });
+      iterationCount++;
+      setTimeout(sendMessagesLoop, interval);
+    } catch (error) {
+      console.error("Error in notification loop:", error);
+      // You can also try to resend the notification after a short delay
+      setTimeout(sendMessagesLoop, 1000); // retry after 1 second
+    }
   }
+
+  sendMessagesLoop(); // Start the loop
+
+  res.status(200).json({
+    message: "Notification loop started successfully",
+  });
 });
 
-// Export the app to be used as a Vercel serverless function
-module.exports = app;
+
+
+const port = 5001;
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+});

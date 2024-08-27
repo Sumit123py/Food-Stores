@@ -68,6 +68,13 @@ const Table1 = ({ addressAdded }) => {
             "Content-Type": "application/json",
             "x-fcm-token": adminUser?.fcm_token,
           },
+          body: JSON.stringify({
+            fcmToken: user?.fcm_token , 
+            userId: user?.id,
+            title: 'New Order',
+            body: `OrderID: ${user?.userShortID}`,
+            url: 'https://shivaaysweets.vercel.app'
+          }),
         }
       );
 
@@ -82,33 +89,33 @@ const Table1 = ({ addressAdded }) => {
     }
   };
 
-  const scheduleNotification = async () => {
-    try {
-      const response = await fetch(`https://shivaaysweets.vercel.app/api/schedule-message`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fcmToken: adminUser?.fcm_token,
-          delayInSeconds: 300, 
-          userId: user?.id,
-          title: 'New Order',
-          body: `OrderID: ${user?.userShortID}`,
-          url: 'https://shivaaysweets.vercel.app'
-        }),
-      });
+  // const scheduleNotification = async () => {
+  //   try {
+  //     const response = await fetch(`https://shivaaysweets.vercel.app/api/schedule-message`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         fcmToken: adminUser?.fcm_token,
+  //         delayInSeconds: 300, 
+  //         userId: user?.id,
+  //         title: 'New Order',
+  //         body: `OrderID: ${user?.userShortID}`,
+  //         url: 'https://shivaaysweets.vercel.app'
+  //       }),
+  //     });
   
-      if (!response.ok) {
-        throw new Error('Failed to schedule notification on the server');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Failed to schedule notification on the server');
+  //     }
   
-      const data = await response.json();
-      console.log('Server response:', data);
-    } catch (error) {
-      console.error('Error scheduling notification:', error);
-    }
-  };
+  //     const data = await response.json();
+  //     console.log('Server response:', data);
+  //   } catch (error) {
+  //     console.error('Error scheduling notification:', error);
+  //   }
+  // };
 
 
 
@@ -240,7 +247,7 @@ const Table1 = ({ addressAdded }) => {
               onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: ["Orders"] });
                 sendNotification();
-                scheduleNotification()
+                // scheduleNotification()
               },
               onError: (err) => {
                 console.error("Error deleting cart item:", err);
