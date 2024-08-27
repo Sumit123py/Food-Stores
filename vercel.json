@@ -11,7 +11,7 @@
   ],
   "crons": [
     {
-      "url": "/api/schedule-message",
+      "path": "/api/schedule-message",
       "schedule": "* * * * *"
     }
   ]
