@@ -31,7 +31,7 @@ const Option = ({ i, index, setIndex, userId }) => {
     }
     
     try {
-      const response = await fetch(`http://localhost:5001/api/send-message?title=Order Ready&body=Your order is now ready for pickup&url=https://shivaaysweets.vercel.app`, {
+      const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=Order Ready&body=Your order is now ready for pickup&url=https://shivaaysweets.vercel.app`, {
         method: 'POST', // Use 'POST' if your server expects a POST request
         headers: {
           'Content-Type': 'application/json',
