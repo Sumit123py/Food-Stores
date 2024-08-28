@@ -61,7 +61,7 @@ const Table1 = ({ addressAdded }) => {
 
     try {
       const response = await fetch(
-        `https://shivaaysweets.vercel.app/api/send-message?title=New Order&body=OrderID: ${user?.userShortID}&url=https://shivaaysweets.vercel.app`,
+        `http://localhost:5001/api/send-message?title=New Order&body=OrderID: ${user?.userShortID}&url=https://shivaaysweets.vercel.app`,
         {
           method: "POST", // Use 'POST' if your server expects a POST request
           headers: {
@@ -73,7 +73,8 @@ const Table1 = ({ addressAdded }) => {
             userId: user?.id,
             title: 'New Order',
             body: `OrderID: ${user?.userShortID}`,
-            url: 'https://shivaaysweets.vercel.app'
+            url: 'https://shivaaysweets.vercel.app',
+            condition: 'table'
           }),
         }
       );
