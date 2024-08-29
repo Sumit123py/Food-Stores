@@ -40,7 +40,7 @@ const Table1 = ({ addressAdded, setShow, setCloseReadyMessage, closeReadyMessage
   });
 
 
-  const currentUserOrder = orders?.find((order) => order.userId === userId)
+  const currentUserOrder = orders?.filter((order) => order.userId === userId)
 
 
   const currentUser = users?.filter((user) => user?.id === userId);

@@ -12,7 +12,7 @@ import supabase from '../Services/Supabase';
 import { getCurrentUserId } from '../Services/apiUsers';
 import { useQuery } from '@tanstack/react-query';
 
-const steps = ['Step 1', 'Send Notification', 'Completed'];
+const steps = ['Placing Order', 'Approval', 'Completed'];
 
 export default function StepperPopUp({setShow, setCloseReadyMessage}) {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -80,6 +80,8 @@ export default function StepperPopUp({setShow, setCloseReadyMessage}) {
       <div className="stepperContainer">
         <div className="bgColor"></div>
         <Box className='stepperBox' sx={{ width: '100%' }}>
+        <h1>Don't Close</h1>
+
           <Stepper nonLinear activeStep={activeStep} alternativeLabel>
             {steps.map((label, index) => (
               <Step key={label}>
@@ -98,9 +100,8 @@ export default function StepperPopUp({setShow, setCloseReadyMessage}) {
             )}
             {activeStep === 1 && (
               <>
-                <Typography sx={{ mt: 2, mb: 1 }}>
-                  Please Wait... ShopOwner Approval Pending
-                </Typography>
+                <p>Please Wait...</p>
+                <p>ShopOwner Approval Pending</p>
                 <Countdown ref={countdownRef} onComplete={handleCountdownComplete}/>
               </>
             )}
