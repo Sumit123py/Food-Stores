@@ -1525,6 +1525,17 @@ h1 {
   }
 
 
+  .countDown{
+    width: 60px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    z-index: 1;
+    background-color: white;
+  }
+ 
+
 
 
 

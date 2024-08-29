@@ -14,7 +14,7 @@ import useSupabaseRealtime from "../../../Services/useSupabaseRealtime";
 import { getFood } from "../../../Services/apiFood";
 import OrderPreparingMessage from "../../OrderPreparingMessage/OrderPreparingMessage";
 
-const Table1 = ({ addressAdded }) => {
+const Table1 = ({ addressAdded, setShow, setCloseReadyMessage, closeReadyMessage }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { setOrderData, setTotalItem } = useContext(ProductContext);
@@ -42,7 +42,6 @@ const Table1 = ({ addressAdded }) => {
 
   const currentUserOrder = orders?.find((order) => order.userId === userId)
 
-  const [closeReadyMessage, setCloseReadyMessage] = useState(false);
 
   const currentUser = users?.filter((user) => user?.id === userId);
 
@@ -67,15 +66,7 @@ const Table1 = ({ addressAdded }) => {
           headers: {
             "Content-Type": "application/json",
             "x-fcm-token": adminUser?.fcm_token,
-          },
-          body: JSON.stringify({
-            fcmToken: user?.fcm_token , 
-            userId: user?.id,
-            title: 'New Order',
-            body: `OrderID: ${user?.userShortID}`,
-            url: 'https://shivaaysweets.vercel.app',
-            condition: 'table'
-          }),
+          }
         }
       );
 
@@ -90,33 +81,36 @@ const Table1 = ({ addressAdded }) => {
     }
   };
 
-  // const scheduleNotification = async () => {
-  //   try {
-  //     const response = await fetch(`https://shivaaysweets.vercel.app/api/schedule-message`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         fcmToken: adminUser?.fcm_token,
-  //         delayInSeconds: 300, 
-  //         userId: user?.id,
-  //         title: 'New Order',
-  //         body: `OrderID: ${user?.userShortID}`,
-  //         url: 'https://shivaaysweets.vercel.app'
-  //       }),
-  //     });
+  const allOrdersApproved = currentUserOrder?.every(order => order.Approval === 'Pending');
+
+  useEffect(() => {
+
+    if (!currentUserOrder) return;
+    
+    let interval;
+    let timeout;
+
+    
   
-  //     if (!response.ok) {
-  //       throw new Error('Failed to schedule notification on the server');
-  //     }
+    if (allOrdersApproved) {
+      interval = setInterval(() => {
+        sendNotification()
+      }, 30000); // 10 seconds interval
   
-  //     const data = await response.json();
-  //     console.log('Server response:', data);
-  //   } catch (error) {
-  //     console.error('Error scheduling notification:', error);
-  //   }
-  // };
+      timeout = setTimeout(() => {
+        clearInterval(interval);
+      }, 5 * 60 * 1000); // 5 minutes
+    }
+  
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [currentUserOrder]);
 
 
 
@@ -239,7 +233,7 @@ const Table1 = ({ addressAdded }) => {
       toast.success("Order placed successfully");
       queryClient.invalidateQueries({ queryKey: ["Orders"] });
       handleUpdate();
-      setCloseReadyMessage(true);
+      
 
       try {
         await Promise.all(
@@ -248,6 +242,7 @@ const Table1 = ({ addressAdded }) => {
               onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: ["Orders"] });
                 sendNotification();
+                setShow(true)
                 // scheduleNotification()
               },
               onError: (err) => {

@@ -11,6 +11,7 @@ import { getCart } from "../../Services/apiCart";
 import { getAppSetting } from "../../Services/apiAppSetting";
 import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
 import OrderReadyMessage from "../OrderReadyMessage/OrderReadyMessage";
+import StepperPopUp from "../StepperPopUp";
 const Cart = () => {
 
   useSupabaseRealtime('appSetting', 'appSettings')
@@ -21,6 +22,10 @@ const Cart = () => {
     queryKey: ["users"],
     queryFn: getUser,
   });
+  const [closeReadyMessage, setCloseReadyMessage] = useState(false);
+
+
+  const [show, setShow] = useState(false)
 
   const {isLoading: cartLoading, data: cart } = useQuery({
     queryKey: ['carts'],
@@ -69,7 +74,7 @@ const Cart = () => {
     <div className="cart">
       {isOrderReady && <OrderReadyMessage userId={userId} />}
 
-      <div className="cartContainer">
+      <div style={{height: show ? '100vh' : 'unset'}} className="cartContainer">
       {/* <Message appSetting={appSetting}/> */}
 
       {(!user?.address  || isEditing) &&  <AddressForm setAddressAdded={setAddressAdded} userDetails={user} setIsEditing={setIsEditing} onAddressUpdated={handleAddressUpdated}/>}
@@ -93,8 +98,10 @@ const Cart = () => {
         
       </div>)}
 
-      <Table1 addressAdded={addressAdded}/>
+      <Table1 setShow={setShow} setCloseReadyMessage={setCloseReadyMessage} closeReadyMessage={closeReadyMessage} addressAdded={addressAdded}/>
       {cartItems?.length > 0 && <Table2 cartItems={cartItems} cartLoading={cartLoading} appSetting={appSetting}/>}
+      {show && <StepperPopUp setShow={setShow} setCloseReadyMessage={setCloseReadyMessage}/>}
+
       </div>
     </div>
   );

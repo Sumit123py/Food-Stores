@@ -2,11 +2,10 @@ const express = require("express");
 const firebaseAdmin = require("firebase-admin");
 const cors = require("cors");
 const firebaseServiceAccount = require("../firebase-service-account.json");
-const supabase = require("../src/Components/backend/Supabase"); // Assuming you have Supabase integration
-const { fetchUserFromDatabase, getOrdersByUserId } = require('../src/utils');
 
 const app = express();
 
+// Allow requests from your React app
 app.use(cors({
   origin: '*', // or '*' to allow all origins
   methods: ['GET', 'POST'],
@@ -15,44 +14,22 @@ app.use(cors({
 
 app.use(express.json());
 
+// Initialize Firebase app
 const firebaseApp = firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
 });
 
+// Initialize Firebase messaging
 const messaging = firebaseApp.messaging();
 
-async function checkUserAndOrderStatus(userId, condition) {
+app.post("/api/send-message", async (req, res) => {
   try {
-    const user = await fetchUserFromDatabase(userId);
-  
-    if (condition === 'options') {
-      if (!user?.message) {
-        return false;
-      }
-      // If the condition is 'table' and user has a message, return true
-      return true;
-    }
+    const token =
+      req.body.token || req.query.token || req.headers["x-fcm-token"];
+    const title = req.query.title || "Default Title"; // Default title if not provided
+    const body = req.query.body || "Default Body"; // Default body if not provided
+    const url = req.query.url || "https://shivaaysweets.vercel.app"; // Default URL if not provided
 
-    const orders = await getOrdersByUserId(userId);
-
-    // Check if the condition is 'options' and there are pending orders
-    if (condition === 'table') {
-      const hasPendingOrders = orders?.some(order => order.Approval === 'Pending');
-      return hasPendingOrders;
-    }
-
-
-    return false
-  } catch (error) {
-    console.error("Error checking user and order status:", error);
-    return false;
-  }
-}
-
-
-
-async function sendNotification(token, title, body, url) {
-  try {
     const message = {
       token,
       data: { 
@@ -65,71 +42,16 @@ async function sendNotification(token, title, body, url) {
     };
 
     await messaging.send(message);
+    res.status(200).json({
+      message: "Notification sent successfully",
+    });
   } catch (error) {
-    console.error("Error sending notification:", error);
-  }
-}
-
-app.post("/api/send-message", async (req, res) => {
-  // Access userId from request body
-  const userId = req.body.userId || req.query.userId;
-  const token = req.body.fcmToken || req.query.token || req.headers["x-fcm-token"];
-  const title = req.query.title || "Default Title";
-  const body = req.query.body || "Default Body";
-  const condition = req.body.condition || "";
-  const url = req.query.url || "https://shivaaysweets.vercel.app";
-
-
-
-  if (!userId || !token) {
-    return res.status(400).json({
-      message: "Missing required parameters: userId or fcmToken"
+    res.status(error?.status || 500).json({
+      status: "error",
+      message: error?.message || "Something went wrong",
     });
   }
-
-  const maxIterations = 10; // Add a maximum number of iterations
-  const interval = 30 * 1000; // 30 seconds
-  let iterationCount = 0;
-
-  try {
-    // Send a single notification before starting the loop
-    await sendNotification(token, title, body, url);
-    console.log("Initial notification sent successfully");
-  } catch (error) {
-    console.error("Error sending initial notification:", error);
-    res.status(500).json({ message: "Error sending initial notification" });
-    return;
-  }
-
-  async function sendMessagesLoop() {
-    if (iterationCount >= maxIterations) return; // Stop after max iterations
-
-    try {
-      const shouldContinue = await checkUserAndOrderStatus(userId, condition);
-
-      console.log('sho', shouldContinue, condition)
-      if (shouldContinue) {
-        await sendNotification(token, title, body, url);
-      } else {
-        console.log("Conditions not met, stopping notifications.");
-        return;
-      }
-
-      iterationCount++;
-      setTimeout(sendMessagesLoop, interval);
-    } catch (error) {
-      console.error("Error in notification loop:", error);
-      // You can also try to resend the notification after a short delay
-      setTimeout(sendMessagesLoop, 1000); // retry after 1 second
-    }
-  }
-
-  sendMessagesLoop(); 
-
-  res.status(200).json({
-    message: "Notification loop started successfully",
-  });
 });
 
-
-
+// Export the app to be used as a Vercel serverless function
+module.exports = app;

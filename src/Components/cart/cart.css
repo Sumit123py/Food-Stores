@@ -10,7 +10,48 @@
 @media (min-width: 100px) and (max-width: 1000px) {
     .cartContainer {
         width: 100%;
+        position: relative;
+        display: grid;
+        place-items: center;
+        
     }
+
+    .cartContainer .stepperContainer .bgColor{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      display: grid;
+      place-items: center;
+      background-color: rgba(113, 112, 112, 0.27);
+      filter: blur(5px);
+      z-index: 1;
+      backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    }
+
+    .cartContainer .stepperContainer{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+    }
+
+    .cartContainer .stepperContainer .stepperBox{
+      width: 100%;
+      height: 300px;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1;
+      padding: 20px;
+    }
+
+    
 
     .userDetailsContainer {
         width: 100%;

@@ -1,18 +1,11 @@
-import React from 'react'
-import './spinner.css'
-const Spinner = () => {
-  return (
-    <div className="dot-spinner">
-    <div className="dot-spinner__dot"></div>
-    <div className="dot-spinner__dot"></div>
-    <div className="dot-spinner__dot"></div>
-    <div className="dot-spinner__dot"></div>
-    <div className="dot-spinner__dot"></div>
-    <div className="dot-spinner__dot"></div>
-    <div className="dot-spinner__dot"></div>
-    <div className="dot-spinner__dot"></div>
-</div>
-  )
-}
+import * as React from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
-export default Spinner
+export default function Spinner() {
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CircularProgress />
+    </Box>
+  );
+}

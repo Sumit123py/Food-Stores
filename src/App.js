@@ -20,9 +20,9 @@ import { ProductProvider } from './context/FoodContext';
 import useAuthRedirect from './Authentication/useAuthRedirect';
 import OrdersMainPage from './Components/OrdersMainPage/OrdersMainPage';
 import AppClosed from './Components/AppClosedPage/AppClosed';
-import LottieIcon from './Components/LottieIcon';
 import FCMInitializer, { messaging, requestNotificationPermission } from './features/notifications/firebase';
 import { onMessage } from 'firebase/messaging';
+import StepperPopUp from './Components/StepperPopUp';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,6 +53,7 @@ const AppRoutes = () => (
     <Route path="/scroll" element={<ScrollToTop />} />
     <Route path="/FoodAddForm" element={<FoodAddForm />} />
     <Route path="/orderMain" element={<OrdersMainPage />} />
+    <Route path="/stepper" element={<StepperPopUp />} />
   </Routes>
 );
 

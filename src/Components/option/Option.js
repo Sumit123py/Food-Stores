@@ -31,20 +31,13 @@ const Option = ({ i, index, setIndex, userId }) => {
     }
     
     try {
-      const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=Order Ready&body=Your order is now ready for pickup&url=https://shivaaysweets.vercel.app`, {
+      const response = await fetch(`https://shivaaysweets.vercel.app/api/send-message?title=Shivaay Sweet: Order Ready&body=Your order is now ready for pickup&url=https://shivaaysweets.vercel.app`, {
         method: 'POST', // Use 'POST' if your server expects a POST request
         headers: {
           'Content-Type': 'application/json',
           'x-fcm-token': user?.fcm_token 
-        },
-              body: JSON.stringify({
-                fcmToken: user?.fcm_token , 
-                userId: user?.id,
-                title: 'Order Ready',
-                body: 'Your order is now ready for pickup',
-                url: 'https://shivaaysweets.vercel.app',
-                condition: 'options'
-              }),
+        }
+             
       });
   
       if (!response.ok) {
@@ -88,34 +81,34 @@ const Option = ({ i, index, setIndex, userId }) => {
   // };
   
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   if (!user?.message) return;
+    if (!user?.message) return;
     
-  //   let interval;
-  //   let timeout;
+    let interval;
+    let timeout;
 
     
   
-  //   if (user?.message) {
-  //     interval = setInterval(() => {
-  //       sendNotification()
-  //     }, 30000); // 10 seconds interval
+    if (user?.message) {
+      interval = setInterval(() => {
+        sendNotification()
+      }, 30000); // 10 seconds interval
   
-  //     timeout = setTimeout(() => {
-  //       clearInterval(interval);
-  //     }, 5 * 60 * 1000); // 5 minutes
-  //   }
+      timeout = setTimeout(() => {
+        clearInterval(interval);
+      }, 5 * 60 * 1000); // 5 minutes
+    }
   
-  //   return () => {
-  //     if (interval) {
-  //       clearInterval(interval);
-  //     }
-  //     if (timeout) {
-  //       clearTimeout(timeout);
-  //     }
-  //   };
-  // }, [user?.message]);
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [user?.message]);
   
   
   

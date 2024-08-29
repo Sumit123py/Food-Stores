@@ -9,9 +9,9 @@ import { useQuery } from "@tanstack/react-query";
 import Spinner from "../../spinLoader/Spinner";
 import "./customerDashboard.css";
 import OrderReadyMessage from "../OrderReadyMessage/OrderReadyMessage";
-import { getOrders } from "../../Services/apiOrders";
 import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
 import WeightSelection from "../weightSelection/WeightSelection";
+import Countdown from "../CountDown";
 
 const CustomerDashboard = () => {
   const [show, setShow] = useState(false);
