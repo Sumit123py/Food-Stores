@@ -80,7 +80,7 @@ export default function StepperPopUp({setShow, setCloseReadyMessage}) {
       <div className="stepperContainer">
         <div className="bgColor"></div>
         <Box className='stepperBox' sx={{ width: '100%' }}>
-        <h1>Don't Close</h1>
+        <h3 style={{color: 'red'}}>Don't Close App</h3>
 
           <Stepper nonLinear activeStep={activeStep} alternativeLabel>
             {steps.map((label, index) => (
