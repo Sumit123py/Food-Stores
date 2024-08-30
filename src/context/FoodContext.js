@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { getUserByEmail } from '../Services/apiUsers';
-import { useNavigate } from 'react-router-dom';
 
 const ProductContext = createContext(null);
 
@@ -20,6 +19,7 @@ const ProductProvider = ({ children }) => {
   const [type, setType] = useState(null)
   const [weight, setWeight] = useState(null)
   const [fcmToken, setFcmToken] = useState(null)
+  const [message, setMessage] = useState('')
 
 
   useEffect(() => {
@@ -92,7 +92,9 @@ const ProductProvider = ({ children }) => {
         weight,
         setWeight,
         fcmToken,
-        setFcmToken
+        setFcmToken, 
+        message,
+        setMessage
       }}
     >
       {children}

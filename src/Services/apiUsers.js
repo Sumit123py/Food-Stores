@@ -71,7 +71,7 @@ export async function updateUser({ newData, id, imageData }) {
 export async function getUserByEmail(email) {
   let { data, error } = await supabase
     .from("users")
-    .select("role")
+    .select("id, email, role")
     .eq("email", email);
 
   if (error) {
@@ -108,6 +108,8 @@ export function getCurrentUserId() {
   }
   return null;
 }
+
+
 
 
 export async function getUsersByIds(userId) {

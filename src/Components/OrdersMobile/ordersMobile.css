@@ -57,6 +57,13 @@
         position: relative;
     }
 
+    .ordersMobileContainer .ordersHistoryListContainer .column .col3 .countDown{
+        position: absolute;
+        top: -83%;
+    left: 94%;
+        transform: translate(-50%, -50%);
+    }
+
     .ordersMobileContainer .ordersHistoryListContainer .column .col3 .status {
         width: 150px;
         padding: 1rem;

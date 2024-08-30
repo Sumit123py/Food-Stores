@@ -5,6 +5,7 @@ import supabase from "../../Services/Supabase";
 import toast from "react-hot-toast";
 import { getUser } from "../../Services/apiUsers";
 import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
+import { ProductContext } from "../../context/FoodContext";
 
 const Option = ({ i, index, setIndex, userId }) => {
   const queryClient = useQueryClient();
@@ -14,6 +15,7 @@ const Option = ({ i, index, setIndex, userId }) => {
     queryFn: getUser,
   });
 
+  const {setMessage} = useContext(ProductContext)
   const currentUser = users?.filter(
     (user) => user?.id === userId
   );
@@ -120,8 +122,13 @@ const Option = ({ i, index, setIndex, userId }) => {
     async ({ status, userId }) => {
       const { error: orderError } = await supabase
         .from("Orders")
-        .update({ orderStatus: status })
+        .update({ 
+          orderStatus: status,
+          Message: ''
+         })
         .eq("userId", userId);
+
+        
 
       if (orderError) {
         throw new Error(orderError.message);

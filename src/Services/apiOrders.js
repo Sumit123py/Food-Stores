@@ -41,7 +41,8 @@ export async function createOrder(userId, cartItems) {
       totalPrice: item.totalPrice,
       image: item.image,
       deliveryType: item.deliveryType,
-      weightType: item.weight
+      weightType: item.weight, 
+      Message: 'नई ऑर्डर प्राप्त हुई है।'
     })));
 
   if (error) {

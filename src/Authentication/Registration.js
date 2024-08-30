@@ -23,7 +23,7 @@ const Registration = () => {
       queryClient.invalidateQueries("users");
       Navigate("/Login");
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error('password must be atleast 7 Characters'),
   });
 
   const { register, handleSubmit } = useForm();

@@ -1,7 +1,7 @@
 
 
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging } from "firebase/messaging";
 
 import { useEffect } from "react";
 import { useFCMToken } from "../../Components/useFCMToken";
