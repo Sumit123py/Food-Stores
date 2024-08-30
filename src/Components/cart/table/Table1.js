@@ -17,7 +17,7 @@ import OrderPreparingMessage from "../../OrderPreparingMessage/OrderPreparingMes
 const Table1 = ({ addressAdded, setShow, setCloseReadyMessage, closeReadyMessage }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { setOrderData, setMessage } = useContext(ProductContext);
+  const { setOrderData, setTotalItem } = useContext(ProductContext);
 
   useSupabaseRealtime("Orders", "Orders");
 
@@ -233,7 +233,6 @@ const Table1 = ({ addressAdded, setShow, setCloseReadyMessage, closeReadyMessage
       toast.success("Order placed successfully");
       queryClient.invalidateQueries({ queryKey: ["Orders"] });
       handleUpdate();
-      setMessage('नई ऑर्डर प्राप्त हुई है।')
       
 
       try {

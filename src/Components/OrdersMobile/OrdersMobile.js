@@ -9,6 +9,7 @@ import OrdersMenu from "../OrdersMenu";
 import useSupabaseRealtime from "../../Services/useSupabaseRealtime";
 import Option from "../option/Option";
 import Spinner from "../../spinLoader/Spinner";
+import useInsertSupabaseRealtime from "../../Services/useInsertSupabaseRealtime";
 const OrdersMobile = () => {
   const queryClient = useQueryClient();
   const [currentFilter] = useSearchParams();
@@ -24,36 +25,36 @@ const OrdersMobile = () => {
   const { setOrderData, userRole, handleLogout } = useContext(ProductContext);
   const [index, setIndex] = useState(null);
   const navigate = useNavigate();
-  // const announceNewOrder = (order, userId) => {
+  const announceNewOrder = (order, userId) => {
     
-  //   if (userId) {
-  //     const user = orders?.find((currOrder) => currOrder?.users.id === userId);
+    if (userId) {
+      const user = orders?.find((currOrder) => currOrder?.users.id === userId);
 
-  //     const msg = new SpeechSynthesisUtterance();
-  //     msg.text = `नई ऑर्डर प्राप्त हुई है।`
-  //     // ऑर्डर आईडी: ${user?.users.userShortID}, ग्राहक का नाम: ${user?.users.firstName} ${user?.users.lastName}`;
-  //     msg.lang = "hi-IN";
+      const msg = new SpeechSynthesisUtterance();
+      msg.text = `नई ऑर्डर प्राप्त हुई है।`
+      // ऑर्डर आईडी: ${user?.users.userShortID}, ग्राहक का नाम: ${user?.users.firstName} ${user?.users.lastName}`;
+      msg.lang = "hi-IN";
 
-  //     // Get the list of available voices
-  //     const voices = window.speechSynthesis.getVoices();
+      // Get the list of available voices
+      const voices = window.speechSynthesis.getVoices();
 
-  //     // Find a female Hindi voice
-  //     const femaleHindiVoice = voices.find(
-  //       (voice) => voice.lang === "hi-IN" && voice.name.includes("female")
-  //     );
+      // Find a female Hindi voice
+      const femaleHindiVoice = voices.find(
+        (voice) => voice.lang === "hi-IN" && voice.name.includes("female")
+      );
 
-  //     // If a female Hindi voice is available, set it to the message
-  //     if (femaleHindiVoice) {
-  //       msg.voice = femaleHindiVoice;
-  //     }
+      // If a female Hindi voice is available, set it to the message
+      if (femaleHindiVoice) {
+        msg.voice = femaleHindiVoice;
+      }
 
-  //     window.speechSynthesis.speak(msg);
-  //   }
-  // };
+      window.speechSynthesis.speak(msg);
+    }
+  };
 
-  useSupabaseRealtime("Orders", "Orders",
-  //  announceNewOrder
+  useSupabaseRealtime("Orders", "Orders"
    );
+  useInsertSupabaseRealtime("Orders", "Orders", announceNewOrder)
 
   const showOrderStatus = (userId) => {
   const currentOrder = orders?.filter((order) => order.userId === userId)
