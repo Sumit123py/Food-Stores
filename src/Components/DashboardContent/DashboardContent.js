@@ -14,7 +14,7 @@ const DashboardContent = ({currentAction, setCurrentAction}) => {
   const announceNewOrder = (order, userId) => {
     
     if (userId) {
-      const user = orders?.find((currOrder) => currOrder?.users.id === userId);
+      // const user = orders?.find((currOrder) => currOrder?.users.id === userId);
 
       const msg = new SpeechSynthesisUtterance();
       msg.text = `नई ऑर्डर प्राप्त हुई है।`
