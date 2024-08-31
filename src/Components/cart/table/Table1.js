@@ -75,7 +75,6 @@ const Table1 = ({ addressAdded, setShow, setCloseReadyMessage, closeReadyMessage
       }
 
       const data = await response.json();
-      console.log("Server Response:", data);
     } catch (error) {
       console.error("Error sending notification:", error);
     }

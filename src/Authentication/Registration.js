@@ -13,7 +13,6 @@ const Registration = () => {
 
   const {fcmToken} = useContext(ProductContext)
 
-  console.log('akd', fcmToken)
   
   const Navigate = useNavigate();
 
