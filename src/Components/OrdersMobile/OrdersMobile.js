@@ -255,6 +255,8 @@ const OrdersMobile = () => {
                 <p className="totalCost" style={{ color: "red" }}>
                   Total Cost: <span>₹{totalCost(orderItem.userId) + (orderItem.deliveryType === 'delivery' ? 2 : 0)}</span>
                 </p>
+                {orderItem.orderStatus === 'Ready' && <p>
+                  Customer: {orderItem?.users?.message ? 'Pending' : 'Accepted'}</p>}
               </div>
               <div className="col2">
                 <p className="locationIcon">
@@ -275,6 +277,7 @@ const OrdersMobile = () => {
                   setIndex={setIndex}
                   userId={orderItem.userId}
                 />
+                
               </div>
               {(userRole === "admin" || orderItem.Approval !== "Reject") && (
                 <Link

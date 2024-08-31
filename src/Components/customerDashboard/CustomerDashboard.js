@@ -61,7 +61,7 @@ const CustomerDashboard = () => {
       />
       <WeightSelection title={title} maxQuantity={maxQuantity} showCartPopUp={showCartPopUp} setShowCartPopUp={setShowCartPopUp} />
       <ScrollToTop />
-      {isOrderReady && <OrderReadyMessage userId={userId} />}
+      {isOrderReady && <OrderReadyMessage userId={userId} user={user} />}
 
           <p class="item1"></p>
           <p class="item2"></p>
