@@ -23,6 +23,7 @@ import AppClosed from './Components/AppClosedPage/AppClosed';
 import FCMInitializer, { messaging, requestNotificationPermission } from './features/notifications/firebase';
 import { onMessage } from 'firebase/messaging';
 import StepperPopUp from './Components/StepperPopUp';
+import Video from './Components/Video';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,7 +40,8 @@ const AppWrapper = () => {
 
 const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<Registration />} />
+    <Route path="/" element={<Video />} />
+    <Route path="/registration" element={<Registration />} />
     <Route path="/Login" element={<Login />} />
     <Route path="/spinner" element={<Spinner />} />
     <Route path="/appClosed" element={<AppClosed />} />

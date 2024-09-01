@@ -1141,6 +1141,31 @@ a {
 
 }
 
+.videoContainer{
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+  position: relative;
+}
+
+video{
+  width: 100%;
+  height: 100%;
+}
+
+.skip{
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translate(-50%, -50%);
+  padding: 5px;
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  text-wrap: nowrap;
+
+}
+
 
 .table2 {
   width: 600px;
